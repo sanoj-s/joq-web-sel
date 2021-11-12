@@ -17,7 +17,7 @@ import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.snj.action.GeneralUtilities;
+import com.snj.action.UtilityActions;
 import com.snj.exception.AutomationException;
 import com.snj.utils.AutomationConstants;
 
@@ -81,7 +81,7 @@ public class ExcelDataHandler {
 		try {
 			CellType cellType = sheet.getRow(rowNum - 1).getCell(colNum - 1).getCellType();
 			if (cellType.toString().toLowerCase().equals("numeric")) {
-				cellValue = new GeneralUtilities().convertIntToString(new GeneralUtilities()
+				cellValue = new UtilityActions().convertIntToString(new UtilityActions()
 						.convertDoubleToInt(sheet.getRow(rowNum - 1).getCell(colNum - 1).getNumericCellValue()));
 			}
 			if (cellType.toString().toLowerCase().equals("string")) {

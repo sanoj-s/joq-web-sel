@@ -31,7 +31,7 @@ import com.snj.data.PropertyDataHandler;
 import com.snj.exception.AutomationException;
 import com.snj.utils.AutomationConstants;
 
-public class WebUIActions extends AutomationEngine {
+public class WebActions extends AutomationEngine {
 
 	UtilityActions utilsObj = new UtilityActions();
 

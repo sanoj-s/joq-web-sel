@@ -19,8 +19,7 @@ public class UIActions extends AutomationEngine {
 	UtilityActions utilityActionHelper = new UtilityActions();
 
 	/**
-	 * Method to CLICK on the object (which is referred by the user from the Object
-	 * Repository)
+	 * Click on an object
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
@@ -28,7 +27,7 @@ public class UIActions extends AutomationEngine {
 	 * @param elementName
 	 * @throws AutomationException
 	 */
-	public void click(WebDriver driver, String elementName) throws AutomationException {
+	public void tap(WebDriver driver, String elementName) throws AutomationException {
 		try {
 			if (elementName != null) {
 				WebElement element = utilityActionHelper.waitForElement(driver, elementName);
@@ -39,65 +38,20 @@ public class UIActions extends AutomationEngine {
 				throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementName + "'");
 			}
 		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
-		}
-	}
-
-	/**
-	 * Method to CLICK on the object using JS(which is referred by the user from the
-	 * Object Repository)
-	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param driver
-	 * @param elementName
-	 * @throws AutomationException
-	 */
-	public void clickUsingJS(WebDriver driver, String elementName) throws AutomationException {
-		try {
-			if (elementName != null) {
+			try {
 				WebElement element = utilityActionHelper.waitForElement(driver, elementName);
 				JavascriptExecutor executor = (JavascriptExecutor) driver;
 				executor.executeScript("arguments[0].click();", element);
 				System.out.println("==========================================================");
 				System.out.println("Successfully clicked on " + elementName);
-			} else {
-				throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementName + "'");
+			} catch (Exception ex) {
+				throw new AutomationException(getExceptionMessage(), ex);
 			}
-		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
 		}
 	}
 
 	/**
-	 * Method to Double Click on the object (which is referred by the user from the
-	 * Object Repository)
-	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param driver
-	 * @param elementName
-	 * @throws AutomationException
-	 */
-	public void doubleClick(WebDriver driver, String elementName) throws AutomationException {
-		try {
-			if (elementName != null) {
-				Actions action = new Actions(driver);
-				WebElement element = utilityActionHelper.waitForElement(driver, elementName);
-				action.doubleClick(element).perform();
-				System.out.println("==========================================================");
-				System.out.println("Successfully double clicked on " + elementName);
-			} else {
-				throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementName + "'");
-			}
-		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
-		}
-	}
-
-	/**
-	 * Method to Right Click on the object (which is referred by the user from the
-	 * Object Repository)
+	 * Right click on an object
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
@@ -122,8 +76,42 @@ public class UIActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to MULTI CLICK on the object (which is referred by the user from the
-	 * Object Repository)
+	 * Double click on an object
+	 * 
+	 * @author sanojs
+	 * @since 15-04-2021
+	 * @param driver
+	 * @param elementName
+	 * @throws AutomationException
+	 */
+	public void doubleTap(WebDriver driver, String elementName) throws AutomationException {
+		try {
+			if (elementName != null) {
+				Actions action = new Actions(driver);
+				WebElement element = utilityActionHelper.waitForElement(driver, elementName);
+				action.doubleClick(element).perform();
+				System.out.println("==========================================================");
+				System.out.println("Successfully double clicked on " + elementName);
+			} else {
+				throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementName + "'");
+			}
+		} catch (Exception e) {
+			try {
+				WebElement element = utilityActionHelper.waitForElement(driver, elementName);
+				JavascriptExecutor executor = (JavascriptExecutor) driver;
+				executor.executeScript("arguments[0].click();", element);
+				executor.executeScript("arguments[0].click();", element);
+				System.out.println("==========================================================");
+				System.out.println("Successfully clicked on " + elementName);
+			} catch (Exception ex) {
+				throw new AutomationException(getExceptionMessage(), ex);
+			}
+
+		}
+	}
+
+	/**
+	 * Multiple click on an object
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
@@ -132,7 +120,7 @@ public class UIActions extends AutomationEngine {
 	 * @param clickCount
 	 * @throws AutomationException
 	 */
-	public void multiClick(WebDriver driver, String elementName, int clickCount) throws AutomationException {
+	public void multiTap(WebDriver driver, String elementName, int clickCount) throws AutomationException {
 		try {
 			if (elementName != null) {
 				PropertyDataHandler propertyObj = new PropertyDataHandler();
@@ -157,7 +145,7 @@ public class UIActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to CLICK on the object based on the X and Y Co-ordinates.
+	 * Click on an object based on the X and Y Coordinates of an object
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
@@ -166,7 +154,7 @@ public class UIActions extends AutomationEngine {
 	 * @param yOffset
 	 * @throws AutomationException
 	 */
-	public void clickOnXandY(WebDriver driver, int xOffset, int yOffset) throws AutomationException {
+	public void tapUsingCoordinates(WebDriver driver, int xOffset, int yOffset) throws AutomationException {
 		try {
 			Actions action = new Actions(driver);
 			action.moveByOffset(xOffset, yOffset).click().build().perform();
@@ -178,43 +166,58 @@ public class UIActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to CLICK on the object based on the locator - xpath.
+	 * Click on the object based on the locator type - xpath, id, classname,
+	 * linktext, partial linktext, css selector, tag name
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
 	 * @param driver
-	 * @param elementXpath
-	 * @throws AutomationException
-	 */
-	public void clickByXpath(WebDriver driver, String elementXpath) throws AutomationException {
-		try {
-			if (elementXpath != null) {
-				By elementLocator = By.xpath(elementXpath);
-				WebElement element = utilityActionHelper.waitForElement(driver, elementLocator);
-				element.click();
-				System.out.println("==========================================================");
-				System.out.println("Successfully clicked on " + elementXpath);
-			} else {
-				throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementXpath + "'");
-			}
-		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
-		}
-	}
-
-	/**
-	 * Method to CLICK on the object based on the locator - name.
-	 * 
-	 * @author sanojs
-	 * @since 15-0-2021
-	 * @param driver
+	 * @param locatorType
 	 * @param elementName
 	 * @throws AutomationException
 	 */
-	public void clickByName(WebDriver driver, String elementName) throws AutomationException {
+	public void tapUsingLocatorType(WebDriver driver, String locatorType, String elementName)
+			throws AutomationException {
 		try {
+			By elementLocator = null;
 			if (elementName != null) {
-				By elementLocator = By.name(elementName);
+				switch (locatorType.toLowerCase()) {
+				case "xpath":
+					elementLocator = By.xpath(elementName);
+					break;
+				case "id":
+					elementLocator = By.id(elementName);
+					break;
+				case "name":
+					elementLocator = By.name(elementName);
+					break;
+				case "css":
+				case "css selector":
+				case "cssselector":
+					elementLocator = By.cssSelector(elementName);
+					break;
+				case "class":
+				case "classname":
+				case "class name":
+					elementLocator = By.className(elementName);
+					break;
+				case "link text":
+				case "linktext":
+					elementLocator = By.linkText(elementName);
+					break;
+				case "partial link text":
+				case "partiallinktext":
+				case "partial linktext":
+					elementLocator = By.partialLinkText(elementName);
+					break;
+				case "tag":
+				case "tagname":
+				case "tag name":
+					elementLocator = By.tagName(elementName);
+					break;
+				default:
+					break;
+				}
 				WebElement element = utilityActionHelper.waitForElement(driver, elementLocator);
 				element.click();
 				System.out.println("==========================================================");
@@ -228,174 +231,55 @@ public class UIActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to CLICK on the object based on the locator - id.
-	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param driver
-	 * @param elementId
-	 * @throws AutomationException
-	 */
-	public void clickById(WebDriver driver, String elementId) throws AutomationException {
-		try {
-			if (elementId != null) {
-				By elementLocator = By.id(elementId);
-				WebElement element = utilityActionHelper.waitForElement(driver, elementLocator);
-				element.click();
-				System.out.println("==========================================================");
-				System.out.println("Successfully clicked on " + elementId);
-			} else {
-				throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementId + "'");
-			}
-		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
-		}
-	}
-
-	/**
-	 * Method to CLICK on the object based on the locator - linkText.
-	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param driver
-	 * @param elementlinkText
-	 * @throws AutomationException
-	 */
-	public void clickBylinkText(WebDriver driver, String elementlinkText) throws AutomationException {
-		try {
-			if (elementlinkText != null) {
-				By elementLocator = By.linkText(elementlinkText);
-				WebElement element = utilityActionHelper.waitForElement(driver, elementLocator);
-				element.click();
-				System.out.println("==========================================================");
-				System.out.println("Successfully clicked on " + elementlinkText);
-			} else {
-				throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementlinkText + "'");
-			}
-		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
-		}
-	}
-
-	/**
-	 * Method to CLICK on the object based on the locator - PartialLinkText.
-	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param driver
-	 * @param elementpartialLinkText
-	 * @throws AutomationException
-	 */
-	public void clickByPartialLinkText(WebDriver driver, String elementpartialLinkText) throws AutomationException {
-		try {
-			if (elementpartialLinkText != null) {
-				By elementLocator = By.partialLinkText(elementpartialLinkText);
-				WebElement element = utilityActionHelper.waitForElement(driver, elementLocator);
-				element.click();
-				System.out.println("==========================================================");
-				System.out.println("Successfully clicked on " + elementpartialLinkText);
-			} else {
-				throw new AutomationException(
-						AutomationConstants.OBJECT_NOT_FOUND + "'" + elementpartialLinkText + "'");
-			}
-		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
-		}
-	}
-
-	/**
-	 * Method to CLICK on the object based on the locator - CSSselector.
-	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param driver
-	 * @param elementcssSelector
-	 * @throws AutomationException
-	 */
-	public void clickByCssSelector(WebDriver driver, String elementcssSelector) throws AutomationException {
-		try {
-			if (elementcssSelector != null) {
-				By elementLocator = By.cssSelector(elementcssSelector);
-				WebElement element = utilityActionHelper.waitForElement(driver, elementLocator);
-				element.click();
-				System.out.println("==========================================================");
-				System.out.println("Successfully clicked on " + elementcssSelector);
-			} else {
-				throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementcssSelector + "'");
-			}
-		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
-		}
-	}
-
-	/**
-	 * Method to CLICK on the object based on the locator - TagName.
-	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param driver
-	 * @param elementtagName
-	 * @throws AutomationException
-	 */
-	public void clickByTagName(WebDriver driver, String elementtagName) throws AutomationException {
-		try {
-			if (elementtagName != null) {
-				By elementLocator = By.tagName(elementtagName);
-				WebElement element = utilityActionHelper.waitForElement(driver, elementLocator);
-				element.click();
-				System.out.println("==========================================================");
-				System.out.println("Successfully clicked on " + elementtagName);
-			} else {
-				throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementtagName + "'");
-			}
-		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
-		}
-	}
-
-	/**
-	 * Method to CLICK on the object based on the locator - ClassName.
-	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param driver
-	 * @param elementClassName
-	 * @throws AutomationException
-	 */
-	public void clickByClassName(WebDriver driver, String elementClassName) throws AutomationException {
-		try {
-			if (elementClassName != null) {
-				By elementLocator = By.className(elementClassName);
-				WebElement element = utilityActionHelper.waitForElement(driver, elementLocator);
-				element.click();
-				System.out.println("==========================================================");
-				System.out.println("Successfully clicked on " + elementClassName);
-			} else {
-				throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementClassName + "'");
-			}
-		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
-		}
-	}
-
-	/**
-	 * Method to set text in the input field (which is referred by the user from the
-	 * Object Repository)
+	 * Enter values to an input field
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
 	 * @param driver
 	 * @param elementExpression
-	 * @param inputText
+	 * @param typeValue
 	 * @throws AutomationException
 	 */
-	public void type(WebDriver driver, String elementName, String inputText) throws AutomationException {
+	public void type(WebDriver driver, String elementName, String typeValue) throws AutomationException {
 		try {
 			if (driver != null && elementName != null) {
 				WebElement element = utilityActionHelper.waitForElement(driver, elementName);
-				element.sendKeys(inputText);
+				element.sendKeys(typeValue);
 				System.out.println("==========================================================");
-				System.out.println("Data " + inputText + " successfully entered into " + elementName);
+				System.out.println("Data " + typeValue + " successfully entered into " + elementName);
+			} else {
+				throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementName + "'");
+			}
+		} catch (Exception e) {
+			try {
+				WebElement element = utilityActionHelper.waitForElement(driver, elementName);
+				JavascriptExecutor executor = (JavascriptExecutor) driver;
+				executor.executeScript("arguments[0]. value='" + typeValue + "';", element);
+				System.out.println("==========================================================");
+				System.out.println("Data " + typeValue + " successfully entered into " + elementName);
+			} catch (Exception ex) {
+				throw new AutomationException(getExceptionMessage(), ex);
+			}
+		}
+	}
+
+	/**
+	 * Enter values to an input field based on Keys
+	 * 
+	 * @author sanojs
+	 * @since 15-04-2021
+	 * @param driver
+	 * @param elementExpression
+	 * @param typeValue
+	 * @throws AutomationException
+	 */
+	public void type(WebDriver driver, String elementName, Keys typeValue) throws AutomationException {
+		try {
+			if (driver != null && elementName != null) {
+				WebElement element = utilityActionHelper.waitForElement(driver, elementName);
+				element.sendKeys(typeValue);
+				System.out.println("==========================================================");
+				System.out.println("Data " + typeValue + " successfully entered into " + elementName);
 			} else {
 				throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementName + "'");
 			}
@@ -405,50 +289,98 @@ public class UIActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to set key in the input field (which is referred by the user from the
-	 * Object Repository)
-	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param driver
-	 * @param elementExpression
-	 * @param inputText
-	 * @throws AutomationException
-	 */
-	public void type(WebDriver driver, String elementName, Keys inputText) throws AutomationException {
-		try {
-			if (driver != null && elementName != null) {
-				WebElement element = utilityActionHelper.waitForElement(driver, elementName);
-				element.sendKeys(inputText);
-				System.out.println("==========================================================");
-				System.out.println("Data " + inputText + " successfully entered into " + elementName);
-			} else {
-				throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementName + "'");
-			}
-		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
-		}
-	}
-
-	/**
-	 * Method to clear the input field and then set text to the same input field
-	 * (which is referred by the user from the Object Repository)
+	 * Clear an input field and enter values to that input field
 	 * 
 	 * @author sanojs
 	 * @since 15-0-2021
 	 * @param driver
 	 * @param expressionPath
-	 * @param inputText
+	 * @param typeValue
 	 * @throws AutomationException
 	 */
-	public void clearAndType(WebDriver driver, String elementName, String inputText) throws AutomationException {
+	public void clearAndType(WebDriver driver, String elementName, String typeValue) throws AutomationException {
 		try {
 			if (elementName != null) {
 				WebElement element = utilityActionHelper.waitForElement(driver, elementName);
 				element.clear();
-				element.sendKeys(inputText);
+				element.sendKeys(typeValue);
 				System.out.println("==========================================================");
-				System.out.println("Data " + inputText + " successfully entered into " + elementName);
+				System.out.println("Data " + typeValue + " successfully entered into " + elementName);
+			} else {
+				throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementName + "'");
+			}
+		} catch (Exception e) {
+			try {
+				WebElement element = utilityActionHelper.waitForElement(driver, elementName);
+				JavascriptExecutor executor = (JavascriptExecutor) driver;
+				element.clear();
+				executor.executeScript("arguments[0]. value='" + typeValue + "';", element);
+				System.out.println("==========================================================");
+				System.out.println("Data " + typeValue + " successfully entered into " + elementName);
+			} catch (Exception ex) {
+				throw new AutomationException(getExceptionMessage(), ex);
+			}
+		}
+	}
+
+	/**
+	 * Enter values to an input field based on the locator type - xpath, id,
+	 * classname, linktext, partial linktext, css selector, tag name
+	 * 
+	 * @author sanojs
+	 * @since 15-04-2021
+	 * @param driver
+	 * @param locatorType
+	 * @param elementName
+	 * @param typeValue
+	 * @throws AutomationException
+	 */
+	public void typeUsingLocatorType(WebDriver driver, String locatorType, String elementName, String typeValue)
+			throws AutomationException {
+		try {
+			By elementLocator = null;
+			if (elementName != null) {
+				switch (locatorType.toLowerCase()) {
+				case "xpath":
+					elementLocator = By.xpath(elementName);
+					break;
+				case "id":
+					elementLocator = By.id(elementName);
+					break;
+				case "name":
+					elementLocator = By.name(elementName);
+					break;
+				case "css":
+				case "css selector":
+				case "cssselector":
+					elementLocator = By.cssSelector(elementName);
+					break;
+				case "class":
+				case "classname":
+				case "class name":
+					elementLocator = By.className(elementName);
+					break;
+				case "link text":
+				case "linktext":
+					elementLocator = By.linkText(elementName);
+					break;
+				case "partial link text":
+				case "partiallinktext":
+				case "partial linktext":
+					elementLocator = By.partialLinkText(elementName);
+					break;
+				case "tag":
+				case "tagname":
+				case "tag name":
+					elementLocator = By.tagName(elementName);
+					break;
+				default:
+					break;
+				}
+				WebElement element = utilityActionHelper.waitForElement(driver, elementLocator);
+				element.sendKeys(typeValue);
+				System.out.println("==========================================================");
+				System.out.println("Successfully clicked on " + elementName);
 			} else {
 				throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementName + "'");
 			}

@@ -5,7 +5,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Parameters;
 
-import com.snj.action.WebUIActions;
+import com.snj.action.WebActions;
 import com.snj.base.AutomationEngine;
 import com.snj.exception.AutomationException;
 import com.snj.reporting.AutomationReport;
@@ -20,7 +20,7 @@ public class TestRunner extends AutomationEngine {
 
 	@AfterSuite
 	public void tearDownMethod() throws AutomationException, InterruptedException {
-		WebUIActions webObj = new WebUIActions();
+		WebActions webObj = new WebActions();
 		webObj.closeBrowser(driver);
 	}
 }
