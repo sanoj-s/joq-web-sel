@@ -1,5 +1,5 @@
 # snj-selenium-java
-This is a test automation framework for the web applications on different browsers like Google chrome, Mozilla Firefox, Microsoft Edge, Internet Explorer and Safari in real time. It provides rich features like Test Execution, Test Reporting, and Test details sharing via mail. The  automation framework includes 110+ pre-built keywords using which an Automation Engineer can easily perform the web automation.
+This is a test automation framework for the web applications on different browsers like Google Chrome, Mozilla Firefox, Microsoft Edge, Internet Explorer and Safari in real-time. It provides rich features like Test Execution, Test Reporting, and Test details sharing via mail. The  automation framework includes 110+ pre-built keywords using which an Automation Engineer can easily perform the web automation.
 
 <h3>Salient features of snj-selenium-java:</h3>
 <li>Automation support for web applications (Windows and MAC).
