@@ -80,5 +80,7 @@ This is a test automation framework for the web applications on different browse
 NOTE: If you need run on different browsers, you can mention firefox or edge or ie or safari or headless for the **browserName** parameter in the above testng.xml code. 
 
 I hope this automation framework will help to kickstart your automation scripting from the base level.	
+
+Get your latest releases from https://github.com/sanoj-s/snj-selenium-java/releases	
 	
 _**make it perfect!**_
