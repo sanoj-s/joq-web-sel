@@ -322,8 +322,8 @@ public class WebActions extends AutomationEngine {
 					return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
 				}
 			};
-			long timeout = Long.parseLong(new PropertyDataHandler().getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG,
-					AutomationConstants.SHORT_LOADING));
+			long timeout = Long.parseLong(new PropertyDataHandler()
+					.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, AutomationConstants.SHORT_LOADING));
 			WebDriverWait wait = new WebDriverWait(driver, timeout);
 			wait.until(pageLoadCondition);
 		} catch (Exception e) {
@@ -517,7 +517,7 @@ public class WebActions extends AutomationEngine {
 	public void fileUpload(WebDriver driver, String filePath, String elementName) throws AutomationException {
 		try {
 			if (driver != null) {
-				WebElement element = new UtilityActions().waitForElement(driver, elementName);
+				WebElement element = new UtilityActions().getWebElement(driver, elementName);
 				if (element != null) {
 					String operatingSystem = System.getProperty("os.name");
 					Robot robot = new Robot();

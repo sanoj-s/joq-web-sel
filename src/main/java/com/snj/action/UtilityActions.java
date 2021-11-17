@@ -33,8 +33,7 @@ public class UtilityActions extends AutomationEngine {
 	public Random random;
 
 	/**
-	 * Method to wait for the element using the object mentioned in the Object
-	 * Repository
+	 * Get an element based on the visibility and return WebElement
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
@@ -43,7 +42,7 @@ public class UtilityActions extends AutomationEngine {
 	 * @return element
 	 * @throws AutomationException
 	 */
-	public WebElement waitForElement(WebDriver driver, String elementKey) throws AutomationException {
+	public WebElement getWebElement(WebDriver driver, String elementName) throws AutomationException {
 		WebElement element = null;
 		ObjectRepositoryHandler objRepository = new ObjectRepositoryHandler();
 		PropertyDataHandler objProertyData = new PropertyDataHandler();
@@ -51,49 +50,18 @@ public class UtilityActions extends AutomationEngine {
 			long timeout = Long.parseLong(objProertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG,
 					AutomationConstants.SHORT_LOADING));
 			wait = new WebDriverWait(driver, timeout);
-			By actualElement = objRepository.getElementByLocator(elementKey);
+			By actualElement = objRepository.getElementByLocator(elementName);
 			element = wait.until(ExpectedConditions.visibilityOfElementLocated(actualElement));
 			((JavascriptExecutor) driver)
 					.executeScript("window.scrollTo(" + element.getLocation().x + "," + element.getLocation().y + ")");
 		} catch (Exception e) {
-			throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementKey + "'");
+			throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementName + "'");
 		}
 		return element;
 	}
 
 	/**
-	 * Method to wait for the elements using the object mentioned in the Object
-	 * Repository
-	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param driver
-	 * @param elementName
-	 * @return elements
-	 * @throws AutomationException
-	 */
-	public List<WebElement> waitForElements(WebDriver driver, String elementKey) throws AutomationException {
-		List<WebElement> elements;
-		ObjectRepositoryHandler objRepository = new ObjectRepositoryHandler();
-		PropertyDataHandler objProertyData = new PropertyDataHandler();
-		try {
-			if (elementKey != null) {
-				long timeout = Long.parseLong(
-						objProertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
-				wait = new WebDriverWait(driver, timeout);
-				By actualElement = objRepository.getElementByLocator(elementKey);
-				wait.until(ExpectedConditions.presenceOfElementLocated(actualElement));
-				elements = driver.findElements(actualElement);
-			} else
-				throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementKey + "'");
-		} catch (Exception e) {
-			throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementKey + "'");
-		}
-		return elements;
-	}
-
-	/**
-	 * Method to wait for the element using the By elementlocator
+	 * Get an element based on the presence of element located and return WebElement
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
@@ -102,7 +70,7 @@ public class UtilityActions extends AutomationEngine {
 	 * @return element
 	 * @throws AutomationException
 	 */
-	public WebElement waitForElement(WebDriver driver, By elementLocator) throws AutomationException {
+	public WebElement getWebElement(WebDriver driver, By elementLocator) throws AutomationException {
 		WebElement element = null;
 		PropertyDataHandler objProertyData = new PropertyDataHandler();
 		try {
@@ -117,16 +85,16 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to Wait for the element to get Visible
+	 * Wait for an element based on the visibility and return true or false
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
 	 * @param driver
-	 * @param elementLocator
+	 * @param elementName
 	 * @return isElementVisible
 	 * @throws AutomationException
 	 */
-	public boolean waitForElementVisible(WebDriver driver, String elementKey) throws AutomationException {
+	public boolean waitForElement(WebDriver driver, String elementName) throws AutomationException {
 		boolean isElementVisible = false;
 		PropertyDataHandler objPropertyData = new PropertyDataHandler();
 		ObjectRepositoryHandler objRepository = new ObjectRepositoryHandler();
@@ -134,7 +102,7 @@ public class UtilityActions extends AutomationEngine {
 			long timeout = Long.parseLong(
 					objPropertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
 			wait = new WebDriverWait(driver, timeout);
-			By actualElement = objRepository.getElementByLocator(elementKey);
+			By actualElement = objRepository.getElementByLocator(elementName);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(actualElement));
 			isElementVisible = true;
 		} catch (Exception e) {
@@ -144,16 +112,16 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to Wait for the element to get Invisible
+	 * Wait for an element based on the invisibility and return true or false
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
 	 * @param driver
-	 * @param elementKey
+	 * @param elementName
 	 * @return isElementInVisible
 	 * @throws AutomationException
 	 */
-	public boolean waitForElementInVisible(WebDriver driver, String elementKey) throws AutomationException {
+	public boolean waitForElementInVisible(WebDriver driver, String elementName) throws AutomationException {
 		boolean isElementInVisible = false;
 		PropertyDataHandler objPropertyData = new PropertyDataHandler();
 		ObjectRepositoryHandler objRepository = new ObjectRepositoryHandler();
@@ -161,7 +129,7 @@ public class UtilityActions extends AutomationEngine {
 			long timeout = Long.parseLong(
 					objPropertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
 			wait = new WebDriverWait(driver, timeout);
-			By actualElement = objRepository.getElementByLocator(elementKey);
+			By actualElement = objRepository.getElementByLocator(elementName);
 			isElementInVisible = wait.until(ExpectedConditions.invisibilityOfElementLocated(actualElement));
 		} catch (Exception e) {
 			throw new AutomationException(getExceptionMessage(), e);
@@ -170,16 +138,16 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to Wait for the element Text to be present
+	 * Wait for text or label to be present and return true or false
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
 	 * @param driver
-	 * @param elementKey
+	 * @param elementName
 	 * @return element
 	 * @throws AutomationException
 	 */
-	public boolean waitForTextPresent(WebDriver driver, String elementKey, String expectedText)
+	public boolean waitForTextPresent(WebDriver driver, String elementName, String expectedText)
 			throws AutomationException {
 		boolean isTextPresent = false;
 		PropertyDataHandler objPropertyData = new PropertyDataHandler();
@@ -188,7 +156,7 @@ public class UtilityActions extends AutomationEngine {
 			long timeout = Long.parseLong(
 					objPropertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
 			wait = new WebDriverWait(driver, timeout);
-			By actualElement = objRepository.getElementByLocator(elementKey);
+			By actualElement = objRepository.getElementByLocator(elementName);
 			isTextPresent = wait.until(ExpectedConditions.textToBePresentInElementLocated(actualElement, expectedText));
 		} catch (Exception e) {
 			throw new AutomationException(getExceptionMessage(), e);
@@ -197,70 +165,150 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to get WebElement
+	 * Wait for the elements based on the presence of element located and return
+	 * lists of WebElement
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
 	 * @param driver
-	 * @param elementKey
-	 * @return element
+	 * @param elementName
+	 * @return elements
 	 * @throws AutomationException
 	 */
-	public WebElement getWebElement(String elementName) throws AutomationException {
-		WebElement webElement = null;
-		By byElement = null;
+	public List<WebElement> waitForElements(WebDriver driver, String elementName) throws AutomationException {
+		List<WebElement> elements;
+		ObjectRepositoryHandler objRepository = new ObjectRepositoryHandler();
+		PropertyDataHandler objProertyData = new PropertyDataHandler();
 		try {
-			PropertyDataHandler objPropertyData = new PropertyDataHandler();
-			WebDriver driver = new AutomationEngine().getDriver();
-			if (elementName.startsWith("#") || elementName.startsWith("td[") || elementName.startsWith("tr[")
-					|| elementName.startsWith("td ") || elementName.startsWith("tr ")
-					|| elementName.startsWith("input[") || elementName.startsWith("span[")
-					|| elementName.startsWith("div") || elementName.startsWith(".")) {
-				byElement = By.cssSelector(elementName);
-			} else if (elementName.startsWith("//") || elementName.startsWith(".//") || elementName.startsWith("(.//")
-					|| elementName.startsWith("(//") || elementName.startsWith("((//")) {
-				byElement = By.xpath(elementName);
-			} else if (elementName.startsWith("name")) {
-				byElement = By.name(elementName.split(">>")[1]);
-			} else if (elementName.startsWith("id")) {
-				byElement = By.id(elementName.split(">>")[1]);
-			} else if (elementName.startsWith("className")) {
-				byElement = By.className(elementName.split(">>")[1]);
-			} else if (elementName.startsWith("linkText")) {
-				byElement = By.linkText(elementName.split(">>")[1]);
-			} else if (elementName.startsWith("partialLinkText")) {
-				byElement = By.partialLinkText(elementName.split(">>")[1]);
-			} else {
-				byElement = By.tagName(elementName);
-			}
-
-			long timeout = Long.parseLong(
-					objPropertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
-			wait = new WebDriverWait(driver, timeout);
-			webElement = wait.until(ExpectedConditions.visibilityOfElementLocated(byElement));
-			((JavascriptExecutor) driver).executeScript(
-					"window.scrollTo(" + webElement.getLocation().x + "," + webElement.getLocation().y + ")");
+			if (elementName != null) {
+				long timeout = Long.parseLong(
+						objProertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
+				wait = new WebDriverWait(driver, timeout);
+				By actualElement = objRepository.getElementByLocator(elementName);
+				wait.until(ExpectedConditions.presenceOfElementLocated(actualElement));
+				elements = driver.findElements(actualElement);
+			} else
+				throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementName + "'");
 		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
+			throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementName + "'");
 		}
-		return webElement;
+		return elements;
 	}
 
 	/**
-	 * Method to Drag and Drop an element from source to destination
+	 * Get the text or label of the WebElement
+	 * 
+	 * @author sanojs
+	 * @since 16-04-2021
+	 * @param driver
+	 * @param elementName
+	 * @throws AutomationException
+	 */
+	public String getElementText(WebDriver driver, String elementName) throws AutomationException {
+		String elementText = "";
+		try {
+			WebElement element = getWebElement(driver, elementName);
+			elementText = element.getText();
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage(), e);
+		}
+		return elementText;
+	}
+
+	/**
+	 * Get the attribute value of the WebElement
+	 * 
+	 * @author sanojs
+	 * @since 16-04-2021
+	 * @param driver
+	 * @param elementName
+	 * @param attributeName
+	 * @throws AutomationException
+	 */
+	public String getElementAttributeValue(WebDriver driver, String elementName, String attributeName)
+			throws AutomationException {
+		String elementAttribute = "";
+		try {
+			WebElement element = getWebElement(driver, elementName);
+			elementAttribute = element.getAttribute(attributeName);
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage(), e);
+		}
+		return elementAttribute;
+	}
+
+	/**
+	 * Get the X co-ordinate of the WebElement
+	 * 
+	 * @author sanojs
+	 * @since 16-04-2021
+	 * @param driver
+	 * @param elementName
+	 * @throws AutomationException
+	 */
+	public int getElementXcoordinate(WebDriver driver, String elementName) throws AutomationException {
+		try {
+			WebElement element = getWebElement(driver, elementName);
+			Point point = element.getLocation();
+			return point.getX();
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage(), e);
+		}
+	}
+
+	/**
+	 * Get the y co-ordinate of the WebElement
+	 * 
+	 * @author sanojs
+	 * @since 16-04-2021
+	 * @param driver
+	 * @param elementName
+	 * @throws AutomationException
+	 */
+	public int getElementycoordinate(WebDriver driver, String elementName) throws AutomationException {
+		try {
+			WebElement element = getWebElement(driver, elementName);
+			Point point = element.getLocation();
+			return point.getY();
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage(), e);
+		}
+	}
+
+	/**
+	 * Get the Count of the elements from the WebElement list
+	 * 
+	 * @author sanojs
+	 * @since 16-04-2021
+	 * @param driver
+	 * @param elementName
+	 * @throws AutomationException
+	 */
+	public int getCountOfElements(WebDriver driver, String elementName) throws AutomationException {
+		try {
+			List<WebElement> elements = waitForElements(driver, elementName);
+			return elements.size();
+		} catch (Exception e) {
+			return 1;
+		}
+	}
+
+	/**
+	 * Drag and drop an element from source to destination
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
 	 * @param driver
-	 * @param elementKey
+	 * @param sourceElementName
+	 * @param destinationElementName
 	 * @return element
 	 * @throws AutomationException
 	 */
-	public void dragAndDrop(WebDriver driver, String sourceElementExpression, String destinationElementExpression)
+	public void dragAndDrop(WebDriver driver, String sourceElementName, String destinationElementName)
 			throws AutomationException {
 		try {
-			WebElement sourceElement = waitForElement(driver, sourceElementExpression);
-			WebElement destinationElement = waitForElement(driver, destinationElementExpression);
+			WebElement sourceElement = getWebElement(driver, sourceElementName);
+			WebElement destinationElement = getWebElement(driver, destinationElementName);
 			Actions action = new Actions(driver);
 			action.dragAndDrop(sourceElement, destinationElement);
 		} catch (Exception e) {
@@ -269,7 +317,237 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to Take a Screenshot
+	 * Scroll to an element
+	 * 
+	 * @author sanojs
+	 * @since 16-04-2021
+	 * @param driver
+	 * @param elementExpression
+	 * @throws AutomationException
+	 */
+	public void scrollToElement(WebDriver driver, String elementName) throws AutomationException {
+		try {
+			WebElement element = getWebElement(driver, elementName);
+			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage(), e);
+		}
+	}
+
+	/**
+	 * Scroll to the bottom of the web page
+	 * 
+	 * @author sanojs
+	 * @since 16-04-2021
+	 * @param driver
+	 * @throws AutomationException
+	 */
+	public void scrollToBottom(WebDriver driver) throws AutomationException {
+		try {
+			((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage(), e);
+		}
+	}
+
+	/**
+	 * Scroll to the top of the web page
+	 * 
+	 * @author sanojs
+	 * @since 16-04-2021
+	 * @param driver
+	 * @throws AutomationException
+	 */
+	public void scrollToTop(WebDriver driver) throws AutomationException {
+		try {
+			((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0)");
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage(), e);
+		}
+	}
+
+	/**
+	 * Mouse move to an element
+	 * 
+	 * @author sanojs
+	 * @since 16-04-2021
+	 * @param driver
+	 * @param elementName
+	 * @throws AutomationException
+	 */
+	public void moveToElement(WebDriver driver, String elementName) throws AutomationException {
+		try {
+			Actions actions = new Actions(driver);
+			WebElement element = getWebElement(driver, elementName);
+			actions.moveToElement(element).perform();
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage(), e);
+		}
+	}
+
+	/**
+	 * Mouse move to an element based on the X and Y co-ordinates
+	 * 
+	 * @author sanojs
+	 * @since 16-04-2021
+	 * @param driver
+	 * @param elementName
+	 * @param xOffset
+	 * @param yOffset
+	 * @throws AutomationException
+	 */
+	public void moveToElement(WebDriver driver, String elementName, int xOffset, int yOffset)
+			throws AutomationException {
+		try {
+			Actions actions = new Actions(driver);
+			WebElement element = getWebElement(driver, elementName);
+			actions.moveToElement(element, xOffset, yOffset).perform();
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage(), e);
+		}
+	}
+
+	/**
+	 * Clear an input field
+	 * 
+	 * @author sanojs
+	 * @since 16-04-2021
+	 * @param driver
+	 * @param elementName
+	 * @throws AutomationException
+	 */
+	public void clearInputField(WebDriver driver, String elementName) throws AutomationException {
+		try {
+			WebElement element = getWebElement(driver, elementName);
+			element.clear();
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage(), e);
+		}
+	}
+
+	/**
+	 * Copy and paste the value from one input field to another input field
+	 * 
+	 * @author sanojs
+	 * @since 16-04-2021
+	 * @param driver
+	 * @param sourceElementName
+	 * @param destinationElementName
+	 * @throws AutomationException
+	 */
+	public void copyAndPasteFromOneInputFieldToAnother(WebDriver driver, String sourceElementName,
+			String destinationElementName) throws AutomationException {
+		try {
+			WebElement sourceElement = getWebElement(driver, sourceElementName);
+			sourceElement.sendKeys(Keys.CONTROL + "a");
+			sourceElement.sendKeys(Keys.CONTROL + "c");
+
+			WebElement destinationElement = getWebElement(driver, destinationElementName);
+			destinationElement.clear();
+			destinationElement.sendKeys(Keys.CONTROL + "v");
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage(), e);
+		}
+	}
+
+	/**
+	 * Select all and delete the value from input field
+	 * 
+	 * @author sanojs
+	 * @since 16-04-2021
+	 * @param driver
+	 * @param elementName
+	 * @throws AutomationException
+	 */
+	public void selectAndDeleteInputFieldValue(WebDriver driver, String elementName) throws AutomationException {
+		try {
+			WebElement sourceElement = getWebElement(driver, elementName);
+			sourceElement.sendKeys(Keys.CONTROL + "a");
+			sourceElement.sendKeys(Keys.DELETE);
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage(), e);
+		}
+	}
+
+	/**
+	 * Select the value from the drop down using the visible text
+	 * 
+	 * @author sanojs
+	 * @since 16-04-2021
+	 * @param driver
+	 * @param elementName
+	 * @param visibleText
+	 * @throws AutomationException
+	 */
+	public void selectDropDownValueByVisibleText(WebDriver driver, String elementName, String visibleText)
+			throws AutomationException {
+		try {
+			Select select = new Select(getWebElement(driver, elementName));
+			select.selectByVisibleText(visibleText);
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage(), e);
+		}
+	}
+
+	/**
+	 * Select the value from the drop down using the index
+	 * 
+	 * @author sanojs
+	 * @since 16-04-2021
+	 * @param driver
+	 * @param elementName
+	 * @param index
+	 * @throws AutomationException
+	 */
+	public void selectDropDownValueByIndex(WebDriver driver, String elementName, int index) throws AutomationException {
+		try {
+			Select select = new Select(getWebElement(driver, elementName));
+			select.selectByIndex(index);
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage(), e);
+		}
+	}
+
+	/**
+	 * Select the value from the drop down using value
+	 * 
+	 * @author sanojs
+	 * @since 16-04-2021
+	 * @param driver
+	 * @param elementName
+	 * @param valueToSelect
+	 * @throws AutomationException
+	 */
+	public void selectDropDownValueByValue(WebDriver driver, String elementName, String valueToSelect)
+			throws AutomationException {
+		try {
+			Select select = new Select(getWebElement(driver, elementName));
+			select.selectByValue(valueToSelect);
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage(), e);
+		}
+	}
+
+	/**
+	 * Release the pressed left mouse button at the current mouse location
+	 * 
+	 * @author sanojs
+	 * @since 16-04-2021
+	 * @param driver
+	 * @throws AutomationException
+	 */
+	public void releaseMouse(WebDriver driver) throws AutomationException {
+		try {
+			Actions actions = new Actions(driver);
+			actions.release();
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage(), e);
+		}
+	}
+
+	/**
+	 * Take a screenshot of the current screen and store into screenshots folder in
+	 * the project structure
 	 * 
 	 * @author sanojs
 	 * @since 16-04-2021
@@ -291,357 +569,7 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to Scroll to the Element
-	 * 
-	 * @author sanojs
-	 * @since 16-04-2021
-	 * @param driver
-	 * @param elementExpression
-	 * @throws AutomationException
-	 */
-	public void scrollToElement(WebDriver driver, String elementExpression) throws AutomationException {
-		try {
-			WebElement element = waitForElement(driver, elementExpression);
-			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
-		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
-		}
-	}
-
-	/**
-	 * Method to Scroll to the Bottom of the web page
-	 * 
-	 * @author sanojs
-	 * @since 16-04-2021
-	 * @param driver
-	 * @throws AutomationException
-	 */
-	public void scrollToBottom(WebDriver driver) throws AutomationException {
-		try {
-			((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
-		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
-		}
-	}
-
-	/**
-	 * Method to Scroll to the Top of the web page
-	 * 
-	 * @author sanojs
-	 * @since 16-04-2021
-	 * @param driver
-	 * @throws AutomationException
-	 */
-	public void scrollToTop(WebDriver driver) throws AutomationException {
-		try {
-			((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0)");
-		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
-		}
-	}
-
-	/**
-	 * Method to Move to the Web element
-	 * 
-	 * @author sanojs
-	 * @since 16-04-2021
-	 * @param driver
-	 * @param elementExpression
-	 * @throws AutomationException
-	 */
-	public void moveToElement(WebDriver driver, String elementExpression) throws AutomationException {
-		try {
-			Actions actions = new Actions(driver);
-			WebElement element = waitForElement(driver, elementExpression);
-			actions.moveToElement(element).perform();
-		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
-		}
-	}
-
-	/**
-	 * Method to Move to the Web element based on the provided X and Y co-ordinates
-	 * 
-	 * @author sanojs
-	 * @since 16-04-2021
-	 * @param driver
-	 * @param elementExpression
-	 * @param xOffset
-	 * @param yOffset
-	 * @throws AutomationException
-	 */
-	public void moveToElementByXandY(WebDriver driver, String elementExpression, int xOffset, int yOffset)
-			throws AutomationException {
-		try {
-			Actions actions = new Actions(driver);
-			WebElement element = waitForElement(driver, elementExpression);
-			actions.moveToElement(element, xOffset, yOffset).perform();
-		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
-		}
-	}
-
-	/**
-	 * Method to Get the X co-ordinate of the Web element
-	 * 
-	 * @author sanojs
-	 * @since 16-04-2021
-	 * @param driver
-	 * @param elementExpression
-	 * @throws AutomationException
-	 */
-	public int getXcoordinate(WebDriver driver, String elementExpression) throws AutomationException {
-		try {
-			WebElement element = waitForElement(driver, elementExpression);
-			Point point = element.getLocation();
-			return point.getX();
-		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
-		}
-	}
-
-	/**
-	 * Method to Get the Y co-ordinate of the Web element
-	 * 
-	 * @author sanojs
-	 * @since 16-04-2021
-	 * @param driver
-	 * @param elementExpression
-	 * @throws AutomationException
-	 */
-	public int getYcoordinate(WebDriver driver, String elementExpression) throws AutomationException {
-		try {
-			WebElement element = waitForElement(driver, elementExpression);
-			Point point = element.getLocation();
-			return point.getY();
-		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
-		}
-	}
-
-	/**
-	 * Method to Get the Count of the Elements from the Web Element List
-	 * 
-	 * @author sanojs
-	 * @since 16-04-2021
-	 * @param driver
-	 * @param elementExpression
-	 * @throws AutomationException
-	 */
-	public int countOfElementsFromList(WebDriver driver, String elementExpression) throws AutomationException {
-		try {
-			List<WebElement> elements = waitForElements(driver, elementExpression);
-			return elements.size();
-		} catch (Exception e) {
-			return 1;
-		}
-	}
-
-	/**
-	 * Method to Get the Count of the Elements from the Web Element List using Xpath
-	 * 
-	 * @author sanojs
-	 * @since 16-04-2021
-	 * @param driver
-	 * @param elementExpression
-	 * @throws AutomationException
-	 */
-	public int countOfElementsFromListUsingXpath(WebDriver driver, String xpathExpression) throws AutomationException {
-		try {
-			List<WebElement> elements = driver.findElements(By.xpath(xpathExpression));
-			return elements.size();
-		} catch (Exception e) {
-			return 0;
-		}
-	}
-
-	/**
-	 * Method to Clear the input field (which is referred by the user from the
-	 * Object Repository)
-	 * 
-	 * @author sanojs
-	 * @since 16-04-2021
-	 * @param driver
-	 * @param elementExpression
-	 * @throws AutomationException
-	 */
-	public void clearInputField(WebDriver driver, String elementExpression) throws AutomationException {
-		try {
-			WebElement element = waitForElement(driver, elementExpression);
-			element.clear();
-		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
-		}
-	}
-
-	/**
-	 * Method to Copy and Paste the value from one input field to another input
-	 * field
-	 * 
-	 * @author sanojs
-	 * @since 16-04-2021
-	 * @param driver
-	 * @param sourceElementName
-	 * @param destinationElementName
-	 * @throws AutomationException
-	 */
-	public void copyAndPasteFromOneInputFieldToAnother(WebDriver driver, String sourceElementName,
-			String destinationElementName) throws AutomationException {
-		try {
-			WebElement sourceElement = waitForElement(driver, sourceElementName);
-			sourceElement.sendKeys(Keys.CONTROL + "a");
-			sourceElement.sendKeys(Keys.CONTROL + "c");
-
-			WebElement destinationElement = waitForElement(driver, destinationElementName);
-			destinationElement.clear();
-			destinationElement.sendKeys(Keys.CONTROL + "v");
-		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
-		}
-	}
-
-	/**
-	 * Method to Delete the value from input field (which is referred by the user
-	 * from the Object Repository)
-	 * 
-	 * @author sanojs
-	 * @since 16-04-2021
-	 * @param driver
-	 * @param elementExpression
-	 * @throws AutomationException
-	 */
-	public void deleteInputFieldText(WebDriver driver, String elementExpression) throws AutomationException {
-		try {
-			WebElement sourceElement = waitForElement(driver, elementExpression);
-			sourceElement.sendKeys(Keys.CONTROL + "a");
-			sourceElement.sendKeys(Keys.DELETE);
-		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
-		}
-	}
-
-	/**
-	 * Method to Get the Text of the Web Element
-	 * 
-	 * @author sanojs
-	 * @since 16-04-2021
-	 * @param driver
-	 * @param elementExpression
-	 * @throws AutomationException
-	 */
-	public String getElementText(WebDriver driver, String elementExpression) throws AutomationException {
-		String elementText = "";
-		try {
-			WebElement element = waitForElement(driver, elementExpression);
-			elementText = element.getText();
-		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
-		}
-		return elementText;
-	}
-
-	/**
-	 * Method to Get the Attribute value of the web element
-	 * 
-	 * @author sanojs
-	 * @since 16-04-2021
-	 * @param driver
-	 * @param elementExpression
-	 * @param attributeName
-	 * @throws AutomationException
-	 */
-	public String getElementAttributeValue(WebDriver driver, String elementExpression, String attributeName)
-			throws AutomationException {
-		String elementAttribute = "";
-		try {
-			WebElement element = waitForElement(driver, elementExpression);
-			elementAttribute = element.getAttribute(attributeName);
-		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
-		}
-		return elementAttribute;
-	}
-
-	/**
-	 * Method to Select the value from the drop down using the visible Text
-	 * 
-	 * @author sanojs
-	 * @since 16-04-2021
-	 * @param driver
-	 * @param elementExpression
-	 * @param visibleText
-	 * @throws AutomationException
-	 */
-	public void selectDropDownValueByVisibleText(WebDriver driver, String elementExpression, String visibleText)
-			throws AutomationException {
-		try {
-			Select select = new Select(waitForElement(driver, elementExpression));
-			select.selectByVisibleText(visibleText);
-		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
-		}
-	}
-
-	/**
-	 * Method to Select the value from the drop down using the index
-	 * 
-	 * @author sanojs
-	 * @since 16-04-2021
-	 * @param driver
-	 * @param elementExpression
-	 * @param index
-	 * @throws AutomationException
-	 */
-	public void selectDropDownValueByIndex(WebDriver driver, String elementExpression, int index)
-			throws AutomationException {
-		try {
-			Select select = new Select(waitForElement(driver, elementExpression));
-			select.selectByIndex(index);
-		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
-		}
-	}
-
-	/**
-	 * Method to Select the value from the drop down using value
-	 * 
-	 * @author sanojs
-	 * @since 16-04-2021
-	 * @param driver
-	 * @param elementExpression
-	 * @param valueToSelect
-	 * @throws AutomationException
-	 */
-	public void selectDropDownValueByValue(WebDriver driver, String elementExpression, String valueToSelect)
-			throws AutomationException {
-		try {
-			Select select = new Select(waitForElement(driver, elementExpression));
-			select.selectByValue(valueToSelect);
-		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
-		}
-	}
-
-	/**
-	 * Method to Release the depressed left mouse button at the current mouse
-	 * location
-	 * 
-	 * @author sanojs
-	 * @since 16-04-2021
-	 * @param driver
-	 * @throws AutomationException
-	 */
-	public void releaseMouse(WebDriver driver) throws AutomationException {
-		try {
-			Actions actions = new Actions(driver);
-			actions.release();
-		} catch (Exception e) {
-			throw new AutomationException(getExceptionMessage(), e);
-		}
-	}
-
-	/**
-	 * Method to GET a random number between the lowerBound and upperBound
+	 * Get a random number between the lowerBound and upperBound
 	 * 
 	 * @author sanojs
 	 * @since 20-04-2021
@@ -660,14 +588,14 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to GET a random number with the a number length mentioned
+	 * Get a random number with the a number length mentioned
 	 * 
 	 * @author sanojs
 	 * @since 20-04-2021
 	 * @param numberLength
 	 * @throws AutomationException
 	 */
-	public String getRandomNumber(int numberLength) throws AutomationException {
+	public int getRandomNumber(int numberLength) throws AutomationException {
 		try {
 			random = new Random();
 			int randomNum = 0;
@@ -679,22 +607,21 @@ public class UtilityActions extends AutomationEngine {
 					loop = false;
 				}
 			}
-			String randomNumber = Integer.toString(randomNum);
-			return randomNumber;
+			return randomNum;
 		} catch (Exception e) {
 			throw new AutomationException(getExceptionMessage() + "\n" + AutomationConstants.CAUSE + e.getMessage());
 		}
 	}
 
 	/**
-	 * Method to GET a random string value with the string length mentioned
+	 * Get a random alphanumeric value with the string length mentioned
 	 * 
 	 * @author sanojs
 	 * @since 20-04-2021
 	 * @param stringLength
 	 * @throws AutomationException
 	 */
-	public String getRandomString(int stringLength) throws AutomationException {
+	public String getRandomAlphanumeric(int stringLength) throws AutomationException {
 		try {
 			String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "0123456789" + "abcdefghijklmnopqrstuvxyz";
 			StringBuilder sb = new StringBuilder(stringLength);
@@ -709,15 +636,14 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to GET a random string which has only alphabets with the string length
-	 * mentioned
+	 * Get a random alphabets with the string length mentioned
 	 * 
 	 * @author sanojs
 	 * @since 20-04-2021
 	 * @param stringLength
 	 * @throws AutomationException
 	 */
-	public String getRandomStringOnlyAlphabets(int stringLength) throws AutomationException {
+	public String getRandomAlphabets(int stringLength) throws AutomationException {
 		try {
 			String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "abcdefghijklmnopqrstuvxyz";
 			StringBuilder sb = new StringBuilder(stringLength);
@@ -732,7 +658,7 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to GET the current date
+	 * Get current date
 	 * 
 	 * @author sanojs
 	 * @since 20-04-2021
@@ -750,7 +676,7 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to GET the current date in the date format ddMMMyyyy
+	 * Get current date in the date format ddMMMyyyy
 	 * 
 	 * @author sanojs
 	 * @since 20-04-2021
@@ -768,7 +694,7 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to GET a current date in the date format ddMMyyyy
+	 * Get current date in the date format dd-MM-yyyy
 	 * 
 	 * @author sanojs
 	 * @since 20-04-2021
@@ -786,7 +712,7 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to GET the day from the current date
+	 * Get the day from the current date
 	 * 
 	 * @author sanojs
 	 * @since 20-04-2021
@@ -805,7 +731,7 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to CONVERT a double value to an Integer
+	 * Convert a double value to an Integer
 	 * 
 	 * @author sanojs
 	 * @since 20-04-2021
@@ -822,7 +748,7 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to CONVERT a float value to an Integer
+	 * Convert a float value to an Integer
 	 * 
 	 * @author sanojs
 	 * @since 20-04-2021
@@ -839,7 +765,7 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to CONVERT a string value to an Integer
+	 * Convert a string value to an Integer
 	 * 
 	 * @author sanojs
 	 * @since 20-04-2021
@@ -856,7 +782,7 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to CONVERT a string value to a double value
+	 * Convert a string value to a double value
 	 * 
 	 * @author sanojs
 	 * @since 20-04-2021
@@ -873,7 +799,7 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to CONVERT an Integer to a string value
+	 * Convert an Integer to a string value
 	 * 
 	 * @author sanojs
 	 * @since 20-04-2021
@@ -890,7 +816,7 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to CONVERT a double value to a string value
+	 * Convert a double value to a string value
 	 * 
 	 * @author sanojs
 	 * @since 20-04-2021
@@ -907,7 +833,7 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to CONVERT a string value to a long value
+	 * Convert a string value to a long value
 	 * 
 	 * @author sanojs
 	 * @since 20-04-2021

@@ -52,7 +52,7 @@ public class ValidationActions extends AutomationEngine {
 		boolean elementVisible = false;
 		try {
 			if (elementName != null) {
-				WebElement element = utilityActionHelper.waitForElement(driver, elementName);
+				WebElement element = utilityActionHelper.getWebElement(driver, elementName);
 				if (element.isDisplayed()) {
 					elementVisible = true;
 				} else {
@@ -80,7 +80,7 @@ public class ValidationActions extends AutomationEngine {
 		boolean elementSelected = false;
 		try {
 			if (elementName != null) {
-				if (utilityActionHelper.waitForElement(driver, elementName).isSelected()) {
+				if (utilityActionHelper.getWebElement(driver, elementName).isSelected()) {
 					elementSelected = true;
 				} else {
 					elementSelected = false;
@@ -107,7 +107,7 @@ public class ValidationActions extends AutomationEngine {
 		boolean elementEnabled = false;
 		try {
 			if (elementName != null) {
-				if (utilityActionHelper.waitForElement(driver, elementName).isEnabled()) {
+				if (utilityActionHelper.getWebElement(driver, elementName).isEnabled()) {
 					elementEnabled = true;
 				} else {
 					elementEnabled = false;
@@ -133,7 +133,7 @@ public class ValidationActions extends AutomationEngine {
 	public boolean isElementDisplayed(WebDriver driver, String elementName) throws AutomationException {
 		boolean elementDisplayed = false;
 		try {
-			if (utilityActionHelper.waitForElement(driver, elementName).isDisplayed()) {
+			if (utilityActionHelper.getWebElement(driver, elementName).isDisplayed()) {
 				elementDisplayed = true;
 			} else {
 				elementDisplayed = false;
@@ -159,7 +159,7 @@ public class ValidationActions extends AutomationEngine {
 		boolean isCheckboxSelected = false;
 		try {
 			if (driver != null) {
-				WebElement element = utilityActionHelper.waitForElement(driver, elementName);
+				WebElement element = utilityActionHelper.getWebElement(driver, elementName);
 				if (element != null) {
 					if (element.getAttribute("checked") != null) {
 						if (element.getAttribute("checked").equals("true")) {
@@ -268,7 +268,7 @@ public class ValidationActions extends AutomationEngine {
 	public boolean verifyElementVisible(WebDriver driver, String elementExpression) throws AutomationException {
 		boolean elementVisible = false;
 		try {
-			if (utilityActionHelper.waitForElement(driver, elementExpression).isDisplayed()) {
+			if (utilityActionHelper.getWebElement(driver, elementExpression).isDisplayed()) {
 				elementVisible = true;
 			} else {
 				elementVisible = false;
@@ -293,7 +293,7 @@ public class ValidationActions extends AutomationEngine {
 	public boolean verifyElementNotVisible(WebDriver driver, String elementExpression) throws AutomationException {
 		boolean elementNotVisible = false;
 		try {
-			if (utilityActionHelper.waitForElement(driver, elementExpression).isDisplayed()) {
+			if (utilityActionHelper.getWebElement(driver, elementExpression).isDisplayed()) {
 				elementNotVisible = false;
 				throw new AutomationException(AutomationConstants.VERIFICATION_FAILED);
 			} else {
@@ -318,7 +318,7 @@ public class ValidationActions extends AutomationEngine {
 	public boolean verifyElementSelected(WebDriver driver, String elementExpression) throws AutomationException {
 		boolean elementSelected = false;
 		try {
-			if (utilityActionHelper.waitForElement(driver, elementExpression).isSelected()) {
+			if (utilityActionHelper.getWebElement(driver, elementExpression).isSelected()) {
 				elementSelected = true;
 			} else {
 				elementSelected = false;
@@ -343,7 +343,7 @@ public class ValidationActions extends AutomationEngine {
 	public boolean verifyElementEnabled(WebDriver driver, String elementExpression) throws AutomationException {
 		boolean elementEnabled = false;
 		try {
-			if (utilityActionHelper.waitForElement(driver, elementExpression).isEnabled()) {
+			if (utilityActionHelper.getWebElement(driver, elementExpression).isEnabled()) {
 				elementEnabled = true;
 			} else {
 				elementEnabled = false;
@@ -368,7 +368,7 @@ public class ValidationActions extends AutomationEngine {
 	public boolean verifyElementNotEnabled(WebDriver driver, String elementExpression) throws AutomationException {
 		boolean elementNotEnabled = false;
 		try {
-			if (utilityActionHelper.waitForElement(driver, elementExpression).isEnabled()) {
+			if (utilityActionHelper.getWebElement(driver, elementExpression).isEnabled()) {
 				elementNotEnabled = false;
 				throw new AutomationException(AutomationConstants.VERIFICATION_FAILED);
 			} else {
@@ -393,7 +393,7 @@ public class ValidationActions extends AutomationEngine {
 	public boolean verifyElementDisplayed(WebDriver driver, String elementExpression) throws AutomationException {
 		boolean elementDisplayed = false;
 		try {
-			if (utilityActionHelper.waitForElement(driver, elementExpression).isDisplayed()) {
+			if (utilityActionHelper.getWebElement(driver, elementExpression).isDisplayed()) {
 				elementDisplayed = true;
 			} else {
 				elementDisplayed = false;
@@ -418,7 +418,7 @@ public class ValidationActions extends AutomationEngine {
 	public boolean verifyElementNotDisplayed(WebDriver driver, String elementExpression) throws AutomationException {
 		boolean elementNotDisplayed = false;
 		try {
-			if (utilityActionHelper.waitForElement(driver, elementExpression).isDisplayed()) {
+			if (utilityActionHelper.getWebElement(driver, elementExpression).isDisplayed()) {
 				elementNotDisplayed = false;
 				throw new AutomationException(AutomationConstants.VERIFICATION_FAILED);
 			} else {
@@ -445,7 +445,7 @@ public class ValidationActions extends AutomationEngine {
 			throws AutomationException {
 		boolean textVerified = false;
 		try {
-			WebElement element = utilityActionHelper.waitForElement(driver, elementExpression);
+			WebElement element = utilityActionHelper.getWebElement(driver, elementExpression);
 			String actualText = element.getText();
 			if (actualText.contentEquals(expectedText)) {
 				textVerified = true;
@@ -475,7 +475,7 @@ public class ValidationActions extends AutomationEngine {
 			String expectedText) throws AutomationException {
 		boolean textVerified = false;
 		try {
-			WebElement element = utilityActionHelper.waitForElement(driver, elementExpression);
+			WebElement element = utilityActionHelper.getWebElement(driver, elementExpression);
 			String actualAttributeValue = element.getAttribute(attributeName);
 			if (actualAttributeValue.contentEquals(expectedText)) {
 				textVerified = true;
@@ -505,7 +505,7 @@ public class ValidationActions extends AutomationEngine {
 			String expectedText) throws AutomationException {
 		boolean textVerified = false;
 		try {
-			WebElement element = utilityActionHelper.waitForElement(driver, elementExpression);
+			WebElement element = utilityActionHelper.getWebElement(driver, elementExpression);
 			String actualAttributeValue = element.getCssValue(attributeName);
 			if (actualAttributeValue.contentEquals(expectedText)) {
 				textVerified = true;
@@ -534,7 +534,7 @@ public class ValidationActions extends AutomationEngine {
 			throws AutomationException {
 		boolean textContains = false;
 		try {
-			WebElement element = utilityActionHelper.waitForElement(driver, elementExpression);
+			WebElement element = utilityActionHelper.getWebElement(driver, elementExpression);
 			String actualText = element.getText();
 			if (actualText.contains(expectedText)) {
 				textContains = true;
@@ -563,7 +563,7 @@ public class ValidationActions extends AutomationEngine {
 			throws AutomationException {
 		boolean elementHasNotText = false;
 		try {
-			WebElement element = utilityActionHelper.waitForElement(driver, elementExpression);
+			WebElement element = utilityActionHelper.getWebElement(driver, elementExpression);
 			String actualText = element.getText();
 			if (actualText.contentEquals(expectedText)) {
 				elementHasNotText = false;

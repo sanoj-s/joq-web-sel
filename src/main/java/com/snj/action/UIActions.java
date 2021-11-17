@@ -30,7 +30,7 @@ public class UIActions extends AutomationEngine {
 	public void tap(WebDriver driver, String elementName) throws AutomationException {
 		try {
 			if (elementName != null) {
-				WebElement element = utilityActionHelper.waitForElement(driver, elementName);
+				WebElement element = utilityActionHelper.getWebElement(driver, elementName);
 				element.click();
 				System.out.println("==========================================================");
 				System.out.println("Successfully clicked on " + elementName);
@@ -39,7 +39,7 @@ public class UIActions extends AutomationEngine {
 			}
 		} catch (Exception e) {
 			try {
-				WebElement element = utilityActionHelper.waitForElement(driver, elementName);
+				WebElement element = utilityActionHelper.getWebElement(driver, elementName);
 				JavascriptExecutor executor = (JavascriptExecutor) driver;
 				executor.executeScript("arguments[0].click();", element);
 				System.out.println("==========================================================");
@@ -63,7 +63,7 @@ public class UIActions extends AutomationEngine {
 		try {
 			if (elementName != null) {
 				Actions action = new Actions(driver);
-				WebElement element = utilityActionHelper.waitForElement(driver, elementName);
+				WebElement element = utilityActionHelper.getWebElement(driver, elementName);
 				action.contextClick(element).perform();
 				System.out.println("==========================================================");
 				System.out.println("Successfully right clicked on " + elementName);
@@ -88,7 +88,7 @@ public class UIActions extends AutomationEngine {
 		try {
 			if (elementName != null) {
 				Actions action = new Actions(driver);
-				WebElement element = utilityActionHelper.waitForElement(driver, elementName);
+				WebElement element = utilityActionHelper.getWebElement(driver, elementName);
 				action.doubleClick(element).perform();
 				System.out.println("==========================================================");
 				System.out.println("Successfully double clicked on " + elementName);
@@ -97,7 +97,7 @@ public class UIActions extends AutomationEngine {
 			}
 		} catch (Exception e) {
 			try {
-				WebElement element = utilityActionHelper.waitForElement(driver, elementName);
+				WebElement element = utilityActionHelper.getWebElement(driver, elementName);
 				JavascriptExecutor executor = (JavascriptExecutor) driver;
 				executor.executeScript("arguments[0].click();", element);
 				executor.executeScript("arguments[0].click();", element);
@@ -127,7 +127,7 @@ public class UIActions extends AutomationEngine {
 				long timeout = Long.parseLong(
 						propertyObj.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
 				WebDriverWait wait = new WebDriverWait(driver, timeout);
-				WebElement element = utilityActionHelper.waitForElement(driver, elementName);
+				WebElement element = utilityActionHelper.getWebElement(driver, elementName);
 				int i = 0;
 				while (i < clickCount) {
 					element.click();
@@ -218,7 +218,7 @@ public class UIActions extends AutomationEngine {
 				default:
 					break;
 				}
-				WebElement element = utilityActionHelper.waitForElement(driver, elementLocator);
+				WebElement element = utilityActionHelper.getWebElement(driver, elementLocator);
 				element.click();
 				System.out.println("==========================================================");
 				System.out.println("Successfully clicked on " + elementName);
@@ -243,7 +243,7 @@ public class UIActions extends AutomationEngine {
 	public void type(WebDriver driver, String elementName, String typeValue) throws AutomationException {
 		try {
 			if (driver != null && elementName != null) {
-				WebElement element = utilityActionHelper.waitForElement(driver, elementName);
+				WebElement element = utilityActionHelper.getWebElement(driver, elementName);
 				element.sendKeys(typeValue);
 				System.out.println("==========================================================");
 				System.out.println("Data " + typeValue + " successfully entered into " + elementName);
@@ -252,7 +252,7 @@ public class UIActions extends AutomationEngine {
 			}
 		} catch (Exception e) {
 			try {
-				WebElement element = utilityActionHelper.waitForElement(driver, elementName);
+				WebElement element = utilityActionHelper.getWebElement(driver, elementName);
 				JavascriptExecutor executor = (JavascriptExecutor) driver;
 				executor.executeScript("arguments[0]. value='" + typeValue + "';", element);
 				System.out.println("==========================================================");
@@ -276,7 +276,7 @@ public class UIActions extends AutomationEngine {
 	public void type(WebDriver driver, String elementName, Keys typeValue) throws AutomationException {
 		try {
 			if (driver != null && elementName != null) {
-				WebElement element = utilityActionHelper.waitForElement(driver, elementName);
+				WebElement element = utilityActionHelper.getWebElement(driver, elementName);
 				element.sendKeys(typeValue);
 				System.out.println("==========================================================");
 				System.out.println("Data " + typeValue + " successfully entered into " + elementName);
@@ -301,7 +301,7 @@ public class UIActions extends AutomationEngine {
 	public void clearAndType(WebDriver driver, String elementName, String typeValue) throws AutomationException {
 		try {
 			if (elementName != null) {
-				WebElement element = utilityActionHelper.waitForElement(driver, elementName);
+				WebElement element = utilityActionHelper.getWebElement(driver, elementName);
 				element.clear();
 				element.sendKeys(typeValue);
 				System.out.println("==========================================================");
@@ -311,7 +311,7 @@ public class UIActions extends AutomationEngine {
 			}
 		} catch (Exception e) {
 			try {
-				WebElement element = utilityActionHelper.waitForElement(driver, elementName);
+				WebElement element = utilityActionHelper.getWebElement(driver, elementName);
 				JavascriptExecutor executor = (JavascriptExecutor) driver;
 				element.clear();
 				executor.executeScript("arguments[0]. value='" + typeValue + "';", element);
@@ -377,7 +377,7 @@ public class UIActions extends AutomationEngine {
 				default:
 					break;
 				}
-				WebElement element = utilityActionHelper.waitForElement(driver, elementLocator);
+				WebElement element = utilityActionHelper.getWebElement(driver, elementLocator);
 				element.sendKeys(typeValue);
 				System.out.println("==========================================================");
 				System.out.println("Successfully clicked on " + elementName);
