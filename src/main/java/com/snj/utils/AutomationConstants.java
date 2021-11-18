@@ -2,7 +2,6 @@ package com.snj.utils;
 
 public class AutomationConstants {
 	// =========> Generic
-	public static final String VERIFICATION_FAILED = "Verification failed";
 	public static final String OBJECT_NOT_FOUND = "Unable to locate ";
 	public static final String TEST_ENVIRONMENT = "testEnvironment";
 	public static final String CAUSE = "Cause of the Exception : ";
