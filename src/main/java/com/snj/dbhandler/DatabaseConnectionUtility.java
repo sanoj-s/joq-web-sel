@@ -24,7 +24,7 @@ public class DatabaseConnectionUtility extends AutomationEngine {
 	}
 
 	/**
-	 * Method to create the statement
+	 * Create the statement
 	 * 
 	 * @author sanojs
 	 * @since 07/27/2021
@@ -50,7 +50,7 @@ public class DatabaseConnectionUtility extends AutomationEngine {
 	}
 
 	/**
-	 * Method to create close the Database connection
+	 * Create close the Database connection
 	 * 
 	 * @author sanojs
 	 * @since 07/27/2021

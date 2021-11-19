@@ -36,7 +36,7 @@ public class ExcelDataHandler {
 	}
 
 	/**
-	 * This method is used to get rows count
+	 * Get rows count
 	 * 
 	 * @author sanojs
 	 * @since 08-05-2021
@@ -51,7 +51,7 @@ public class ExcelDataHandler {
 	}
 
 	/**
-	 * This method is used to get Columns count
+	 * Get Columns count
 	 * 
 	 * @author sanojs
 	 * @since 08-05-2021
@@ -65,7 +65,7 @@ public class ExcelDataHandler {
 	}
 
 	/**
-	 * This method is used to get String or Numeric Data from the Cell
+	 * Get string or numeric data from the Cell
 	 * 
 	 * @author sanojs
 	 * @since 08-05-2021
@@ -99,7 +99,7 @@ public class ExcelDataHandler {
 	}
 
 	/**
-	 * This method is used to get Date Data from the Cell
+	 * Get Date data from the Cell
 	 * 
 	 * @author sanojs
 	 * @since 08-05-2021
@@ -127,7 +127,7 @@ public class ExcelDataHandler {
 	}
 
 	/**
-	 * This method is used to get Date Data from the Cell
+	 * Get Date data from the Cell
 	 * 
 	 * @author sanojs
 	 * @since 08-05-2021
@@ -155,7 +155,7 @@ public class ExcelDataHandler {
 	}
 
 	/**
-	 * Method to get list of data from a column
+	 * Get list of data from a column
 	 * 
 	 * @author sanojs
 	 * @since 08-05-2021
@@ -205,7 +205,7 @@ public class ExcelDataHandler {
 	}
 
 	/**
-	 * This method returns true if data is set successfully else false
+	 * Returns true if data is set successfully else false
 	 * 
 	 * @author sanojs
 	 * @since 08-05-2021
@@ -269,7 +269,7 @@ public class ExcelDataHandler {
 	}
 
 	/**
-	 * This Method returns true if data is set successfully else false
+	 * Returns true if data is set successfully else false
 	 * 
 	 * @author sanojs
 	 * @since 08-05-2021

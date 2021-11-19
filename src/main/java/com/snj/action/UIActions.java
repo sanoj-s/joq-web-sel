@@ -1,5 +1,9 @@
 package com.snj.action;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -231,6 +235,80 @@ public class UIActions extends AutomationEngine {
 	}
 
 	/**
+	 * Tap TAB key from system keyboard
+	 * 
+	 * @author sanoj
+	 * @since 13-03-2021
+	 * @param numberOfTimes
+	 * @throws AWTException
+	 * @throws AutomationException
+	 */
+	public void tapTabKey(int numberOfTimes) throws AWTException, AutomationException {
+		try {
+			for (int i = 1; i <= numberOfTimes; i++) {
+				Robot robot = new Robot();
+				robot.keyPress(KeyEvent.VK_TAB);
+				robot.keyRelease(KeyEvent.VK_TAB);
+				new UtilityActions().delay(2);
+			}
+		} catch (Exception lException) {
+			throw new AutomationException(getExceptionMessage(), lException);
+		}
+	}
+
+	/**
+	 * Tap TAB key on an object
+	 * 
+	 * @author sanoj
+	 * @since 13-03-2021
+	 * @param driver
+	 * @param elementName
+	 * @throws AWTException
+	 * @throws AutomationException
+	 */
+	public void tapTabKey(WebDriver driver, String elementName) throws AWTException, AutomationException {
+		try {
+			if (driver != null) {
+				WebElement element = utilityActionHelper.getWebElement(driver, elementName);
+				if (element != null) {
+					element.sendKeys(Keys.TAB);
+				} else {
+					throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementName + "'");
+				}
+			}
+		} catch (Exception lException) {
+			throw new AutomationException(getExceptionMessage(), lException);
+		}
+	}
+
+	/**
+	 * Tap TAB and ENTER key on an object
+	 * 
+	 * @author sanoj
+	 * @since 13-03-2021
+	 * @param driver
+	 * @param elementName
+	 * @throws AWTException
+	 * @throws AutomationException
+	 */
+	public void tapTabAndEnter(WebDriver driver, String elementName) throws AWTException, AutomationException {
+		try {
+			if (driver != null) {
+				WebElement element = utilityActionHelper.getWebElement(driver, elementName);
+				if (element != null) {
+					element.sendKeys(Keys.TAB);
+					Thread.sleep(1500);
+					element.sendKeys(Keys.ENTER);
+				} else {
+					throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementName + "'");
+				}
+			}
+		} catch (Exception lException) {
+			throw new AutomationException(getExceptionMessage(), lException);
+		}
+	}
+
+	/**
 	 * Enter values to an input field
 	 * 
 	 * @author sanojs
@@ -388,4 +466,5 @@ public class UIActions extends AutomationEngine {
 			throw new AutomationException(getExceptionMessage(), e);
 		}
 	}
+
 }

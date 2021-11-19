@@ -34,10 +34,11 @@ public class AutomationReport implements ITestListener {
 	String reportPath = System.getProperty("user.dir") + "/Reports/";
 
 	/**
-	 * Method to set up the Execution Report
+	 * Set up the execution report
 	 * 
 	 * @author sanojs
 	 * @since 20-04-2021
+	 * @param testContext
 	 * @throws Exception
 	 */
 	public void onStart(ITestContext testContext) {
@@ -64,7 +65,7 @@ public class AutomationReport implements ITestListener {
 	}
 
 	/**
-	 * Method to collect the test names
+	 * Collect the test names
 	 * 
 	 * @author sanojs
 	 * @since 20-04-2021
@@ -80,22 +81,22 @@ public class AutomationReport implements ITestListener {
 	}
 
 	/**
-	 * Method to track the steps
+	 * Track the test steps
 	 * 
 	 * @author sanojs
 	 * @since 20-04-2021
-	 * @param stepAction
+	 * @param stepInformation
 	 */
-	public void trackSteps(String stepAction) {
+	public void trackSteps(String stepInformation) {
 		try {
-			test.log(Status.INFO, MarkupHelper.createLabel(stepAction, ExtentColor.PURPLE));
+			test.log(Status.INFO, MarkupHelper.createLabel(stepInformation, ExtentColor.PURPLE));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Method to track the steps
+	 * Track the test category
 	 * 
 	 * @author sanojs
 	 * @since 20-04-2021
@@ -110,10 +111,11 @@ public class AutomationReport implements ITestListener {
 	}
 
 	/**
-	 * Method to get the pass result of the execution
+	 * Get the pass result of the execution
 	 * 
 	 * @author sanojs
 	 * @since 20-04-2021
+	 * @param result
 	 * @throws IOException
 	 */
 	public void onTestSuccess(ITestResult result) {
@@ -129,10 +131,11 @@ public class AutomationReport implements ITestListener {
 	}
 
 	/**
-	 * Method to get the fail result of the execution
+	 * Get the fail result of the execution
 	 * 
 	 * @author sanojs
 	 * @since 20-04-2021
+	 * @param result
 	 * @throws IOException
 	 */
 	public void onTestFailure(ITestResult result) {
@@ -156,10 +159,11 @@ public class AutomationReport implements ITestListener {
 	}
 
 	/**
-	 * Method to get the skip result of the execution
+	 * Get the skip result of the execution
 	 * 
 	 * @author sanojs
 	 * @since 20-04-2021
+	 * @param result
 	 * @throws IOException
 	 */
 	public void onTestSkipped(ITestResult result) {
@@ -177,10 +181,11 @@ public class AutomationReport implements ITestListener {
 	}
 
 	/**
-	 * Method to tear down the report and to call the send mail method
+	 * Teardown the report and trigger send mail the report
 	 * 
 	 * @author sanojs
 	 * @since 20-04-2021
+	 * @param testContext
 	 */
 	public void onFinish(ITestContext testContext) {
 		try {

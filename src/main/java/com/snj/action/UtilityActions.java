@@ -1,14 +1,20 @@
 package com.snj.action;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
@@ -17,6 +23,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -25,7 +32,6 @@ import com.snj.base.AutomationEngine;
 import com.snj.data.PropertyDataHandler;
 import com.snj.exception.AutomationException;
 import com.snj.utils.AutomationConstants;
-import com.snj.utils.ObjectRepositoryHandler;
 
 public class UtilityActions extends AutomationEngine {
 
@@ -44,13 +50,12 @@ public class UtilityActions extends AutomationEngine {
 	 */
 	public WebElement getWebElement(WebDriver driver, String elementName) throws AutomationException {
 		WebElement element = null;
-		ObjectRepositoryHandler objRepository = new ObjectRepositoryHandler();
 		PropertyDataHandler objProertyData = new PropertyDataHandler();
 		try {
 			long timeout = Long.parseLong(objProertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG,
 					AutomationConstants.SHORT_LOADING));
 			wait = new WebDriverWait(driver, timeout);
-			By actualElement = objRepository.getElementByLocator(elementName);
+			By actualElement = getElementByLocator(elementName);
 			element = wait.until(ExpectedConditions.visibilityOfElementLocated(actualElement));
 			((JavascriptExecutor) driver)
 					.executeScript("window.scrollTo(" + element.getLocation().x + "," + element.getLocation().y + ")");
@@ -85,6 +90,45 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
+	 * Get the By locator value
+	 * 
+	 * @author sanojs
+	 * @since 15-04-2021
+	 * @param elementName
+	 * @return
+	 * @throws AutomationException
+	 */
+	public By getElementByLocator(String elementName) throws AutomationException {
+		By byElement = null;
+		try {
+			if (elementName.startsWith("#") || elementName.startsWith("td[") || elementName.startsWith("tr[")
+					|| elementName.startsWith("td ") || elementName.startsWith("tr ")
+					|| elementName.startsWith("input[") || elementName.startsWith("span[")
+					|| elementName.startsWith("div") || elementName.startsWith(".")) {
+				byElement = By.cssSelector(elementName);
+			} else if (elementName.startsWith("//") || elementName.startsWith(".//") || elementName.startsWith("(.//")
+					|| elementName.startsWith("(//") || elementName.startsWith("((//")) {
+				byElement = By.xpath(elementName);
+			} else if (elementName.startsWith("name")) {
+				byElement = By.name(elementName.split(">>")[1]);
+			} else if (elementName.startsWith("id")) {
+				byElement = By.id(elementName.split(">>")[1]);
+			} else if (elementName.startsWith("className")) {
+				byElement = By.className(elementName.split(">>")[1]);
+			} else if (elementName.startsWith("linkText")) {
+				byElement = By.linkText(elementName.split(">>")[1]);
+			} else if (elementName.startsWith("partialLinkText")) {
+				byElement = By.partialLinkText(elementName.split(">>")[1]);
+			} else {
+				byElement = By.tagName(elementName);
+			}
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage(), e);
+		}
+		return byElement;
+	}
+
+	/**
 	 * Wait for an element based on the visibility and return true or false
 	 * 
 	 * @author sanojs
@@ -97,12 +141,11 @@ public class UtilityActions extends AutomationEngine {
 	public boolean waitForElement(WebDriver driver, String elementName) throws AutomationException {
 		boolean isElementVisible = false;
 		PropertyDataHandler objPropertyData = new PropertyDataHandler();
-		ObjectRepositoryHandler objRepository = new ObjectRepositoryHandler();
 		try {
 			long timeout = Long.parseLong(
 					objPropertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
 			wait = new WebDriverWait(driver, timeout);
-			By actualElement = objRepository.getElementByLocator(elementName);
+			By actualElement = getElementByLocator(elementName);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(actualElement));
 			isElementVisible = true;
 		} catch (Exception e) {
@@ -124,12 +167,11 @@ public class UtilityActions extends AutomationEngine {
 	public boolean waitForElementInVisible(WebDriver driver, String elementName) throws AutomationException {
 		boolean isElementInVisible = false;
 		PropertyDataHandler objPropertyData = new PropertyDataHandler();
-		ObjectRepositoryHandler objRepository = new ObjectRepositoryHandler();
 		try {
 			long timeout = Long.parseLong(
 					objPropertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
 			wait = new WebDriverWait(driver, timeout);
-			By actualElement = objRepository.getElementByLocator(elementName);
+			By actualElement = getElementByLocator(elementName);
 			isElementInVisible = wait.until(ExpectedConditions.invisibilityOfElementLocated(actualElement));
 		} catch (Exception e) {
 			throw new AutomationException(getExceptionMessage(), e);
@@ -151,12 +193,11 @@ public class UtilityActions extends AutomationEngine {
 			throws AutomationException {
 		boolean isTextPresent = false;
 		PropertyDataHandler objPropertyData = new PropertyDataHandler();
-		ObjectRepositoryHandler objRepository = new ObjectRepositoryHandler();
 		try {
 			long timeout = Long.parseLong(
 					objPropertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
 			wait = new WebDriverWait(driver, timeout);
-			By actualElement = objRepository.getElementByLocator(elementName);
+			By actualElement = getElementByLocator(elementName);
 			isTextPresent = wait.until(ExpectedConditions.textToBePresentInElementLocated(actualElement, expectedText));
 		} catch (Exception e) {
 			throw new AutomationException(getExceptionMessage(), e);
@@ -177,14 +218,13 @@ public class UtilityActions extends AutomationEngine {
 	 */
 	public List<WebElement> waitForElements(WebDriver driver, String elementName) throws AutomationException {
 		List<WebElement> elements;
-		ObjectRepositoryHandler objRepository = new ObjectRepositoryHandler();
 		PropertyDataHandler objProertyData = new PropertyDataHandler();
 		try {
 			if (elementName != null) {
 				long timeout = Long.parseLong(
 						objProertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
 				wait = new WebDriverWait(driver, timeout);
-				By actualElement = objRepository.getElementByLocator(elementName);
+				By actualElement = getElementByLocator(elementName);
 				wait.until(ExpectedConditions.presenceOfElementLocated(actualElement));
 				elements = driver.findElements(actualElement);
 			} else
@@ -193,6 +233,67 @@ public class UtilityActions extends AutomationEngine {
 			throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementName + "'");
 		}
 		return elements;
+	}
+
+	/**
+	 * Wait for the page load complete
+	 * 
+	 * @author sanojs
+	 * @since 16-04-2021
+	 * @param driver
+	 * @throws NumberFormatException
+	 * @throws Exception
+	 */
+	public void waitForPageLoadComplete(WebDriver driver) throws NumberFormatException, Exception {
+		try {
+			ExpectedCondition<Boolean> pageLoadCondition = new ExpectedCondition<Boolean>() {
+				public Boolean apply(WebDriver driver) {
+					return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
+				}
+			};
+			long timeout = Long.parseLong(new PropertyDataHandler()
+					.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, AutomationConstants.SHORT_LOADING));
+			WebDriverWait wait = new WebDriverWait(driver, timeout);
+			wait.until(pageLoadCondition);
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage(), e);
+		}
+	}
+
+	/**
+	 * Set delay between test steps
+	 * 
+	 * @author sanojs
+	 * @since 20-04-2021
+	 * @param driver
+	 * @param delayInSeconds
+	 * @param doubleValue
+	 * @throws AutomationException
+	 */
+	public void delay(int delayInSeconds) throws AutomationException {
+		try {
+			Thread.sleep(delayInSeconds * 1000);
+		} catch (Exception lException) {
+			throw new AutomationException(getExceptionMessage(), lException);
+		}
+	}
+
+	/**
+	 * Set delay between test steps based on driver session
+	 * 
+	 * @author sanojs
+	 * @since 20-04-2021
+	 * @param driver
+	 * @param delayInSeconds
+	 * @param doubleValue
+	 * @throws AutomationException
+	 */
+	public void delay(WebDriver driver, int delayInSeconds) throws AutomationException {
+		try {
+			driver.manage().timeouts().implicitlyWait(Long.valueOf(delayInSeconds), TimeUnit.SECONDS);
+		} catch (Exception lException) {
+			throw new AutomationException(getExceptionMessage(), lException);
+		}
 	}
 
 	/**
@@ -363,6 +464,75 @@ public class UtilityActions extends AutomationEngine {
 			((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0)");
 		} catch (Exception e) {
 			throw new AutomationException(getExceptionMessage(), e);
+		}
+	}
+
+	/**
+	 * 
+	 * Scroll the page up in web applications
+	 * 
+	 * @author sanoj
+	 * @since 13-03-2021
+	 * @param numberOfTimes
+	 * @param
+	 * @throws AutomationException
+	 * 
+	 */
+
+	public void scrollWebPageUp(int numberOfTimes) throws AutomationException {
+		int x = 1;
+
+		try {
+			Robot robot = new Robot();
+			new UtilityActions().delay(2);
+			while (x <= numberOfTimes) {
+				// Simulate a mouse click
+				robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+				robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+
+				// Simulate a key press
+				robot.keyPress(KeyEvent.VK_PAGE_UP);
+				robot.keyRelease(KeyEvent.VK_PAGE_UP);
+				new UtilityActions().delay(2);
+				x++;
+			}
+		} catch (AWTException e) {
+			throw new AutomationException(e);
+		}
+
+	}
+
+	/**
+	 * 
+	 * Scroll the page down in web applications
+	 * 
+	 * @author sanoj
+	 * @since 13-03-2021
+	 * @param numberOfTimes
+	 * @param
+	 * @throws AutomationException
+	 * 
+	 */
+
+	public void scrollWebPageDown(int numberOfTimes) throws AutomationException {
+		int x = 1;
+
+		try {
+			Robot robot = new Robot();
+			new UtilityActions().delay(2);
+			while (x <= numberOfTimes) {
+				// Simulate a mouse click
+				robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+				robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+
+				// Simulate a key press
+				robot.keyPress(KeyEvent.VK_PAGE_DOWN);
+				robot.keyRelease(KeyEvent.VK_PAGE_DOWN);
+				new UtilityActions().delay(2);
+				x++;
+			}
+		} catch (AWTException e) {
+			throw new AutomationException(e);
 		}
 	}
 
@@ -566,6 +736,34 @@ public class UtilityActions extends AutomationEngine {
 		} catch (Exception e) {
 			throw new AutomationException(getExceptionMessage(), e);
 		}
+	}
+
+	/**
+	 * 
+	 * Set the size of the current window. This will change the outer window
+	 * dimension, not just the view port
+	 * 
+	 * @author sanoj
+	 * @since 13-03-2021
+	 * @param driver
+	 * @param width
+	 * @param height
+	 * @return isScreenRezised
+	 * @throws AutomationException
+	 * 
+	 */
+
+	public boolean setBrowserResolution(WebDriver driver, int width, int height) throws AutomationException {
+		boolean isScreenRezised = false;
+		try {
+			if (driver != null) {
+				driver.manage().window().setSize(new Dimension(width, height));
+				isScreenRezised = true;
+			}
+		} catch (Exception lException) {
+			throw new AutomationException(getExceptionMessage(), lException);
+		}
+		return isScreenRezised;
 	}
 
 	/**
@@ -848,4 +1046,5 @@ public class UtilityActions extends AutomationEngine {
 			throw new AutomationException(getExceptionMessage() + "\n" + AutomationConstants.CAUSE + e.getMessage());
 		}
 	}
+
 }

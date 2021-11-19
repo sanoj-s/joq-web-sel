@@ -28,7 +28,7 @@ public class AutomationEngine {
 	public WebDriver driver;
 
 	/**
-	 * Method to start the web browser
+	 * Start the web browser
 	 * 
 	 * @author sanojs
 	 * @since 22-04-2021
@@ -71,7 +71,7 @@ public class AutomationEngine {
 	}
 
 	/**
-	 * Method to launch Safari browser
+	 * Launch Safari browser
 	 * 
 	 * @author sanojs
 	 * @throws InterruptedException
@@ -94,7 +94,7 @@ public class AutomationEngine {
 	}
 
 	/**
-	 * Method to launch Edge browser
+	 * Launch Edge browser
 	 * 
 	 * @author sanojs
 	 * @since 19-05-2021
@@ -109,7 +109,7 @@ public class AutomationEngine {
 	}
 
 	/**
-	 * Method to launch Internet Explorer browser
+	 * Launch Internet Explorer browser
 	 * 
 	 * @author sanojs
 	 * @since 19-05-2021
@@ -126,7 +126,7 @@ public class AutomationEngine {
 	}
 
 	/**
-	 * Method to launch Chrome browser
+	 * Launch Chrome browser
 	 * 
 	 * @author sanojs
 	 * @throws AutomationException
@@ -155,7 +155,7 @@ public class AutomationEngine {
 	}
 
 	/**
-	 * Method to launch Firefox browser
+	 * Launch Firefox browser
 	 * 
 	 * @author sanojs
 	 * @throws AutomationException
@@ -180,8 +180,8 @@ public class AutomationEngine {
 	}
 
 	/**
-	 * Method to get the Exception message, to pass the message whenever an
-	 * exception is encountered
+	 * Get the Exception message, to pass the message whenever an exception is
+	 * encountered
 	 * 
 	 * @author sanojs
 	 * @since 13-04-2021
@@ -204,10 +204,10 @@ public class AutomationEngine {
 	}
 
 	/**
-	 * Method to set driver for Web applications
+	 * Set driver for Web applications
 	 * 
 	 * @author sanojs
-	 * @since 03-02-2017
+	 * @since 03-02-2021
 	 * @param driver
 	 */
 	public void setDriver(WebDriver driver) {
@@ -215,10 +215,10 @@ public class AutomationEngine {
 	}
 
 	/**
-	 * Method to get current running driver
+	 * Get current running driver session
 	 * 
 	 * @author sanojs
-	 * @return driver
+	 * @since 03-02-2021
 	 */
 	public WebDriver getDriver() {
 		return this.driver;

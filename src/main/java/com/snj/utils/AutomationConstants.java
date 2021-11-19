@@ -18,7 +18,7 @@ public class AutomationConstants {
 
 	// ============> Exception Messages
 	public static final String CHECKBROWSER_MESSAGE = "Please check the browser name. Looks like the browser name is not valid";
-	public static final String EXCEPTION_MESSAGE_FOR_LOAD_URL = "Cannot navigate to invalid URL, please specify valid URL";
+	public static final String EXCEPTION_MESSAGE_FOR_LOAD_URL = "Cannot navigate to invalid web URL, please specify valid web URL";
 	public static final String EXCEPTION_MESSAGE_CSV_FILE_PATH = "Specify test data CSV file path in automation_test_config.properties file";
 	public static final String EXCEPTION_MESSAGE_EXCEL_FILE_PATH = "Specify test data Excel file path in automation_test_config.properties file";
 	public static final String EXCEPTIION_EXCEL_SHEETNAME = "Can't read data from specified sheet, check sheet name";

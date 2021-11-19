@@ -27,7 +27,7 @@ public class AutomationMail extends AutomationEngine {
 	PropertyDataHandler propertyObj = new PropertyDataHandler();
 
 	/**
-	 * Method to send the execution report to the recipients list mentioned in the
+	 * Send the execution report to the recipients list mentioned in the
 	 * email_config file
 	 * 
 	 * @author sanojs
@@ -101,7 +101,7 @@ public class AutomationMail extends AutomationEngine {
 	}
 
 	/**
-	 * Method to get the last modified File
+	 * Get the last modified File
 	 * 
 	 * @author sanojs
 	 * @since 20-04-2021

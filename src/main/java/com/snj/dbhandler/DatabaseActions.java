@@ -33,7 +33,7 @@ public class DatabaseActions extends DatabaseConnectionUtility {
 	}
 
 	/**
-	 * Method to retrieve data from a table
+	 * Retrieve data from a table
 	 * 
 	 * @author sanojs
 	 * @since 09/07/2021
@@ -61,7 +61,7 @@ public class DatabaseActions extends DatabaseConnectionUtility {
 	}
 
 	/**
-	 * Method to retrieve integer data from a table based on the column number
+	 * Retrieve integer data from a table based on the column number
 	 * 
 	 * @author sanojs
 	 * @since 09/07/2021
@@ -80,7 +80,7 @@ public class DatabaseActions extends DatabaseConnectionUtility {
 	}
 
 	/**
-	 * Method to retrieve String data from a table based on the column number
+	 * Retrieve String data from a table based on the column number
 	 * 
 	 * @author sanojs
 	 * @since 09/07/2021

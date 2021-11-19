@@ -1,11 +1,26 @@
 package com.snj.action;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
 
 import com.snj.base.AutomationEngine;
 import com.snj.exception.AutomationException;
+import com.snj.utils.AutomationConstants;
 
 public class ValidationActions extends AutomationEngine {
 
@@ -583,6 +598,179 @@ public class ValidationActions extends AutomationEngine {
 			Assert.assertTrue(urlConatinsText, messageOnFailure);
 		} catch (Exception e) {
 			Assert.assertTrue(urlConatinsText, messageOnFailure);
+		}
+	}
+
+	/**
+	 * Test broken links in a web page. To achieve, users must be in the web page to
+	 * be tested and call this method
+	 * 
+	 * @author sanojs
+	 * @since 16-04-2021
+	 * @param driver
+	 * @throws AutomationException
+	 * 
+	 */
+	public void verifyBrokenLinks(final WebDriver driver) throws AutomationException {
+		List<WebElement> linkElements = null;
+		int size = 0;
+		int count = 0;
+		String pageCurrentURL = "";
+		FileOutputStream linkCheckerOutPut = null;
+		byte[] firstRun = null;
+		long startTime;
+		Capabilities capabilities = null;
+		if (driver != null) {
+			final String currentURL = driver.getCurrentUrl();
+			driver.get(currentURL);
+
+			final long end = System.currentTimeMillis() + 5000;
+			while (System.currentTimeMillis() < end) {
+				linkElements = driver.findElements(By.tagName("a"));
+			}
+			size = linkElements.size();
+			System.out.println("Number of links : " + size);
+			capabilities = ((RemoteWebDriver) driver).getCapabilities();
+		} else {
+			System.out.println("Driver not initialised..");
+			System.exit(0);
+		}
+		String browsername = "";
+		try {
+			browsername = (String) capabilities.getCapability("browserName");
+		} catch (final NullPointerException e) {
+			browsername = "UnknownBrowser";
+		}
+		String urls = null, attributeValue1 = null, attributeValue2 = null;
+		final String[] hrefTags = new String[size];
+		for (int i = 0; i < size; i++) {
+			boolean resultDataLink = false;
+			boolean resultHref = false;
+			try {
+				urls = linkElements.get(i).getAttribute("href");
+				try {
+					attributeValue1 = linkElements.get(i).getAttribute("data-link");
+					resultDataLink = true;
+				} catch (final Exception e) {
+					resultDataLink = false;
+				}
+				try {
+					attributeValue2 = linkElements.get(i).getAttribute("href");
+					resultHref = true;
+
+				} catch (final Exception e) {
+					resultHref = false;
+				}
+
+				if (urls.equals(null) || (urls.equalsIgnoreCase("null"))) {
+					count = count + 0;
+				} else {
+					hrefTags[count] = urls;
+					count = count + 1;
+				}
+				if (attributeValue1 != null) {
+					resultDataLink = true;
+				} else if (attributeValue2 != null) {
+					resultHref = true;
+				}
+
+				if (resultDataLink == true) {
+					if (attributeValue1.equals(null) || (attributeValue1.equalsIgnoreCase("null"))) {
+						count = count + 0;
+					} else {
+						hrefTags[count] = attributeValue1;
+						count = count + 1;
+					}
+				} else if (resultHref == true) {
+					if (attributeValue2.equals(null) || (attributeValue2.equalsIgnoreCase("null"))) {
+						count = count + 0;
+					} else {
+						hrefTags[count] = attributeValue2;
+						count = count + 1;
+					}
+				}
+			} catch (final NullPointerException nuEx) {
+				count = count + 0;
+			}
+		}
+		final DateFormat dateFormat = new SimpleDateFormat("dd_MM_yyyy");
+		new File(new File(System.getProperty("user.dir")), AutomationConstants.URLCHECK_LIST_FILE).mkdirs();
+		try {
+			try {
+				linkCheckerOutPut = new FileOutputStream(System.getProperty("user.dir")
+						+ AutomationConstants.URLCHECK_LIST_FILE + "default_" + browsername + "_"
+						+ dateFormat.format(new Date()) + "_" + +System.currentTimeMillis() + ".txt");
+
+			} catch (final Exception lException) {
+				lException.printStackTrace();
+			}
+
+		} catch (final Exception fnf) {
+			fnf.printStackTrace();
+		}
+		try {
+			firstRun = ("\n" + "Index" + "\t " + "Link Name" + "\t\t " + "Response Code" + "\n ").getBytes();
+			linkCheckerOutPut.write(firstRun);
+		} catch (final IOException e1) {
+			e1.printStackTrace();
+		}
+		startTime = (System.currentTimeMillis() / 1000);
+
+		driver.manage().timeouts().pageLoadTimeout(59, TimeUnit.SECONDS);
+
+		for (int j = 0; j < hrefTags.length; j++) {
+			try {
+				if ((j < hrefTags.length) && (hrefTags[j] != null) && (!hrefTags[j].equals(""))) {
+					if ((hrefTags[j].contains("javascript:"))) {
+						System.out.println("URL contains javascript Method");
+						firstRun = ("\n" + j + " \t" + hrefTags[j] + " \t" + " URL contains javascript Method ")
+								.getBytes();
+						try {
+							linkCheckerOutPut.write(firstRun);
+						} catch (final IOException e) {
+						}
+					} else {
+						driver.get(hrefTags[j]);
+						pageCurrentURL = driver.getCurrentUrl().toString().trim();
+					}
+					try {
+						if (!pageCurrentURL.equals(hrefTags[j]) && (pageCurrentURL.equals(""))) {
+							throw new Exception();
+						}
+						final URL url = new URL(hrefTags[j]);
+						final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+						connection.setRequestMethod("GET");
+						connection.connect();
+						final int code = connection.getResponseCode();
+
+						if (code == 200 || code == 201 || code == 202 || code == 203 || code == 204 || code == 205
+								|| code == 206 || code == 207 || code == 208 || code == 226) {
+							System.out.println("Server Response  : " + code);
+							firstRun = ("\n" + j + " \t" + hrefTags[j] + " \t" + code + "\t\t - Success Code Returned")
+									.getBytes();
+							linkCheckerOutPut.write(firstRun);
+						} else {
+							System.out.println("URL not returned a Success response from server!!!");
+							firstRun = ("\n" + j + " \t" + hrefTags[j] + " \t" + code
+									+ "\t\t - Fail Response from server").getBytes();
+							linkCheckerOutPut.write(firstRun);
+							throw new Exception();
+						}
+					} catch (final Exception e) {
+						System.out.println("Failed to load URL- Exception occured!!!");
+					}
+				}
+			} catch (final Exception e) {
+				continue;
+			}
+		}
+		final long endTime = (System.currentTimeMillis() / 1000);
+		final long elapsedTimeLong = endTime - startTime;
+		final String elapsedTime = Long.toString(elapsedTimeLong);
+		try {
+			linkCheckerOutPut.write(("\n\n\n\t" + "Total Execution time : " + elapsedTime + " (Seconds)").getBytes());
+		} catch (final IOException e) {
+			e.printStackTrace();
 		}
 	}
 
