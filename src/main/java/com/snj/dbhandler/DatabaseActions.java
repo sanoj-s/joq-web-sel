@@ -22,7 +22,7 @@ public class DatabaseActions extends DatabaseConnectionUtility {
 	 * @since 09/07/2021
 	 * @return
 	 */
-	public Statement getConnection() {
+	public Statement openConection() {
 		Statement stmt = null;
 		try {
 			stmt = new DatabaseConnectionUtility().getConnectionStatement();
@@ -30,6 +30,20 @@ public class DatabaseActions extends DatabaseConnectionUtility {
 			e.printStackTrace();
 		}
 		return stmt;
+	}
+
+	/**
+	 * Close Database connection
+	 * 
+	 * @author sanojs
+	 * @since 09/07/2021
+	 */
+	public void closeConnection() {
+		try {
+			new DatabaseConnectionUtility().closeDatabaseConnection();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
