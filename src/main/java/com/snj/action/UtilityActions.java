@@ -767,7 +767,7 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
-	 * Get a random number between the lowerBound and upperBound
+	 * Get a random number between the lower-bound and upper-bound
 	 * 
 	 * @author sanojs
 	 * @since 20-04-2021
