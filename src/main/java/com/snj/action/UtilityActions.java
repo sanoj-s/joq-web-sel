@@ -7,10 +7,10 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
@@ -54,7 +54,7 @@ public class UtilityActions extends AutomationEngine {
 		try {
 			long timeout = Long.parseLong(objProertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG,
 					AutomationConstants.SHORT_LOADING));
-			wait = new WebDriverWait(driver, timeout);
+			wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
 			By actualElement = getElementByLocator(elementName);
 			element = wait.until(ExpectedConditions.visibilityOfElementLocated(actualElement));
 			((JavascriptExecutor) driver)
@@ -81,7 +81,7 @@ public class UtilityActions extends AutomationEngine {
 		try {
 			long timeout = Long.parseLong(
 					objProertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
-			wait = new WebDriverWait(driver, timeout);
+			wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
 			element = wait.until(ExpectedConditions.presenceOfElementLocated(elementLocator));
 		} catch (Exception e) {
 			throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementLocator + "'");
@@ -144,7 +144,7 @@ public class UtilityActions extends AutomationEngine {
 		try {
 			long timeout = Long.parseLong(
 					objPropertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
-			wait = new WebDriverWait(driver, timeout);
+			wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
 			By actualElement = getElementByLocator(elementName);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(actualElement));
 			isElementVisible = true;
@@ -170,7 +170,7 @@ public class UtilityActions extends AutomationEngine {
 		try {
 			long timeout = Long.parseLong(
 					objPropertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
-			wait = new WebDriverWait(driver, timeout);
+			wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
 			By actualElement = getElementByLocator(elementName);
 			isElementInVisible = wait.until(ExpectedConditions.invisibilityOfElementLocated(actualElement));
 		} catch (Exception e) {
@@ -196,7 +196,7 @@ public class UtilityActions extends AutomationEngine {
 		try {
 			long timeout = Long.parseLong(
 					objPropertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
-			wait = new WebDriverWait(driver, timeout);
+			wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
 			By actualElement = getElementByLocator(elementName);
 			isTextPresent = wait.until(ExpectedConditions.textToBePresentInElementLocated(actualElement, expectedText));
 		} catch (Exception e) {
@@ -223,7 +223,7 @@ public class UtilityActions extends AutomationEngine {
 			if (elementName != null) {
 				long timeout = Long.parseLong(
 						objProertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
-				wait = new WebDriverWait(driver, timeout);
+				wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
 				By actualElement = getElementByLocator(elementName);
 				wait.until(ExpectedConditions.presenceOfElementLocated(actualElement));
 				elements = driver.findElements(actualElement);
@@ -253,7 +253,7 @@ public class UtilityActions extends AutomationEngine {
 			};
 			long timeout = Long.parseLong(new PropertyDataHandler()
 					.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, AutomationConstants.SHORT_LOADING));
-			WebDriverWait wait = new WebDriverWait(driver, timeout);
+			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
 			wait.until(pageLoadCondition);
 		} catch (Exception e) {
 			throw new AutomationException(getExceptionMessage(), e);
@@ -290,7 +290,7 @@ public class UtilityActions extends AutomationEngine {
 	 */
 	public void delay(WebDriver driver, int delayInSeconds) throws AutomationException {
 		try {
-			driver.manage().timeouts().implicitlyWait(Long.valueOf(delayInSeconds), TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(delayInSeconds));
 		} catch (Exception lException) {
 			throw new AutomationException(getExceptionMessage(), lException);
 		}

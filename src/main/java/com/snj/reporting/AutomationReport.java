@@ -51,6 +51,9 @@ public class AutomationReport implements ITestListener {
 			extent.attachReporter(sparkReporter);
 			extent.setSystemInfo("Operating System", System.getProperty("os.name"));
 			extent.setSystemInfo("Browser Name", test.getParameter("browserName").toString());
+			if (testEnvironment.equalsIgnoreCase("")) {
+				testEnvironment = "QA";
+			}
 			extent.setSystemInfo("Test Environment", testEnvironment);
 			extent.setSystemInfo("Host Name", InetAddress.getLocalHost().getHostName());
 			extent.setSystemInfo("IP address", InetAddress.getLocalHost().getHostAddress());
@@ -192,6 +195,9 @@ public class AutomationReport implements ITestListener {
 			extent.flush();
 			String testEnvironment = new PropertyDataHandler().getProperty(AutomationConstants.AUTOMATION_TEST_CONFIG,
 					AutomationConstants.TEST_ENVIRONMENT);
+			if (testEnvironment.equalsIgnoreCase("")) {
+				testEnvironment = "QA";
+			}
 			DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy_HH-mm-ss");
 			Date date = new Date();
 			String filePathdate = dateFormat.format(date).toString();

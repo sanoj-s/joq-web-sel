@@ -1,9 +1,9 @@
 package com.snj.base;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -11,7 +11,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -66,7 +65,7 @@ public class AutomationEngine {
 			break;
 		}
 		driver.manage().window().maximize();
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		return driver;
 	}
 
@@ -165,11 +164,7 @@ public class AutomationEngine {
 	private void startFirefox() throws AutomationException {
 		try {
 			WebDriverManager.firefoxdriver().setup();
-			FirefoxProfile fp = new FirefoxProfile();
-			fp.setPreference("intl.accept_languages", "no,en-us,en");
-			DesiredCapabilities capabilities = DesiredCapabilities.firefox();
-			capabilities.setCapability(FirefoxDriver.MARIONETTE, true);
-			capabilities.setCapability(FirefoxDriver.PROFILE, fp);
+			DesiredCapabilities capabilities = new DesiredCapabilities();
 			capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
 			FirefoxOptions firefoxOptions = new FirefoxOptions(capabilities);
 			driver = new FirefoxDriver(firefoxOptions);

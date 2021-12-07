@@ -7,9 +7,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
@@ -716,7 +716,7 @@ public class ValidationActions extends AutomationEngine {
 		}
 		startTime = (System.currentTimeMillis() / 1000);
 
-		driver.manage().timeouts().pageLoadTimeout(59, TimeUnit.SECONDS);
+		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(59));
 
 		for (int j = 0; j < hrefTags.length; j++) {
 			try {

@@ -3,6 +3,7 @@ package com.snj.action;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
+import java.time.Duration;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -130,7 +131,7 @@ public class UIActions extends AutomationEngine {
 				PropertyDataHandler propertyObj = new PropertyDataHandler();
 				long timeout = Long.parseLong(
 						propertyObj.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
-				WebDriverWait wait = new WebDriverWait(driver, timeout);
+				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
 				WebElement element = utilityActionHelper.getWebElement(driver, elementName);
 				int i = 0;
 				while (i < clickCount) {
