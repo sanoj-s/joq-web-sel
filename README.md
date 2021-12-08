@@ -9,7 +9,7 @@ This is a test automation framework for web applications on different browsers l
 <br><li>Support database validation.
 <br><li>Good reporting - framework generates HTML report. 
 <br><li>Email collaboration - send an email with details of automation execution and HTML attachment. 
-<br><li>Well defined keyword document, get from **src/main/resources -> keywords** folder of the project structure. 
+<br><li>Well defined keyword document, get from src/main/resources -> keywords folder of the project structure. 
 	
 **Steps to develop and execute automation scripts using snj-selenium-java**
 <br><li>Set up Java, Eclipse/IntelliJ IDEA and dependent softwares.
