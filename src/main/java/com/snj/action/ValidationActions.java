@@ -151,6 +151,64 @@ public class ValidationActions extends AutomationEngine {
 	}
 
 	/**
+	 * Verify that the object is visible and return true or false based on
+	 * RelativeLocator direction
+	 * 
+	 * @author sanojs
+	 * @since 08-12-2021
+	 * @param driver
+	 * @param tagName
+	 * @param direction:  left, right, above, below, near
+	 * @param elementName
+	 * @throws AutomationException
+	 */
+	public boolean verifyElementVisible(WebDriver driver, String tagName, String direction, String elementName)
+			throws AutomationException {
+		boolean elementVisible = false;
+		try {
+			WebElement element = utilityActionHelper.getWebElement(driver, elementName);
+			WebElement elementToDoAction = new UtilityActions().getRelativeElement(driver, tagName, direction, element);
+			if (elementToDoAction.isDisplayed()) {
+				elementVisible = true;
+			} else {
+				elementVisible = false;
+			}
+		} catch (Exception e) {
+			elementVisible = false;
+		}
+		return elementVisible;
+	}
+
+	/**
+	 * Verify that the object is visible based on RelativeLocator direction
+	 * 
+	 * @author sanojs
+	 * @since 08-12-2021
+	 * @param driver
+	 * @param tagName
+	 * @param direction:left,  right, above, below, near
+	 * @param elementName
+	 * @param messageOnFailure
+	 * @throws AutomationException
+	 */
+	public void verifyElementVisible(WebDriver driver, String tagName, String direction, String elementName,
+			String messageOnFailure) throws AutomationException {
+		boolean elementVisible = false;
+		try {
+			WebElement element = utilityActionHelper.getWebElement(driver, elementName);
+			WebElement elementToDoAction = new UtilityActions().getRelativeElement(driver, tagName, direction, element);
+			if (elementToDoAction.isDisplayed()) {
+				elementVisible = true;
+			} else {
+				elementVisible = false;
+			}
+			Assert.assertTrue(elementVisible, messageOnFailure);
+		} catch (Exception e) {
+			Assert.assertTrue(elementVisible, messageOnFailure);
+		}
+	}
+
+	/**
 	 * Verify that the object is not visible
 	 * 
 	 * @author sanojs
@@ -219,6 +277,64 @@ public class ValidationActions extends AutomationEngine {
 			Assert.assertTrue(elementEnabled, messageOnFailure);
 		} catch (Exception e) {
 			Assert.assertTrue(elementEnabled, messageOnFailure);
+		}
+	}
+
+	/**
+	 * Verify that the object is enabled and return true or false based on
+	 * RelativeLocator direction
+	 * 
+	 * @author sanojs
+	 * @since 08-12-2021
+	 * @param driver
+	 * @param tagName
+	 * @param direction:  left, right, above, below, near
+	 * @param elementName
+	 * @throws AutomationException
+	 */
+	public boolean verifyElementEnabled(WebDriver driver, String tagName, String direction, String elementName)
+			throws AutomationException {
+		boolean elementVisible = false;
+		try {
+			WebElement element = utilityActionHelper.getWebElement(driver, elementName);
+			WebElement elementToDoAction = new UtilityActions().getRelativeElement(driver, tagName, direction, element);
+			if (elementToDoAction.isEnabled()) {
+				elementVisible = true;
+			} else {
+				elementVisible = false;
+			}
+		} catch (Exception e) {
+			elementVisible = false;
+		}
+		return elementVisible;
+	}
+
+	/**
+	 * Verify that the object is enabled based on RelativeLocator direction
+	 * 
+	 * @author sanojs
+	 * @since 08-12-2021
+	 * @param driver
+	 * @param tagName
+	 * @param direction:left,  right, above, below, near
+	 * @param elementName
+	 * @param messageOnFailure
+	 * @throws AutomationException
+	 */
+	public void verifyElementEnabled(WebDriver driver, String tagName, String direction, String elementName,
+			String messageOnFailure) throws AutomationException {
+		boolean elementVisible = false;
+		try {
+			WebElement element = utilityActionHelper.getWebElement(driver, elementName);
+			WebElement elementToDoAction = new UtilityActions().getRelativeElement(driver, tagName, direction, element);
+			if (elementToDoAction.isEnabled()) {
+				elementVisible = true;
+			} else {
+				elementVisible = false;
+			}
+			Assert.assertTrue(elementVisible, messageOnFailure);
+		} catch (Exception e) {
+			Assert.assertTrue(elementVisible, messageOnFailure);
 		}
 	}
 
@@ -292,6 +408,64 @@ public class ValidationActions extends AutomationEngine {
 			Assert.assertTrue(elementSelected, messageOnFailure);
 		} catch (Exception e) {
 			Assert.assertTrue(elementSelected, messageOnFailure);
+		}
+	}
+
+	/**
+	 * Verify that the object is selected and return true or false based on
+	 * RelativeLocator direction
+	 * 
+	 * @author sanojs
+	 * @since 08-12-2021
+	 * @param driver
+	 * @param tagName
+	 * @param direction:  left, right, above, below, near
+	 * @param elementName
+	 * @throws AutomationException
+	 */
+	public boolean verifyElementSelected(WebDriver driver, String tagName, String direction, String elementName)
+			throws AutomationException {
+		boolean elementVisible = false;
+		try {
+			WebElement element = utilityActionHelper.getWebElement(driver, elementName);
+			WebElement elementToDoAction = new UtilityActions().getRelativeElement(driver, tagName, direction, element);
+			if (elementToDoAction.isSelected()) {
+				elementVisible = true;
+			} else {
+				elementVisible = false;
+			}
+		} catch (Exception e) {
+			elementVisible = false;
+		}
+		return elementVisible;
+	}
+
+	/**
+	 * Verify that the object is selected based on RelativeLocator direction
+	 * 
+	 * @author sanojs
+	 * @since 08-12-2021
+	 * @param driver
+	 * @param tagName
+	 * @param direction:left,  right, above, below, near
+	 * @param elementName
+	 * @param messageOnFailure
+	 * @throws AutomationException
+	 */
+	public void verifyElementSelected(WebDriver driver, String tagName, String direction, String elementName,
+			String messageOnFailure) throws AutomationException {
+		boolean elementVisible = false;
+		try {
+			WebElement element = utilityActionHelper.getWebElement(driver, elementName);
+			WebElement elementToDoAction = new UtilityActions().getRelativeElement(driver, tagName, direction, element);
+			if (elementToDoAction.isSelected()) {
+				elementVisible = true;
+			} else {
+				elementVisible = false;
+			}
+			Assert.assertTrue(elementVisible, messageOnFailure);
+		} catch (Exception e) {
+			Assert.assertTrue(elementVisible, messageOnFailure);
 		}
 	}
 
