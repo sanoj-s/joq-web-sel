@@ -56,6 +56,44 @@ public class UIActions extends AutomationEngine {
 	}
 
 	/**
+	 * Click on an object based on RelativeLocator direction
+	 * 
+	 * @author sanoj
+	 * @since 08-12-2021
+	 * @param driver
+	 * @param tagName
+	 * @param direction:  left, right, above, below, near
+	 * @param elementName
+	 * @throws AutomationException
+	 */
+	public void tap(WebDriver driver, String tagName, String direction, String elementName) throws AutomationException {
+		try {
+			if (elementName != null) {
+				WebElement element = utilityActionHelper.getWebElement(driver, elementName);
+				WebElement elementToDoAction = new UtilityActions().getRelativeElement(driver, tagName, direction,
+						element);
+				elementToDoAction.click();
+				System.out.println("==========================================================");
+				System.out.println("Successfully clicked on " + elementToDoAction);
+			} else {
+				throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementName + "'");
+			}
+		} catch (Exception lException) {
+			try {
+				WebElement element = utilityActionHelper.getWebElement(driver, elementName);
+				WebElement elementToDoAction = new UtilityActions().getRelativeElement(driver, tagName, direction,
+						element);
+				JavascriptExecutor executor = (JavascriptExecutor) driver;
+				executor.executeScript("arguments[0].click();", elementToDoAction);
+				System.out.println("==========================================================");
+				System.out.println("Successfully clicked on " + elementToDoAction);
+			} catch (Exception ex) {
+				throw new AutomationException(getExceptionMessage(), ex);
+			}
+		}
+	}
+
+	/**
 	 * Right click on an object
 	 * 
 	 * @author sanojs
@@ -364,6 +402,46 @@ public class UIActions extends AutomationEngine {
 			}
 		} catch (Exception e) {
 			throw new AutomationException(getExceptionMessage(), e);
+		}
+	}
+
+	/**
+	 * Enter values to an input field based on RelativeLocator direction
+	 * 
+	 * @author sanoj
+	 * @since 08-12-2021
+	 * @param driver
+	 * @param tagName
+	 * @param direction:  left, right, above, below, near
+	 * @param elementName
+	 * @param inputText
+	 * @throws AutomationException
+	 */
+	public void type(WebDriver driver, String tagName, String direction, String elementName, String inputText)
+			throws AutomationException {
+		try {
+			if (elementName != null) {
+				final WebElement element = utilityActionHelper.getWebElement(driver, elementName);
+				WebElement elementToDoAction = new UtilityActions().getRelativeElement(driver, tagName, direction,
+						element);
+				elementToDoAction.sendKeys(inputText);
+				System.out.println("==========================================================");
+				System.out.println("Data " + inputText + " successfully entered into " + elementToDoAction);
+			} else {
+				throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementName + "'");
+			}
+		} catch (final Exception lException) {
+			try {
+				WebElement element = utilityActionHelper.getWebElement(driver, elementName);
+				WebElement elementToDoAction = new UtilityActions().getRelativeElement(driver, tagName, direction,
+						element);
+				JavascriptExecutor executor = (JavascriptExecutor) driver;
+				executor.executeScript("arguments[0]. value='" + inputText + "';", elementToDoAction);
+				System.out.println("==========================================================");
+				System.out.println("Data " + inputText + " successfully entered into " + elementToDoAction);
+			} catch (Exception ex) {
+				throw new AutomationException(getExceptionMessage(), ex);
+			}
 		}
 	}
 
