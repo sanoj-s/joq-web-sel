@@ -1,5 +1,7 @@
 package com.snj.action;
 
+import static org.openqa.selenium.support.locators.RelativeLocator.with;
+
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.InputEvent;
@@ -87,6 +89,43 @@ public class UtilityActions extends AutomationEngine {
 			throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementLocator + "'");
 		}
 		return element;
+	}
+
+	/**
+	 * Get the web element based on RelativeLocator direction
+	 * 
+	 * @author sanojs
+	 * @since 08-12-2021
+	 * @param driver
+	 * @param tagName
+	 * @param direction
+	 * @param element
+	 * @return
+	 */
+	public WebElement getRelativeElement(WebDriver driver, String tagName, String direction, WebElement element) {
+		WebElement elementToDoAction = null;
+		try {
+			switch (direction) {
+			case "left":
+				elementToDoAction = driver.findElement(with(By.tagName(tagName)).toLeftOf(element));
+				break;
+			case "right":
+				elementToDoAction = driver.findElement(with(By.tagName(tagName)).toRightOf(element));
+				break;
+			case "above":
+				elementToDoAction = driver.findElement(with(By.tagName(tagName)).above(element));
+				break;
+			case "below":
+				elementToDoAction = driver.findElement(with(By.tagName(tagName)).below(element));
+				break;
+			case "near":
+				elementToDoAction = driver.findElement(with(By.tagName(tagName)).near(element));
+				break;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return elementToDoAction;
 	}
 
 	/**
