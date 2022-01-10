@@ -1,6 +1,5 @@
 package com.snj.reporting;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.text.DateFormat;
@@ -20,6 +19,7 @@ import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
+import com.aventstack.extentreports.reporter.configuration.ViewName;
 import com.snj.action.UtilityActions;
 import com.snj.base.AutomationEngine;
 import com.snj.data.PropertyDataHandler;
@@ -45,15 +45,24 @@ public class AutomationReport implements ITestListener {
 		try {
 			String testEnvironment = new PropertyDataHandler().getProperty(AutomationConstants.AUTOMATION_TEST_CONFIG,
 					AutomationConstants.TEST_ENVIRONMENT);
-			sparkReporter = new ExtentSparkReporter(reportPath);
+			if (testEnvironment.equalsIgnoreCase("")) {
+				testEnvironment = "QA";
+			}
+
+			DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy_HH-mm-ss");
+			Date date = new Date();
+			String filePathdate = dateFormat.format(date).toString();
+			sparkReporter = new ExtentSparkReporter(
+					reportPath + testEnvironment + "_Automation_Report_" + filePathdate + ".html").viewConfigurer()
+							.viewOrder().as(new ViewName[] { ViewName.DASHBOARD, ViewName.CATEGORY, ViewName.TEST,
+									ViewName.AUTHOR, ViewName.DEVICE, ViewName.EXCEPTION, ViewName.LOG })
+							.apply();
+
 			XmlTest test = testContext.getCurrentXmlTest();
 			extent = new ExtentReports();
 			extent.attachReporter(sparkReporter);
 			extent.setSystemInfo("Operating System", System.getProperty("os.name"));
 			extent.setSystemInfo("Browser Name", test.getParameter("browserName").toString());
-			if (testEnvironment.equalsIgnoreCase("")) {
-				testEnvironment = "QA";
-			}
 			extent.setSystemInfo("Test Environment", testEnvironment);
 			extent.setSystemInfo("Host Name", InetAddress.getLocalHost().getHostName());
 			extent.setSystemInfo("IP address", InetAddress.getLocalHost().getHostAddress());
@@ -198,13 +207,6 @@ public class AutomationReport implements ITestListener {
 			if (testEnvironment.equalsIgnoreCase("")) {
 				testEnvironment = "QA";
 			}
-			DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy_HH-mm-ss");
-			Date date = new Date();
-			String filePathdate = dateFormat.format(date).toString();
-			String actualReportPath = reportPath + "index.html";
-			new File(actualReportPath).renameTo(new File(
-					System.getProperty("user.dir") + "/Reports/" + "Automation_Report_" + filePathdate + ".html"));
-
 			String isMailReportNeed = new PropertyDataHandler()
 					.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "isMailReportNeed");
 			if (isMailReportNeed.toLowerCase().equals("yes")) {
