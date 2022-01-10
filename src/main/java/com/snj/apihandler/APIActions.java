@@ -24,12 +24,12 @@ public class APIActions {
 	 * @throws AutomationException
 	 */
 
-	public Response postRequest(String baseURI, File requestFilePath, String contentType, String endPointPath)
+	public Response postRequest(String baseURI, String requestFilePath, String contentType, String endPointPath)
 			throws AutomationException {
 		Response response = null;
 		try {
-			response = RestAssured.given().baseUri(baseURI).body(requestFilePath).contentType(contentType).log().all()
-					.when().post(endPointPath).andReturn();
+			response = RestAssured.given().baseUri(baseURI).body(new File(requestFilePath).getAbsoluteFile())
+					.contentType(contentType).log().all().when().post(endPointPath).andReturn();
 			response.then().log().all().extract().response();
 			System.out.println("==========================================================");
 			System.out.println("Execution completed successfully");
@@ -210,8 +210,8 @@ public class APIActions {
 			throws AutomationException {
 		Response response = null;
 		try {
-			response = RestAssured.given().baseUri(baseURI).body(requestFilePath).contentType(contentType).log().all()
-					.when().get(endPointPath).andReturn();
+			response = RestAssured.given().baseUri(baseURI).body(new File(requestFilePath).getAbsoluteFile())
+					.contentType(contentType).log().all().when().get(endPointPath).andReturn();
 			System.out.println("==========================================================");
 			System.out.println("Execution completed successfully");
 		} catch (Exception e) {
@@ -221,7 +221,7 @@ public class APIActions {
 	}
 
 	/**
-	 * Perform HTTP Put request with body data from file
+	 * Perform HTTP Put request with body data from file and using path parameter
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
@@ -233,12 +233,13 @@ public class APIActions {
 	 * @return
 	 * @throws AutomationException
 	 */
-	public Response putRequest(String baseURI, File requestFilePath, String contentType, String pathParamName,
+	public Response putRequest(String baseURI, String requestFilePath, String contentType, String pathParamName,
 			String pathParamValue, String endPointPath) throws AutomationException {
 		Response response = null;
 		try {
 			response = RestAssured.given().baseUri(baseURI).pathParam(pathParamName, pathParamValue)
-					.body(requestFilePath).contentType(contentType).log().all().when().get(endPointPath).andReturn();
+					.body(new File(requestFilePath).getAbsoluteFile()).contentType(contentType).log().all().when()
+					.get(endPointPath).andReturn();
 			System.out.println("==========================================================");
 			System.out.println("Execution completed successfully");
 			response.then().log().all();
@@ -351,5 +352,4 @@ public class APIActions {
 		responseInString = response.asString();
 		return response;
 	}
-
 }

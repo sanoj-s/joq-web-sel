@@ -18,7 +18,7 @@ import io.restassured.response.Response;
 
 public class APIValidationActions {
 	/**
-	 * To get the value from JSON response
+	 * Get the value from JSON response
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
@@ -39,7 +39,7 @@ public class APIValidationActions {
 	}
 
 	/**
-	 * To validate JsonPath from the response
+	 * Validate JsonPath from the response
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
@@ -58,7 +58,7 @@ public class APIValidationActions {
 	}
 
 	/**
-	 * To validate JsonPath to string value
+	 * Validate JsonPath to string value
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
@@ -79,7 +79,7 @@ public class APIValidationActions {
 	}
 
 	/**
-	 * To validate JsonPath to integer value
+	 * Validate JsonPath to integer value
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
@@ -100,7 +100,7 @@ public class APIValidationActions {
 	}
 
 	/**
-	 * To validate JsonPath to boolean value
+	 * Validate JsonPath to boolean value
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
@@ -121,7 +121,7 @@ public class APIValidationActions {
 	}
 
 	/**
-	 * To validate JsonPath to null value
+	 * Validate JsonPath to null value
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
@@ -142,7 +142,7 @@ public class APIValidationActions {
 	}
 
 	/***
-	 * To validate the status code from the response
+	 * Validate the status code from the response
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
@@ -161,7 +161,7 @@ public class APIValidationActions {
 	}
 
 	/**
-	 * To validate the status line from the response
+	 * Validate the status line from the response
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
@@ -181,7 +181,7 @@ public class APIValidationActions {
 	}
 
 	/**
-	 * To validate the header from the response
+	 * Validate the header from the response
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
@@ -202,7 +202,7 @@ public class APIValidationActions {
 	}
 
 	/**
-	 * To validate the ContentType from the response
+	 * Validate the ContentType from the response
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
@@ -222,7 +222,7 @@ public class APIValidationActions {
 	}
 
 	/**
-	 * To validate the SessionId from the response
+	 * Validate the SessionId from the response
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
@@ -242,11 +242,11 @@ public class APIValidationActions {
 	}
 
 	/**
-	 * To print all header names and values
+	 * Print all header names and values
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
-	 * @param resp
+	 * @param responseData
 	 */
 	public void printAllHeaders(Response responseData) throws AutomationException {
 
