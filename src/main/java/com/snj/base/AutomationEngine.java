@@ -1,5 +1,6 @@
 package com.snj.base;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
+import com.snj.data.PropertyDataHandler;
 import com.snj.exception.AutomationException;
 import com.snj.utils.AutomationConstants;
 
@@ -60,6 +62,10 @@ public class AutomationEngine {
 			startSafari();
 			break;
 
+		case "electron":
+			startElectronApplication();
+			break;
+
 		default:
 			System.out.println(AutomationConstants.CHECKBROWSER_MESSAGE);
 			break;
@@ -67,6 +73,30 @@ public class AutomationEngine {
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		return driver;
+	}
+
+	/**
+	 * Launch Electron application
+	 * 
+	 * @author sanojs
+	 * @since 12-01-2022
+	 * @throws AutomationException
+	 */
+	private void startElectronApplication() throws AutomationException {
+		try {
+			String pathToElectronApplication = new PropertyDataHandler()
+					.getProperty(AutomationConstants.AUTOMATION_TEST_CONFIG, "electronApplicationPath");
+			if ((pathToElectronApplication.equals("")) || (pathToElectronApplication.equalsIgnoreCase(null))) {
+				System.out.println(AutomationConstants.ELECTRON_APPLICATION_MISSING_ERROR_MESSAGE);
+				System.exit(0);
+			}
+			ChromeOptions options = new ChromeOptions();
+			options.setBinary(new File(pathToElectronApplication).getAbsolutePath());
+			WebDriverManager.chromedriver().setup();
+			driver = new ChromeDriver(options);
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage(), e);
+		}
 	}
 
 	/**
