@@ -928,7 +928,7 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
-	 * Mock geolocation based on latitude and longitude
+	 * Mock geolocation based on latitude, longitude and accuracy
 	 * 
 	 * @author sanojs
 	 * @since 01/13/2022
