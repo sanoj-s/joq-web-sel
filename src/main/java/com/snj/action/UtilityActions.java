@@ -11,9 +11,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -24,6 +28,12 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chromium.ChromiumDriver;
+import org.openqa.selenium.devtools.DevTools;
+import org.openqa.selenium.devtools.v95.network.Network;
+import org.openqa.selenium.devtools.v95.network.model.ConnectionType;
+import org.openqa.selenium.devtools.v95.network.model.Headers;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -803,6 +813,148 @@ public class UtilityActions extends AutomationEngine {
 			throw new AutomationException(getExceptionMessage(), lException);
 		}
 		return isScreenRezised;
+	}
+
+	/**
+	 * To do the basic authentication
+	 * 
+	 * @author sanojs
+	 * @since 01/13/2022
+	 * @param driver
+	 * @param username
+	 * @param password
+	 * @throws AutomationException
+	 */
+	public void doBasicAuthentication(WebDriver driver, String username, String password) throws AutomationException {
+		try {
+			DevTools devTools = ((ChromeDriver) driver).getDevTools();
+			devTools.createSession();
+			devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
+			// Send authorization header
+			Map<String, Object> headers = new HashMap<>();
+			String basicAuth = "Basic "
+					+ new String(new Base64().encode(String.format("%s:%s", username, password).getBytes()));
+			headers.put("Authorization", basicAuth);
+			devTools.send(Network.setExtraHTTPHeaders(new Headers(headers)));
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage() + "\n" + AutomationConstants.CAUSE + e.getMessage());
+		}
+	}
+
+	/**
+	 * Simulate device mode and set different screen resolutions
+	 * 
+	 * @author sanojs
+	 * @since 01/13/2022
+	 * @param driver
+	 * @param width
+	 * @param height
+	 * @param isMobile
+	 * @param deviceScaleFactor
+	 * @throws AutomationException
+	 */
+	public void simulateDeviceMode(WebDriver driver, int width, int height, boolean isMobile, int deviceScaleFactor)
+			throws AutomationException {
+		try {
+			DevTools devTools = ((ChromeDriver) driver).getDevTools();
+			devTools.createSession();
+			@SuppressWarnings("serial")
+			HashMap<String, Object> deviceMetrics = new HashMap<String, Object>() {
+				{
+					put("width", width);
+					put("height", height);
+					put("mobile", isMobile);
+					put("deviceScaleFactor", deviceScaleFactor);
+				}
+			};
+			((ChromiumDriver) driver).executeCdpCommand("Emulation.setDeviceMetricsOverride", deviceMetrics);
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage() + "\n" + AutomationConstants.CAUSE + e.getMessage());
+		}
+	}
+
+	/**
+	 * Simulate network speed 2G,3G,4G,BLUETOOTH,ETHERNET,WIFI,WIMAX and also
+	 * offline mode
+	 * 
+	 * @author sanojs
+	 * @since 01/13/2022
+	 * @param driver
+	 * @param isOffline
+	 * @param latency
+	 * @param downloadThroughput
+	 * @param uploadThroughput
+	 * @param connectionType     : 2G,3G,4G,BLUETOOTH,ETHERNET,WIFI,WIMAX
+	 * @throws AutomationException
+	 */
+	public void simulateNetworkSpeed(WebDriver driver, boolean isOffline, int latency, int downloadThroughput,
+			int uploadThroughput, String connectionType) throws AutomationException {
+		try {
+			DevTools devTools = ((ChromeDriver) driver).getDevTools();
+			devTools.createSession();
+			// Set the desired network speed
+			ConnectionType connectionTypeValue = null;
+			switch (connectionType.toLowerCase()) {
+			case "2g":
+				connectionTypeValue = ConnectionType.CELLULAR2G;
+				break;
+			case "3g":
+				connectionTypeValue = ConnectionType.CELLULAR3G;
+				break;
+			case "4g":
+				connectionTypeValue = ConnectionType.CELLULAR4G;
+				break;
+			case "bluetooth":
+				connectionTypeValue = ConnectionType.BLUETOOTH;
+				break;
+			case "ethernet":
+				connectionTypeValue = ConnectionType.ETHERNET;
+				break;
+			case "wifi":
+				connectionTypeValue = ConnectionType.WIFI;
+				break;
+			case "wimax":
+				connectionTypeValue = ConnectionType.WIMAX;
+				break;
+			default:
+				connectionTypeValue = ConnectionType.NONE;
+				break;
+			}
+			devTools.send(Network.emulateNetworkConditions(isOffline, latency, downloadThroughput, uploadThroughput,
+					Optional.of(connectionTypeValue)));
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage() + "\n" + AutomationConstants.CAUSE + e.getMessage());
+		}
+	}
+
+	/**
+	 * Mock geolocation based on latitude and longitude
+	 * 
+	 * @author sanojs
+	 * @since 01/13/2022
+	 * @param driver
+	 * @param latitude
+	 * @param longitude
+	 * @param accuracy
+	 * @throws AutomationException
+	 */
+	public void mockGeolocation(WebDriver driver, double latitude, double longitude, int accuracy)
+			throws AutomationException {
+		try {
+			DevTools devTools = ((ChromeDriver) driver).getDevTools();
+			devTools.createSession();
+			@SuppressWarnings("serial")
+			HashMap<String, Object> coordinates = new HashMap<String, Object>() {
+				{
+					put("latitude", latitude);
+					put("longitude", longitude);
+					put("accuracy", accuracy);
+				}
+			};
+			((ChromiumDriver) driver).executeCdpCommand("Emulation.setGeolocationOverride", coordinates);
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage() + "\n" + AutomationConstants.CAUSE + e.getMessage());
+		}
 	}
 
 	/**
