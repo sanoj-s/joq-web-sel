@@ -2,10 +2,12 @@ package com.snj.base;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -15,6 +17,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
@@ -38,28 +41,49 @@ public class AutomationEngine {
 	 * @throws AutomationException
 	 * @throws InterruptedException
 	 */
-	public WebDriver startBrowser(String browserName) throws AutomationException, InterruptedException {
+	public WebDriver startBrowser(String browserName, String nodeIP, String nodePort)
+			throws AutomationException, InterruptedException {
 		switch (browserName.toLowerCase()) {
 		case "chrome":
 		case "headless":
-			startChrome(browserName);
+			if (!nodeIP.equalsIgnoreCase("")) {
+				startExecutionInGrid(nodeIP, nodePort, browserName);
+			} else {
+				startChrome(browserName);
+			}
 			break;
 
 		case "firefox":
-			startFirefox();
+			if (!nodeIP.equalsIgnoreCase("")) {
+				startExecutionInGrid(nodeIP, nodePort, browserName);
+			} else {
+				startFirefox();
+			}
 			break;
 
 		case "ie":
 		case "internetexplorer":
-			startInternetExplorer();
+			if (!nodeIP.equalsIgnoreCase("")) {
+				startExecutionInGrid(nodeIP, nodePort, browserName);
+			} else {
+				startInternetExplorer();
+			}
 			break;
 
 		case "edge":
-			startEdge();
+			if (!nodeIP.equalsIgnoreCase("")) {
+				startExecutionInGrid(nodeIP, nodePort, browserName);
+			} else {
+				startEdge();
+			}
 			break;
 
 		case "safari":
-			startSafari();
+			if (!nodeIP.equalsIgnoreCase("")) {
+				startExecutionInGrid(nodeIP, nodePort, browserName);
+			} else {
+				startSafari();
+			}
 			break;
 
 		case "electron":
@@ -73,6 +97,67 @@ public class AutomationEngine {
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		return driver;
+	}
+
+	/**
+	 * To start the selenium grid execution in the distributed environment
+	 * 
+	 * @author sanojs
+	 * @since 19-01-2022
+	 * @param nodeIP
+	 * @param nodePort
+	 * @param browserName
+	 * @return
+	 * @throws AutomationException
+	 */
+	private RemoteWebDriver startExecutionInGrid(String nodeIP, String nodePort, String browserName)
+			throws AutomationException {
+		DesiredCapabilities gridCap = new DesiredCapabilities();
+		String nodeURL = "", platformName = "";
+		try {
+			if (nodeIP != "" && nodePort != null && nodeIP != null && nodePort != "") {
+				nodeURL = ("http://" + nodeIP + ":" + nodePort).toString().toLowerCase().trim();
+			} else {
+				Exception ex = new AutomationException(AutomationConstants.GRIDNODEIP_PORTMISSING);
+				throw new AutomationException(ex);
+			}
+
+			try {
+				if (browserName != "" && browserName != null) {
+					if ("firefox".equalsIgnoreCase(browserName))
+						gridCap.setBrowserName("firefox");
+					if (("internetExplorer".equalsIgnoreCase(browserName)) | ("IE".equalsIgnoreCase(browserName)))
+						gridCap.setBrowserName("internet explorer");
+					if ("chrome".equalsIgnoreCase(browserName))
+						gridCap.setBrowserName("chrome");
+					if ("safari".equalsIgnoreCase(browserName))
+						gridCap.setBrowserName("safari");
+					if ("edge".equalsIgnoreCase(browserName))
+						gridCap.setBrowserName("MicrosoftEdge");
+				} else {
+					throw new AutomationException(AutomationConstants.GRID_BROWSER_MISSING);
+				}
+
+				platformName = System.getProperty("os.name");
+				if (platformName != "" && platformName != null) {
+					if (platformName.equalsIgnoreCase("WINDOWS"))
+						gridCap.setPlatform(Platform.WINDOWS);
+					if (platformName.equalsIgnoreCase("LINUX"))
+						gridCap.setPlatform(Platform.LINUX);
+					if (platformName.equalsIgnoreCase("MAC"))
+						gridCap.setPlatform(Platform.MAC);
+					if (platformName.equalsIgnoreCase("ANY"))
+						gridCap.setPlatform(Platform.ANY);
+				}
+				driver = new RemoteWebDriver(new URL(nodeURL), gridCap);
+
+			} catch (Exception e) {
+				throw new AutomationException(e);
+			}
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage(), e);
+		}
+		return (RemoteWebDriver) driver;
 	}
 
 	/**

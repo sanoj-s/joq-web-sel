@@ -13,9 +13,9 @@ import com.snj.reporting.AutomationReport;
 @Listeners(AutomationReport.class)
 public class TestRunner extends AutomationEngine {
 	@BeforeClass
-	@Parameters("browserName")
-	public void setup(String browserName) throws Exception {
-		startBrowser(browserName);
+	@Parameters({ "browserName", "nodeIP", "nodePort" })
+	public void setup(String browserName, String nodeIP, String nodePort) throws Exception {
+		startBrowser(browserName, nodeIP, nodePort);
 	}
 
 	@AfterSuite
