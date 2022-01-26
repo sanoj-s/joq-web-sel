@@ -13,9 +13,9 @@ import com.snj.reporting.AutomationReport;
 @Listeners(AutomationReport.class)
 public class TestRunner extends AutomationEngine {
 	@BeforeClass
-	@Parameters({ "browserName", "nodeIP", "nodePort" })
-	public void setup(String browserName, String nodeIP, String nodePort) throws Exception {
-		startBrowser(browserName, nodeIP, nodePort);
+	@Parameters({ "browserName", "gridIP", "gridPort" })
+	public void setup(String browserName, String gridIP, String gridPort) throws Exception {
+		startBrowser(browserName, gridIP, gridPort);
 	}
 
 	@AfterSuite

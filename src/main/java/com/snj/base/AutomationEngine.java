@@ -41,21 +41,21 @@ public class AutomationEngine {
 	 * @throws AutomationException
 	 * @throws InterruptedException
 	 */
-	public WebDriver startBrowser(String browserName, String nodeIP, String nodePort)
+	public WebDriver startBrowser(String browserName, String gridIP, String gridPort)
 			throws AutomationException, InterruptedException {
 		switch (browserName.toLowerCase()) {
 		case "chrome":
 		case "headless":
-			if (!nodeIP.equalsIgnoreCase("")) {
-				startExecutionInGrid(nodeIP, nodePort, browserName);
+			if (!gridIP.equalsIgnoreCase("")) {
+				startExecutionInGrid(gridIP, gridPort, browserName);
 			} else {
 				startChrome(browserName);
 			}
 			break;
 
 		case "firefox":
-			if (!nodeIP.equalsIgnoreCase("")) {
-				startExecutionInGrid(nodeIP, nodePort, browserName);
+			if (!gridIP.equalsIgnoreCase("")) {
+				startExecutionInGrid(gridIP, gridPort, browserName);
 			} else {
 				startFirefox();
 			}
@@ -63,24 +63,24 @@ public class AutomationEngine {
 
 		case "ie":
 		case "internetexplorer":
-			if (!nodeIP.equalsIgnoreCase("")) {
-				startExecutionInGrid(nodeIP, nodePort, browserName);
+			if (!gridIP.equalsIgnoreCase("")) {
+				startExecutionInGrid(gridIP, gridPort, browserName);
 			} else {
 				startInternetExplorer();
 			}
 			break;
 
 		case "edge":
-			if (!nodeIP.equalsIgnoreCase("")) {
-				startExecutionInGrid(nodeIP, nodePort, browserName);
+			if (!gridIP.equalsIgnoreCase("")) {
+				startExecutionInGrid(gridIP, gridPort, browserName);
 			} else {
 				startEdge();
 			}
 			break;
 
 		case "safari":
-			if (!nodeIP.equalsIgnoreCase("")) {
-				startExecutionInGrid(nodeIP, nodePort, browserName);
+			if (!gridIP.equalsIgnoreCase("")) {
+				startExecutionInGrid(gridIP, gridPort, browserName);
 			} else {
 				startSafari();
 			}
@@ -104,19 +104,19 @@ public class AutomationEngine {
 	 * 
 	 * @author sanojs
 	 * @since 19-01-2022
-	 * @param nodeIP
-	 * @param nodePort
+	 * @param gridIP
+	 * @param gridPort
 	 * @param browserName
 	 * @return
 	 * @throws AutomationException
 	 */
-	private RemoteWebDriver startExecutionInGrid(String nodeIP, String nodePort, String browserName)
+	private RemoteWebDriver startExecutionInGrid(String gridIP, String gridPort, String browserName)
 			throws AutomationException {
 		DesiredCapabilities gridCap = new DesiredCapabilities();
 		String nodeURL = "", platformName = "";
 		try {
-			if (nodeIP != "" && nodePort != null && nodeIP != null && nodePort != "") {
-				nodeURL = ("http://" + nodeIP + ":" + nodePort).toString().toLowerCase().trim();
+			if (gridIP != "" && gridPort != null && gridIP != null && gridPort != "") {
+				nodeURL = ("http://" + gridIP + ":" + gridPort).toString().toLowerCase().trim();
 			} else {
 				Exception ex = new AutomationException(AutomationConstants.GRIDNODEIP_PORTMISSING);
 				throw new AutomationException(ex);

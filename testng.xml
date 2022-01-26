@@ -3,8 +3,8 @@
 <suite name="Suite">
 	<test thread-count="5" name="Execution for Test Suites">
 		<parameter name="browserName" value="chrome" />
-		<parameter name="nodeIP" value="192.168.1.7" />
-		<parameter name="nodePort" value="4444" />
+		<parameter name="gridIP" value="" />
+		<parameter name="gridPort" value="" />
 		<classes>
 			<class name="snj.selenium.testcases.SampleTest" />
 		</classes>
