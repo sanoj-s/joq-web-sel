@@ -5,9 +5,12 @@ This is a test automation framework for web applications on different browsers l
 <li>Automation support for web applications (in Windows, MAC and Linux platforms).
 <br><li>Automation support for Google chrome, Mozilla Firefox, Microsoft Edge, Internet Explorer and Safari browsers.
 <br><li>Automation support for headless execution of test scripts.
+<br><li>Automation support for electron applications.
 <br><li>Support for parallel execution on different browsers.
+<br><li>Support for fully distributed remote executions (Selenium Grid 4).
 <br><li>Support database validation.
 <br><li>Support API testing and response validation.
+<br><li>Support mock geolocation, simulate device mode, simulate network speed.
 <br><li>Good reporting - framework generates HTML report. 
 <br><li>Email collaboration - send an email with details of automation execution and HTML attachment. 
 <br><li>Well defined keyword document, get from src/main/resources -> keywords folder of the project structure. 
@@ -29,9 +32,9 @@ This is a test automation framework for web applications on different browsers l
 	@Listeners(AutomationReport.class)
 	public class TestRunner extends AutomationEngine {
 	@BeforeClass
-	@Parameters("browserName")
-	public void setup(String browserName) throws Exception {
-		startBrowser(browserName);
+	@Parameters({ "browserName", "gridIP", "gridPort" })
+	public void setup(String browserName, String gridIP, String gridPort) throws Exception {
+		startBrowser(browserName, gridIP, gridPort);
 	}
 	@AfterSuite
 	public void tearDownMethod() throws AutomationException, InterruptedException {
@@ -69,17 +72,19 @@ This is a test automation framework for web applications on different browsers l
 <br>You can use the following code in **testng.xml** file:
 	
 	<?xml version="1.0" encoding="UTF-8"?>
-	<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-	<suite name="Suite">
-		<test thread-count="5" name="Execution for Test Suites">
-			<parameter name="browserName" value="chrome" />
-			<classes>
-				<class name="snj.selenium.testcases.SampleTest" />
-			</classes>
-		</test> <!-- Test -->
-	</suite> <!-- Suite -->
+        <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+        <suite name="Suite">
+	 <test thread-count="5" name="Execution for Test Suites">
+		<parameter name="browserName" value="chrome" />
+		<parameter name="gridIP" value="xxx.xxx.xxx.xxx" />
+		<parameter name="gridPort" value="xxxx" />
+		<classes>
+		   <class name="snj.selenium.testcases.SampleTest" />
+		</classes>
+	 </test> <!-- Test -->
+        </suite> <!-- Suite -->
 
-NOTE: If you need run on different browsers, you can mention firefox or edge or ie or safari or headless for the **browserName** parameter in the above testng.xml code. 
+NOTE: If you need run on different browsers, you can mention firefox or edge or ie or safari or headless for the **browserName** parameter in the above testng.xml code. If you need to run as Selenium Grid mode, just specify the values for **gridIP** and **gridPort**. For local execution, you just leave **gridIP** and **gridPort** as blank but need the **browserName** parameter value. For more about Selenium Grid setup, please visit https://journeyofquality.com/2022/01/26/a-variant-selenium-grid-4/   
 
 I hope this automation framework will help to kickstart your automation scripting from the base level.	
 	
