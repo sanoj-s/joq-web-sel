@@ -13,6 +13,32 @@ public class APIActions {
 	public static String responseInString;
 
 	/**
+	 * Perform HTTP Post request with in-line body data
+	 * 
+	 * @author sanojs
+	 * @since 15-04-2021
+	 * @param baseURI
+	 * @param endPointPath
+	 * @param queryParams
+	 * @param body
+	 * @return
+	 * @throws AutomationException
+	 */
+	public Response postRequest(String baseURI, String contentType, Map<String, String> queryParams,
+			Map<String, String> body, String endPointPath) throws AutomationException {
+		Response response = null;
+		try {
+			response = RestAssured.given().baseUri(baseURI).queryParams(queryParams).body(body).contentType(contentType)
+					.log().all().when().post(endPointPath).andReturn();
+			System.out.println("==========================================================");
+			System.out.println("Execution completed successfully");
+		} catch (Exception e) {
+			throw new AutomationException(e.getMessage());
+		}
+		return response;
+	}
+
+	/**
 	 * Perform HTTP Post request with body data from file
 	 * 
 	 * @author sanojs
@@ -41,32 +67,6 @@ public class APIActions {
 	}
 
 	/**
-	 * Perform HTTP Post request with in-line body data
-	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param baseURI
-	 * @param endPointPath
-	 * @param pathParams
-	 * @param body
-	 * @return
-	 * @throws AutomationException
-	 */
-	public Response postRequest(String baseURI, String contentType, Map<String, String> pathParams,
-			Map<String, String> body, String endPointPath) throws AutomationException {
-		Response response = null;
-		try {
-			response = RestAssured.given().baseUri(baseURI).pathParams(pathParams).body(body).contentType(contentType)
-					.log().all().when().post(endPointPath).andReturn();
-			System.out.println("==========================================================");
-			System.out.println("Execution completed successfully");
-		} catch (Exception e) {
-			throw new AutomationException(e.getMessage());
-		}
-		return response;
-	}
-
-	/**
 	 * Perform simple HTTP Get request
 	 * 
 	 * @author sanojs
@@ -79,62 +79,9 @@ public class APIActions {
 	public Response getRequest(String baseURI, String endPointPath) throws AutomationException {
 		Response response = null;
 		try {
-			response = RestAssured.given().baseUri(baseURI).log().all().when().get(endPointPath);
-			System.out.println("==========================================================");
+			response = RestAssured.given().baseUri(baseURI).when().get(endPointPath);
+			System.out.println("===================================================");
 			System.out.println("Execution completed successfully");
-		} catch (Exception e) {
-			throw new AutomationException(e.getMessage());
-		}
-		return response;
-	}
-
-	/**
-	 * Perform HTTP Get request with path parameter
-	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param pathParamName
-	 * @param pathParamValue
-	 * @param endPointPath
-	 * @return
-	 * @throws AutomationException
-	 */
-
-	public Response getRequestWithPathParameter(String baseURI, String pathParamName, String pathParamValue,
-			String endPointPath) throws AutomationException {
-		Response response = null;
-		try {
-			response = RestAssured.given().baseUri(baseURI).pathParam(pathParamName, pathParamValue).log().all().when()
-					.get(endPointPath);
-			System.out.println("==========================================================");
-			System.out.println("Execution completed successfully");
-		} catch (Exception e) {
-			throw new AutomationException(e.getMessage());
-		}
-		return response;
-	}
-
-	/**
-	 * Perform HTTP Get request with query parameter
-	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param baseURI
-	 * @param queryParamName
-	 * @param queryParamValue
-	 * @param endPointPath
-	 * @return
-	 * @throws AutomationException
-	 */
-	public Response getRequestWithQueryParameter(String baseURI, String queryParamName, String queryParamValue,
-			String endPointPath) throws AutomationException {
-		Response response = null;
-		try {
-			response = RestAssured.given().baseUri(baseURI).queryParam(queryParamName, queryParamValue).log().all()
-					.when().get(endPointPath).andReturn();
-			System.out.println("==========================================================");
-			System.out.println("Execution completed successfully");
-			response.then().log().all();
 		} catch (Exception e) {
 			throw new AutomationException(e.getMessage());
 		}
@@ -152,7 +99,7 @@ public class APIActions {
 	 * @return
 	 * @throws AutomationException
 	 */
-	public Response getRequestWithMultipleQueries(String baseURI, Map<String, String> queryParams, String endPointPath)
+	public Response getRequest(String baseURI, Map<String, String> queryParams, String endPointPath)
 			throws AutomationException {
 		Response response = null;
 		try {
@@ -221,51 +168,22 @@ public class APIActions {
 	}
 
 	/**
-	 * Perform HTTP Put request with body data from file and using path parameter
-	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param baseURI
-	 * @param requestFilePath
-	 * @param pathParamName
-	 * @param pathParamValue
-	 * @param endPointPath
-	 * @return
-	 * @throws AutomationException
-	 */
-	public Response putRequest(String baseURI, String requestFilePath, String contentType, String pathParamName,
-			String pathParamValue, String endPointPath) throws AutomationException {
-		Response response = null;
-		try {
-			response = RestAssured.given().baseUri(baseURI).pathParam(pathParamName, pathParamValue)
-					.body(new File(requestFilePath).getAbsoluteFile()).contentType(contentType).log().all().when()
-					.get(endPointPath).andReturn();
-			System.out.println("==========================================================");
-			System.out.println("Execution completed successfully");
-			response.then().log().all();
-		} catch (Exception e) {
-			throw new AutomationException(e.getMessage());
-		}
-		return response;
-	}
-
-	/**
-	 * Perform HTTP Put request with in-line body data
+	 * Perform HTTP Put request with query parameters and in-line body data
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
 	 * @param baseURI
 	 * @param endPointPath
 	 * @param body
-	 * @param pathParams
+	 * @param queryParams
 	 * @return
 	 * @throws AutomationException
 	 */
-	public Response putRequest(String baseURI, Map<String, String> body, Map<String, String> pathParams,
+	public Response putRequest(String baseURI, Map<String, String> body, Map<String, String> queryParams,
 			String contentType, String endPointPath) throws AutomationException {
 		Response response = null;
 		try {
-			response = RestAssured.given().baseUri(baseURI).pathParams(pathParams).body(body).contentType(contentType)
+			response = RestAssured.given().baseUri(baseURI).queryParams(queryParams).body(body).contentType(contentType)
 					.log().all().when().get(endPointPath).andReturn();
 			System.out.println("==========================================================");
 			System.out.println("Execution completed successfully");
@@ -300,48 +218,21 @@ public class APIActions {
 	}
 
 	/**
-	 * Perform HTTP Delete request with a given path parameter
-	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param baseURI
-	 * @param pathParamName
-	 * @param pathParamValue
-	 * @param endPointPath
-	 * @return
-	 * @throws AutomationException
-	 */
-	public Response deleteRequestWithPathParameter(String baseURI, String pathParamName, String pathParamValue,
-			String endPointPath) throws AutomationException {
-		Response response = null;
-		try {
-			response = RestAssured.given().baseUri(baseURI).pathParam(pathParamName, pathParamValue).log().all().when()
-					.delete(endPointPath).andReturn();
-			System.out.println("==========================================================");
-			System.out.println("Execution completed successfully");
-			response.then().log().all();
-		} catch (Exception e) {
-			throw new AutomationException(e.getMessage());
-		}
-		return response;
-	}
-
-	/**
-	 * Perform HTTP Delete request with multiple path parameters
+	 * Perform HTTP Delete request with multiple query parameters
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
 	 * @param baseURI
 	 * @param endPointPath
-	 * @param pathParams
+	 * @param queryParams
 	 * @return
 	 * @throws AutomationException
 	 */
-	public Response deleteRequestWithMultiplePathParameters(String baseURI, Map<String, String> pathParams,
-			String endPointPath) throws AutomationException {
+	public Response deleteRequest(String baseURI, Map<String, String> queryParams, String endPointPath)
+			throws AutomationException {
 		Response response = null;
 		try {
-			response = RestAssured.given().baseUri(baseURI).pathParams(pathParams).log().all().when()
+			response = RestAssured.given().baseUri(baseURI).queryParams(queryParams).log().all().when()
 					.delete(endPointPath).andReturn();
 			System.out.println("==========================================================");
 			System.out.println("Execution completed successfully");
