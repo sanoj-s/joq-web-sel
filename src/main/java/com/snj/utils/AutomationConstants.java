@@ -6,6 +6,8 @@ public class AutomationConstants {
 	public static final String TEST_ENVIRONMENT = "testEnvironment";
 	public static final String CAUSE = "Cause of the Exception : ";
 	public static final String URLCHECK_LIST_FILE = "//Links_Verification_Results//";
+	public static final String API_RESPONSE_DATA = "./src/test/resources/APITesting/ResponseData/";
+	public static final String API_REQUEST_PAYLOAD = "./src/test/resources/APITesting/RequestPayload/";
 
 	// ==========> Configuration files and variables
 	public static final String AUTOMATION_FRAMEWORK_CONFIG = "automation_framework_config";
@@ -30,5 +32,4 @@ public class AutomationConstants {
 	public static final String EXCEPTIION_EXCEL_COLUMN_NAME = "Excel column with given name not found, check the name";
 	public static final String EXCEPTIION_EXCEL_PATH = "Give excel file path as argument";
 	public static final String EXCEPTIION_EXCEL_FILE = "Please provide excel file with .xlsx or .xls format";
-
 }
