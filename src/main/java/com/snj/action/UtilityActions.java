@@ -460,7 +460,13 @@ public class UtilityActions extends AutomationEngine {
 			WebElement sourceElement = getWebElement(driver, sourceElementName);
 			WebElement destinationElement = getWebElement(driver, destinationElementName);
 			Actions action = new Actions(driver);
-			action.dragAndDrop(sourceElement, destinationElement);
+			action.clickAndHold(sourceElement).build().perform();
+			Thread.sleep(1000);
+			action.moveToElement(destinationElement).build().perform();
+			Thread.sleep(1000);
+			action.moveByOffset(-1, -1).build().perform();
+			Thread.sleep(1000);
+			action.release().build().perform();
 		} catch (Exception e) {
 			throw new AutomationException(getExceptionMessage(), e);
 		}
