@@ -1,5 +1,6 @@
 package com.snj.reporting;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.text.DateFormat;
@@ -52,10 +53,15 @@ public class AutomationReport implements ITestListener {
 			DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy_HH-mm-ss");
 			Date date = new Date();
 			String filePathdate = dateFormat.format(date).toString();
+
+			if (!new File(reportPath + "//Reports//Automation").exists()) {
+				(new File(reportPath + "//Reports//Automation")).mkdir();
+			}
+
 			sparkReporter = new ExtentSparkReporter(
-					reportPath + testEnvironment + "_Automation_Report_" + filePathdate + ".html").viewConfigurer()
-							.viewOrder().as(new ViewName[] { ViewName.DASHBOARD, ViewName.CATEGORY, ViewName.TEST,
-									ViewName.AUTHOR, ViewName.DEVICE, ViewName.EXCEPTION, ViewName.LOG })
+					reportPath + "Automation/" + testEnvironment + "_Automation_Report_" + filePathdate + ".html")
+							.viewConfigurer().viewOrder().as(new ViewName[] { ViewName.DASHBOARD, ViewName.CATEGORY,
+									ViewName.TEST, ViewName.AUTHOR, ViewName.DEVICE, ViewName.EXCEPTION, ViewName.LOG })
 							.apply();
 
 			XmlTest test = testContext.getCurrentXmlTest();

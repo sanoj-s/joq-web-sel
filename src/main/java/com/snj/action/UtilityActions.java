@@ -7,6 +7,7 @@ import java.awt.Robot;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -961,6 +962,45 @@ public class UtilityActions extends AutomationEngine {
 		} catch (Exception e) {
 			throw new AutomationException(getExceptionMessage() + "\n" + AutomationConstants.CAUSE + e.getMessage());
 		}
+	}
+
+	/**
+	 * Start the lighthouse audit process with different categories. Make sure that
+	 * you installed the lighthouse node module package on your system
+	 * 
+	 * @author sanojs
+	 * @since 14/03/2022
+	 * @param appURL
+	 * @param categories [performance,accessibility,seo,best-practices,pwa]
+	 * @throws AutomationException
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	public void startLighthouseAudit(String appURL, String categories, String needHeadless)
+			throws AutomationException, IOException, InterruptedException {
+		String reportPath = System.getProperty("user.dir");
+		DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy_HH-mm-ss");
+		Date date = new Date();
+		String reportNameDate = dateFormat.format(date).toString();
+
+		if (!new File(reportPath + "//Reports//Lighthouse_Audit").exists()) {
+			(new File(reportPath + "//Reports//Lighthouse_Audit")).mkdir();
+		}
+		String actualReportPath = reportPath + "//Reports//Lighthouse_Audit".trim() + "//AuditReport_" + reportNameDate
+				+ ".html";
+		String command;
+		if (needHeadless.equalsIgnoreCase("yes")) {
+			command = "cmd.exe /c lighthouse " + appURL + " --chrome-flags='--headless' --only-categories=" + categories
+					+ " --output=html --quiet --output-path=" + actualReportPath + "";
+		} else {
+			command = "cmd.exe /c lighthouse " + appURL + " --only-categories=" + categories
+					+ " --output=html --quiet --output-path=" + actualReportPath + "";
+		}
+		System.out.println("Audit started for " + appURL);
+		Process process = Runtime.getRuntime().exec(command);
+		process.waitFor();
+		process.destroy();
+		System.out.println("Completed the audit and get the report from " + actualReportPath);
 	}
 
 	/**
