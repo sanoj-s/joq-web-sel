@@ -1,5 +1,5 @@
 # snj-selenium-java
-This is a test automation framework for web applications on different browsers like Google Chrome, Mozilla Firefox, Microsoft Edge, Internet Explorer and Safari in real-time. It provides rich features like Test Execution, Test Reporting, and Test details sharing via mail. The  automation framework includes 160+ pre-built keywords using which an Automation Engineer can easily perform the web automation.
+This is a test automation framework for web applications on different browsers like Google Chrome, Mozilla Firefox, Microsoft Edge, Internet Explorer and Safari in real-time. It provides rich features like Test Execution, Test Reporting, and Test details sharing via mail. The automation framework includes 160+ pre-built keywords using which an Automation Engineer can easily perform the web automation.
 
 <h3>Salient features of snj-selenium-java</h3>
 <li>Automation support for web applications (in Windows, MAC and Linux platforms).
@@ -8,10 +8,11 @@ This is a test automation framework for web applications on different browsers l
 <br><li>Automation support for electron applications.
 <br><li>Support for parallel execution on different browsers.
 <br><li>Support for fully distributed remote executions (Selenium Grid 4).
+<br><li>Support for Lighthouse audit on website with different categories such as performance, accessibility, seo, best-practices, pwa. 
 <br><li>Support database validation.
 <br><li>Support API testing and response validation.
 <br><li>Support mock geolocation, simulate device mode, simulate network speed.
-<br><li>Good reporting - framework generates HTML report. 
+<br><li>Good reporting - framework generates HTML report.  
 <br><li>Email collaboration - send an email with details of automation execution and HTML attachment. 
 <br><li>Well defined keyword document, get from src/main/resources -> keywords folder of the project structure. 
 	
@@ -24,7 +25,7 @@ This is a test automation framework for web applications on different browsers l
 <br><li>Manage Test Suite Class inside the **snj.selenium.testcases** package and Test Helper class inside **snj.selenium.testhelpers** package.
 <br><li>Manage Test Object Class inside the **snj.selenium.testobjects** package.
 <br><li>Create **testng.xml** and map test suite classes to it.
-<br><li>Run the **testng.xml** file and view the execution reports which generate in the **Reports** folder of the project structure.	
+<br><li>Run the **testng.xml** file and view the execution reports which generate in the **\Reports\Automation** folder of the project structure.	
 
 **Manage TestRunner class**
 <br>Once the TestRunner class ready under **snj.selenium.runner** package, you can use below code snippet in TestRunner class:
@@ -84,8 +85,12 @@ This is a test automation framework for web applications on different browsers l
 	 </test> <!-- Test -->
         </suite> <!-- Suite -->
 
-NOTE: If you need run on different browsers, you can mention firefox or edge or ie or safari or headless for the **browserName** parameter in the above testng.xml code. If you need to run as Selenium Grid mode, just specify the values for **gridIP** and **gridPort**. For local execution, you just leave **gridIP** and **gridPort** as blank but need the **browserName** parameter value. For more about Selenium Grid setup, please visit https://journeyofquality.com/2022/01/26/a-variant-selenium-grid-4/   
+**NOTE:** If you need run on different browsers, you can mention firefox or edge or ie or safari or headless for the **browserName** parameter in the above testng.xml code. If you need to run as Selenium Grid mode, just specify the values for **gridIP** and **gridPort**. For local execution, you just leave **gridIP** and **gridPort** as blank but need the **browserName** parameter value. For more about Selenium Grid setup, please visit https://journeyofquality.com/2022/01/26/a-variant-selenium-grid-4/   
 
+**Perform Lighthouse Audit**
+<br>This automation framework supports the lighthouse audit on the website with different categories such as performance, accessibility, SEO, best practices, and PWA. You can use **startLighthouseAudit** keyword of the UtilityActions class. Once the audit is completed the framework will generate the audit report in the **\Reports\Lighthouse_Audit** folder of the project structure. The prerequisites for the Lighthouse audit is to install the **lighthouse** node module package on your system. For more details about Lighthouse setup, please visit https://journeyofquality.com/2021/12/21/turn-on-your-lighthouse/. Below is the sample code for reference:
+<br>`new UtilityActions().startLighthouseAudit(driver.getCurrentUrl(), "performance,seo", "no");`	
+	
 I hope this automation framework will help to kickstart your automation scripting from the base level.	
 	
 Get your latest releases from https://github.com/sanoj-s/snj-selenium-java/releases	
