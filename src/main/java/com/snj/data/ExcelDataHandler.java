@@ -12,6 +12,7 @@ import java.util.Iterator;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -86,6 +87,19 @@ public class ExcelDataHandler {
 			}
 			if (cellType.toString().toLowerCase().equals("string")) {
 				cellValue = sheet.getRow(rowNum - 1).getCell(colNum - 1).getStringCellValue();
+			}
+			if (cellType.toString().toLowerCase().equals("formula")) {
+				FormulaEvaluator evaluator = workBook.getCreationHelper().createFormulaEvaluator();
+				switch (evaluator.evaluateFormulaCell(sheet.getRow(rowNum - 1).getCell(colNum - 1))) {
+				case NUMERIC:
+					cellValue = Double.toString(sheet.getRow(rowNum - 1).getCell(colNum - 1).getNumericCellValue());
+					break;
+				case STRING:
+					cellValue = sheet.getRow(rowNum - 1).getCell(colNum - 1).getStringCellValue();
+					break;
+				default:
+					break;
+				}
 			}
 		} catch (Exception e) {
 			// e.printStackTrace();
