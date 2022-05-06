@@ -41,6 +41,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.snj.accessibilityhandler.AccessibilityHandler;
 import com.snj.base.AutomationEngine;
 import com.snj.data.PropertyDataHandler;
 import com.snj.exception.AutomationException;
@@ -978,29 +979,53 @@ public class UtilityActions extends AutomationEngine {
 	 */
 	public void startLighthouseAudit(String appURL, String categories, String needHeadless)
 			throws AutomationException, IOException, InterruptedException {
-		String reportPath = System.getProperty("user.dir");
-		DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy_HH-mm-ss");
-		Date date = new Date();
-		String reportNameDate = dateFormat.format(date).toString();
+		try {
+			String reportPath = System.getProperty("user.dir");
+			DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy_HH-mm-ss");
+			Date date = new Date();
+			String reportNameDate = dateFormat.format(date).toString();
 
-		if (!new File(reportPath + "//Reports//Lighthouse_Audit").exists()) {
-			(new File(reportPath + "//Reports//Lighthouse_Audit")).mkdir();
+			if (!new File(reportPath + "//Reports//Lighthouse_Audit").exists()) {
+				(new File(reportPath + "//Reports//Lighthouse_Audit")).mkdir();
+			}
+			String actualReportPath = reportPath + "//Reports//Lighthouse_Audit".trim() + "//AuditReport_"
+					+ reportNameDate + ".html";
+			String command;
+			if (needHeadless.equalsIgnoreCase("yes")) {
+				command = "cmd.exe /c lighthouse " + appURL + " --chrome-flags='--headless' --only-categories="
+						+ categories + " --output=html --quiet --output-path=" + actualReportPath + "";
+			} else {
+				command = "cmd.exe /c lighthouse " + appURL + " --only-categories=" + categories
+						+ " --output=html --quiet --output-path=" + actualReportPath + "";
+			}
+			System.out.println("Audit started for " + appURL);
+			Process process = Runtime.getRuntime().exec(command);
+			process.waitFor();
+			process.destroy();
+			System.out.println("Completed the audit and get the report from " + actualReportPath);
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage() + "\n" + AutomationConstants.CAUSE + e.getMessage());
 		}
-		String actualReportPath = reportPath + "//Reports//Lighthouse_Audit".trim() + "//AuditReport_" + reportNameDate
-				+ ".html";
-		String command;
-		if (needHeadless.equalsIgnoreCase("yes")) {
-			command = "cmd.exe /c lighthouse " + appURL + " --chrome-flags='--headless' --only-categories=" + categories
-					+ " --output=html --quiet --output-path=" + actualReportPath + "";
-		} else {
-			command = "cmd.exe /c lighthouse " + appURL + " --only-categories=" + categories
-					+ " --output=html --quiet --output-path=" + actualReportPath + "";
+	}
+
+	/**
+	 * To track the violations using AxeBuilder support as part of the Accessibility
+	 * Audit
+	 * 
+	 * @author sanojs
+	 * @since 06-05-2022
+	 * @param driver
+	 * @param pageName
+	 * @throws AutomationException
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	public void startAccessibilityAudit(WebDriver driver, String pageName)
+			throws AutomationException, IOException, InterruptedException {
+		try {
+			new AccessibilityHandler().trackViolations(driver, pageName);
+		} catch (Exception e) {
 		}
-		System.out.println("Audit started for " + appURL);
-		Process process = Runtime.getRuntime().exec(command);
-		process.waitFor();
-		process.destroy();
-		System.out.println("Completed the audit and get the report from " + actualReportPath);
 	}
 
 	/**
