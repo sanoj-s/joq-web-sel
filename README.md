@@ -9,6 +9,7 @@ This is a test automation framework for web applications on different browsers l
 <br><li>Support for parallel execution on different browsers.
 <br><li>Support for fully distributed remote executions (Selenium Grid 4).
 <br><li>Support for Lighthouse audit on website with different categories such as performance, accessibility, seo, best-practices, pwa. 
+<br><li>Support for accessibility testing on website to track the violations, violation impact, and help details to solve the violations.
 <br><li>Support database validation.
 <br><li>Support API testing and response validation.
 <br><li>Support mock geolocation, simulate device mode, simulate network speed.
@@ -90,7 +91,10 @@ This is a test automation framework for web applications on different browsers l
 **Perform Lighthouse Audit**
 <br>This automation framework supports the lighthouse audit on the website with different categories such as performance, accessibility, SEO, best practices, and PWA. You can use **startLighthouseAudit** keyword of the UtilityActions class. Once the audit is completed the framework will generate the audit report in the **\Reports\Lighthouse_Audit** folder of the project structure. The prerequisites for the Lighthouse audit is to install the **lighthouse** node module package on your system. For more details about Lighthouse setup, please visit https://journeyofquality.com/2021/12/21/turn-on-your-lighthouse/. Below is the sample code for reference:
 <br>`new UtilityActions().startLighthouseAudit(driver.getCurrentUrl(), "performance,seo", "no");`	
-	
+
+**Perform Accessibility Testing**
+<br>This automation framework supports the accessibility testing on website to track the violations, violation impact, and help details to solve the violations. You can use **startAccessibilityAudit** keyword of the UtilityActions class in the test suite class to start the track violations. Once the execution is completed the framework will generate the accessibility test summary report in the **\Reports\Accessibility\Summary** folder of the project structure. In addition to the summary report, there are detailed text and JSON reports will generate in the **\Reports\Accessibility\Details** folder of the project structure.
+
 I hope this automation framework will help to kickstart your automation scripting from the base level.	
 	
 Get your latest releases from https://github.com/sanoj-s/snj-selenium-java/releases	
