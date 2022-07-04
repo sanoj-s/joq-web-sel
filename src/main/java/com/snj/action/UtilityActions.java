@@ -206,6 +206,30 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
+	 * Method to wait for the element using the object mentioned in the Object
+	 * repository
+	 * 
+	 * @author sanojs
+	 * @since 07-04-2022
+	 * @param driver
+	 * @param expectedElementName
+	 * @return element
+	 * @throws AutomationException
+	 */
+	public WebElement waitForElement(WebDriver driver, String expectedElementName, long waitTime)
+			throws AutomationException {
+		WebElement element = null;
+		try {
+			wait = new WebDriverWait(driver, Duration.ofSeconds(waitTime));
+			By actualElement = getElementByLocator(expectedElementName);
+			element = wait.until(ExpectedConditions.presenceOfElementLocated(actualElement));
+		} catch (Exception e) {
+			throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + expectedElementName + "'");
+		}
+		return element;
+	}
+
+	/**
 	 * Wait for an element based on the invisibility and return true or false
 	 * 
 	 * @author sanojs
