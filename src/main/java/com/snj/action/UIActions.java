@@ -10,6 +10,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -28,6 +29,7 @@ public class UIActions extends AutomationEngine {
 	 * 
 	 * @author sanojs
 	 * @since 15-04-2021
+	 * @modified 04-07-2022
 	 * @param driver
 	 * @param elementName
 	 * @throws AutomationException
@@ -45,8 +47,9 @@ public class UIActions extends AutomationEngine {
 		} catch (Exception e) {
 			try {
 				WebElement element = utilityActionHelper.getWebElement(driver, elementName);
-				JavascriptExecutor executor = (JavascriptExecutor) driver;
-				executor.executeScript("arguments[0].click();", element);
+				Actions builder = new Actions(driver);
+				Action action = builder.moveToElement(element).click().build();
+				action.perform();
 				System.out.println("==========================================================");
 				System.out.println("Successfully clicked on " + elementName);
 			} catch (Exception ex) {
@@ -60,6 +63,7 @@ public class UIActions extends AutomationEngine {
 	 * 
 	 * @author sanoj
 	 * @since 08-12-2021
+	 * @modified 04-07-2022
 	 * @param driver
 	 * @param tagName
 	 * @param direction:  left, right, above, below, near
@@ -83,8 +87,9 @@ public class UIActions extends AutomationEngine {
 				WebElement element = utilityActionHelper.getWebElement(driver, elementName);
 				WebElement elementToDoAction = new UtilityActions().getRelativeElement(driver, tagName, direction,
 						element);
-				JavascriptExecutor executor = (JavascriptExecutor) driver;
-				executor.executeScript("arguments[0].click();", elementToDoAction);
+				Actions builder = new Actions(driver);
+				Action action = builder.moveToElement(elementToDoAction).click().build();
+				action.perform();
 				System.out.println("==========================================================");
 				System.out.println("Successfully clicked on " + elementToDoAction);
 			} catch (Exception ex) {
