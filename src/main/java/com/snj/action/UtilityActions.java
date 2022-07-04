@@ -372,6 +372,44 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
+	 * Method to get the long waiting time from the framework config file
+	 * 
+	 * @author sanojs
+	 * @since 04-07-2022
+	 * @return
+	 * @throws AutomationException
+	 */
+	public long getLongWaitingTime() throws AutomationException {
+		long timeout;
+		try {
+			timeout = Long.parseLong(new PropertyDataHandler()
+					.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, AutomationConstants.LONG_LOADING));
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage(), e);
+		}
+		return timeout;
+	}
+
+	/**
+	 * Method to get the short waiting time from the framework config file
+	 * 
+	 * @author sanojs
+	 * @since 04-07-2022
+	 * @return
+	 * @throws AutomationException
+	 */
+	public long getShortWaitingTime() throws AutomationException {
+		long timeout;
+		try {
+			timeout = Long.parseLong(new PropertyDataHandler()
+					.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, AutomationConstants.SHORT_LOADING));
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage(), e);
+		}
+		return timeout;
+	}
+
+	/**
 	 * Get the text or label of the WebElement
 	 * 
 	 * @author sanojs
