@@ -10,7 +10,7 @@ This is a test automation framework for web applications on different browsers l
 <br><li>Support for fully distributed remote executions (Selenium Grid 4).
 <br><li>Support for Lighthouse audit on website with different categories such as performance, accessibility, seo, best-practices, pwa. 
 <br><li>Support for accessibility testing on website to track the violations, violation impact, and help details to solve the violations.
-<br><li>Support to collect the page load time for a better performance tracking of an application.
+<br><li>Support to collect the page load time for better performance tracking of an application.
 <br><li>Support database validation.
 <br><li>Support API testing and response validation.
 <br><li>Support mock geolocation, simulate device mode, simulate network speed.
