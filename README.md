@@ -1,5 +1,5 @@
 # snj-selenium-java
-This is a test automation framework for web applications on different browsers like Google Chrome, Mozilla Firefox, Microsoft Edge, Internet Explorer and Safari in real-time. It provides rich features like Test Execution, Test Reporting, and Test details sharing via mail. The automation framework includes 160+ pre-built keywords using which an Automation Engineer can easily perform the web automation.
+This is a test automation framework for web applications on different browsers like Google Chrome, Mozilla Firefox, Microsoft Edge, Internet Explorer and Safari in real-time. It provides rich features like Test Execution, Test Reporting, and Test details sharing via mail. The automation framework includes 170+ pre-built keywords using which an Automation Engineer can easily perform the web automation.
 
 <h3>Salient features of snj-selenium-java</h3>
 <li>Automation support for web applications (in Windows, MAC and Linux platforms).
@@ -10,6 +10,7 @@ This is a test automation framework for web applications on different browsers l
 <br><li>Support for fully distributed remote executions (Selenium Grid 4).
 <br><li>Support for Lighthouse audit on website with different categories such as performance, accessibility, seo, best-practices, pwa. 
 <br><li>Support for accessibility testing on website to track the violations, violation impact, and help details to solve the violations.
+<br><li>Support to collect the page load time for a better performance tracking of an application.
 <br><li>Support database validation.
 <br><li>Support API testing and response validation.
 <br><li>Support mock geolocation, simulate device mode, simulate network speed.
@@ -94,6 +95,9 @@ This is a test automation framework for web applications on different browsers l
 
 **Perform Accessibility Testing**
 <br>This automation framework supports the accessibility testing on website to track the violations, violation impact, and help details to solve the violations. You can use **startAccessibilityAudit** keyword of the UtilityActions class in the test suite class to start the track violations. Once the execution is completed the framework will generate the accessibility test summary report in the **\Reports\Accessibility\Summary** folder of the project structure. In addition to the summary report, there are detailed text and JSON reports will generate in the **\Reports\Accessibility\Details** folder of the project structure.
+
+**Collect Page Load Performance**
+<br>This automation framework support to collect the page load time for a better performance tracking of an application. You can use **collectLoadTime** keyword of the UtilityActions class in the test suite class to collect the page load time. Once the execution is completed the framework will generate the performance test summary report in the **\Reports\Performance\Summary** folder of the project structure. 
 
 I hope this automation framework will help to kickstart your automation scripting from the base level.	
 	
