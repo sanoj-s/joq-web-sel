@@ -50,7 +50,7 @@ public class PageLoadTracker {
 	 * @throws AutomationException
 	 * @throws UnirestException
 	 */
-	public void collectLoadTime(WebDriver driver, String expectedObject, long expectedTime, String pageNameOrFlow,
+	public void trackLoadTime(WebDriver driver, String expectedObject, long expectedTime, String pageNameOrFlow,
 			String reportName) throws AutomationException {
 		try {
 			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(expectedTime));

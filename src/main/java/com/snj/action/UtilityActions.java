@@ -206,8 +206,7 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to wait for the element using the object mentioned in the Object
-	 * repository
+	 * Wait for the element using the object mentioned in the Object repository
 	 * 
 	 * @author sanojs
 	 * @since 07-04-2022
@@ -372,7 +371,7 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to get the long waiting time from the framework config file
+	 * Get the long waiting time from the framework config file
 	 * 
 	 * @author sanojs
 	 * @since 04-07-2022
@@ -391,7 +390,7 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to get the short waiting time from the framework config file
+	 * Get the short waiting time from the framework config file
 	 * 
 	 * @author sanojs
 	 * @since 04-07-2022
@@ -1086,6 +1085,28 @@ public class UtilityActions extends AutomationEngine {
 			throws AutomationException, IOException, InterruptedException {
 		try {
 			new AccessibilityHandler().trackViolations(driver, pageName);
+		} catch (Exception e) {
+		}
+	}
+
+	/**
+	 * Collect the page load time during automation execution
+	 * 
+	 * @author sanojs
+	 * @since 06-05-2022
+	 * @param driver
+	 * @param expectedObject
+	 * @param expectedTime
+	 * @param pageNameOrFlow
+	 * @param reportName
+	 * @throws AutomationException
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	public void collectLoadTime(WebDriver driver, String expectedObject, long expectedTime, String pageNameOrFlow,
+			String reportName) throws AutomationException, IOException, InterruptedException {
+		try {
+			new PageLoadTracker().trackLoadTime(driver, expectedObject, expectedTime, pageNameOrFlow, reportName);
 		} catch (Exception e) {
 		}
 	}
