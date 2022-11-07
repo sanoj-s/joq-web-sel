@@ -11,11 +11,14 @@ import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.testng.Assert;
 
 import com.snj.base.AutomationEngine;
@@ -732,30 +735,6 @@ public class ValidationActions extends AutomationEngine {
 	 * @since 15-04-2021
 	 * @param driver
 	 * @param expectedText
-	 * @throws AutomationException
-	 */
-	public boolean verifyURLContainsText(WebDriver driver, String expectedText) throws AutomationException {
-		boolean urlConatinsText = false;
-		try {
-			String actualURL = driver.getCurrentUrl();
-			if (actualURL.contains(expectedText)) {
-				urlConatinsText = true;
-			} else {
-				urlConatinsText = false;
-			}
-		} catch (Exception e) {
-			urlConatinsText = false;
-		}
-		return urlConatinsText;
-	}
-
-	/**
-	 * Verify that the URL contains text or label and return true or false
-	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param driver
-	 * @param expectedText
 	 * @param messageOnFailure
 	 * @throws AutomationException
 	 */
@@ -772,6 +751,24 @@ public class ValidationActions extends AutomationEngine {
 			Assert.assertTrue(urlConatinsText, messageOnFailure);
 		} catch (Exception e) {
 			Assert.assertTrue(urlConatinsText, messageOnFailure);
+		}
+	}
+
+	/**
+	 * Method to compare and verify the JSON files
+	 * 
+	 * @author sanojs
+	 * @since 10-10-2022
+	 * @param expectedJSONPath
+	 * @param actualJSONPath
+	 */
+	public void verifyJSONContent(String expectedJSONPath, String actualJSONPath) {
+		try {
+			String expectedJson = FileUtils.readFileToString(new File(expectedJSONPath), "utf-8");
+			String actualJson = FileUtils.readFileToString(new File(actualJSONPath), "utf-8");
+			JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.STRICT);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -946,6 +943,27 @@ public class ValidationActions extends AutomationEngine {
 		} catch (final IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Verify the file downloaded or not
+	 * 
+	 * @author sanojs
+	 * @since 19-08-2022
+	 * @param downloadPath
+	 * @param fileName
+	 * @return
+	 */
+	public boolean isFileDownloaded(String downloadPath, String fileName) {
+		File dir = new File(downloadPath);
+		File[] dirContents = dir.listFiles();
+		for (int i = 0; i < dirContents.length; i++) {
+			if (dirContents[i].getName().contains(fileName)) {
+				dirContents[i].delete();
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
