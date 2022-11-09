@@ -43,6 +43,7 @@ public class APIUtilities {
 	 * 
 	 * @author sanojs
 	 * @since 07-02-2022
+	 * @modified 15-07-2022
 	 * @param JSONFilePath
 	 * @param arrayName
 	 * @param keyName
@@ -51,11 +52,10 @@ public class APIUtilities {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public ArrayList<String> getArrayValuesFromJSONFile(String JSONFileName, String arrayName, String keyName)
+	public ArrayList<Object> getArrayValuesFromJSONFile(String JSONFileName, String arrayName, String keyName)
 			throws FileNotFoundException, IOException, ParseException {
-		String value = null;
-		String finalValue;
-		ArrayList<String> listValue = new ArrayList<>();
+		Object value = null;
+		ArrayList<Object> listValue = new ArrayList<>();
 		JSONParser jsonParser = new JSONParser();
 		String responseDataPath = System.getProperty("user.dir") + AutomationConstants.API_RESPONSE_DATA + JSONFileName
 				+ ".json";
@@ -63,9 +63,11 @@ public class APIUtilities {
 		JSONArray jsonArray = (JSONArray) jsonObject.get(arrayName);
 		for (int i = 0; i < jsonArray.size(); i++) {
 			JSONObject jsonobject = (JSONObject) jsonArray.get(i);
-			value = (String) jsonobject.get(keyName);
-			finalValue = new String(value.getBytes("ISO-8859-1"), "UTF-8");
-			listValue.add(finalValue);
+			value = jsonobject.get(keyName);
+			if (((Object) value).getClass().getSimpleName().equalsIgnoreCase("string")) {
+				value = new String(((String) value).getBytes("ISO-8859-1"), "UTF-8");
+			}
+			listValue.add(value);
 		}
 		return listValue;
 	}
