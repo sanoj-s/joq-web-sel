@@ -755,7 +755,7 @@ public class ValidationActions extends AutomationEngine {
 	}
 
 	/**
-	 * Method to compare and verify the JSON files
+	 * To compare and verify the JSON files
 	 * 
 	 * @author sanojs
 	 * @since 10-10-2022
