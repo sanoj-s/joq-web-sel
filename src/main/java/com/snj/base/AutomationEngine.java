@@ -280,7 +280,7 @@ public class AutomationEngine {
 		try {
 			WebDriverManager.firefoxdriver().setup();
 			DesiredCapabilities capabilities = new DesiredCapabilities();
-			capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+			capabilities.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
 			FirefoxOptions firefoxOptions = new FirefoxOptions(capabilities);
 			driver = new FirefoxDriver(firefoxOptions);
 			driver.manage().window().maximize();
