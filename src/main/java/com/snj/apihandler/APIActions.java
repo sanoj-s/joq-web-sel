@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Map;
 
 import com.snj.exception.AutomationException;
+import com.snj.utils.AutomationConstants;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -30,6 +31,34 @@ public class APIActions {
 		try {
 			response = RestAssured.given().baseUri(baseURI).queryParams(queryParams).body(body).contentType(contentType)
 					.log().all().when().post(endPointPath).andReturn();
+			System.out.println("==========================================================");
+			System.out.println("Execution completed successfully");
+		} catch (Exception e) {
+			throw new AutomationException(e.getMessage());
+		}
+		return response;
+	}
+
+	/**
+	 * Perform HTTP Post request with body data as JSON file
+	 * 
+	 * @author sanojs
+	 * @since 14-07-2022
+	 * @param baseURI
+	 * @param endPointPath
+	 * @param queryParams
+	 * @param payloadFileName
+	 * @return
+	 * @throws AutomationException
+	 */
+	public Response postRequest(String baseURI, String contentType, Map<String, String> queryParams,
+			String payloadFileName, String endPointPath) throws AutomationException {
+		Response response = null;
+		try {
+			String payloadPath = System.getProperty("user.dir") + AutomationConstants.API_REQUEST_PAYLOAD
+					+ payloadFileName + ".json";
+			response = RestAssured.given().baseUri(baseURI).queryParams(queryParams).body(new File(payloadPath))
+					.contentType(contentType).log().all().when().post(endPointPath).andReturn();
 			System.out.println("==========================================================");
 			System.out.println("Execution completed successfully");
 		} catch (Exception e) {
