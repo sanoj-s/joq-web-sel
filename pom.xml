@@ -22,13 +22,18 @@
 		<testng-version>7.6.1</testng-version>
 		<extentreports-version>5.0.9</extentreports-version>
 		<apache-poi-version>4.1.2</apache-poi-version>
+		<hamcrest-all-version>1.3</hamcrest-all-version>
+		<javax-mail-version>1.6.2</javax-mail-version>
+		<mysql-connector-version>8.0.17</mysql-connector-version>
+		<sql-connector-version>4.0.2206.100</sql-connector-version>
+		<json-path-assert-version>2.2.0</json-path-assert-version>
+		<json-path-version>2.4.0</json-path-version>
+		<json-simple-version>1.1.1</json-simple-version>
+		<jsonassert-version>1.5.1</jsonassert-version>
+		<commons-io-version>2.6</commons-io-version>
+		<opencsv-version>5.1</opencsv-version>
 	</properties>
 	<dependencies>
-		<dependency>
-			<groupId>org.testng</groupId>
-			<artifactId>testng</artifactId>
-			<version>${testng-version}</version>
-		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
@@ -55,24 +60,19 @@
 			<version>${restassured-version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-all</artifactId>
-			<version>1.3</version>
-		</dependency>
-		<dependency>
-			<groupId>com.jayway.jsonpath</groupId>
-			<artifactId>json-path-assert</artifactId>
-			<version>2.2.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.jayway.jsonpath</groupId>
-			<artifactId>json-path</artifactId>
-			<version>2.4.0</version>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>${testng-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.aventstack</groupId>
 			<artifactId>extentreports</artifactId>
 			<version>${extentreports-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-all</artifactId>
+			<version>${hamcrest-all-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.poi</groupId>
@@ -92,37 +92,47 @@
 		<dependency>
 			<groupId>com.sun.mail</groupId>
 			<artifactId>javax.mail</artifactId>
-			<version>1.6.2</version>
+			<version>${javax-mail-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.17</version>
+			<version>${mysql-connector-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.hynnet</groupId>
 			<artifactId>sqljdbc4-chs</artifactId>
-			<version>4.0.2206.100</version>
+			<version>${sql-connector-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path-assert</artifactId>
+			<version>${json-path-assert-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+			<version>${json-path-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.json-simple</groupId>
 			<artifactId>json-simple</artifactId>
-			<version>1.1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.6</version>
-		</dependency>
-		<dependency>
-			<groupId>com.opencsv</groupId>
-			<artifactId>opencsv</artifactId>
-			<version>5.1</version>
+			<version>${json-simple-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.skyscreamer</groupId>
 			<artifactId>jsonassert</artifactId>
-			<version>1.5.1</version>
+			<version>${jsonassert-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons-io-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>${opencsv-version}</version>
 		</dependency>
 	</dependencies>
 </project>
