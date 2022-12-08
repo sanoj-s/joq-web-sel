@@ -25,8 +25,6 @@ import com.snj.data.PropertyDataHandler;
 import com.snj.exception.AutomationException;
 import com.snj.utils.AutomationConstants;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-
 public class AutomationEngine {
 
 	public WebDriver driver;
@@ -177,7 +175,6 @@ public class AutomationEngine {
 			}
 			ChromeOptions options = new ChromeOptions();
 			options.setBinary(new File(pathToElectronApplication).getAbsolutePath());
-			WebDriverManager.chromedriver().setup();
 			driver = new ChromeDriver(options);
 		} catch (Exception e) {
 			throw new AutomationException(getExceptionMessage(), e);
@@ -215,7 +212,6 @@ public class AutomationEngine {
 	 */
 	private void startEdge() throws AutomationException {
 		try {
-			WebDriverManager.edgedriver().setup();
 			driver = new EdgeDriver();
 		} catch (Exception e) {
 			throw new AutomationException(getExceptionMessage(), e);
@@ -231,7 +227,6 @@ public class AutomationEngine {
 	 */
 	private void startInternetExplorer() throws AutomationException {
 		try {
-			WebDriverManager.iedriver().setup();
 			driver = new InternetExplorerDriver();
 			driver.manage().window().maximize();
 		} catch (Exception e) {
@@ -260,7 +255,6 @@ public class AutomationEngine {
 				options.addArguments("--disable-dev-shm-usage");
 				options.addArguments("--headless");
 			}
-			WebDriverManager.chromedriver().setup();
 			driver = new ChromeDriver(options);
 			driver.manage().window().maximize();
 		} catch (Exception e) {
@@ -278,7 +272,6 @@ public class AutomationEngine {
 	 */
 	private void startFirefox() throws AutomationException {
 		try {
-			WebDriverManager.firefoxdriver().setup();
 			DesiredCapabilities capabilities = new DesiredCapabilities();
 			capabilities.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
 			FirefoxOptions firefoxOptions = new FirefoxOptions(capabilities);
