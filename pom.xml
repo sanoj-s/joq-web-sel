@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>snj.selenium.java</groupId>
 	<artifactId>snj-selenium-java</artifactId>
-	<version>1.0.8</version>
+	<version>1.0.9</version>
 	<packaging>jar</packaging>
 
 	<name>selenium</name>
@@ -14,7 +14,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<selenium-version>4.7.0</selenium-version>
+		<selenium-version>4.7.2</selenium-version>
 		<axe-core-selenium-version>4.4.1</axe-core-selenium-version>
 		<restassured-version>4.4.0</restassured-version>
 		<testng-version>7.6.1</testng-version>
