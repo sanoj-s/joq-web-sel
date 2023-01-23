@@ -18,6 +18,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
@@ -40,6 +43,8 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 
 import com.snj.accessibilityhandler.AccessibilityHandler;
 import com.snj.base.AutomationEngine;
@@ -1392,4 +1397,76 @@ public class UtilityActions extends AutomationEngine {
 		}
 	}
 
+	/**
+	 * Read parameter value based on the given key name from the testng.xml file
+	 *
+	 * @author sanojs
+	 * @since 04/01/2023
+	 * @param keyName
+	 * @return
+	 */
+	public String getParameterValueFromTestNG(String keyName) {
+		String value = null;
+		try {
+			File fXmlFile = new File("./testng.xml");
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			dbFactory.setValidating(false);
+			dbFactory.setNamespaceAware(true);
+			dbFactory.setFeature("http://xml.org/sax/features/namespaces", false);
+			dbFactory.setFeature("http://xml.org/sax/features/validation", false);
+			dbFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+			dbFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(fXmlFile);
+			doc.getDocumentElement().normalize();
+			NodeList nList = doc.getElementsByTagName("parameter");
+			for (int temp = 0; temp < nList.getLength(); temp++) {
+				String name = nList.item(temp).getAttributes().getNamedItem("name").getTextContent();
+				if (name.equalsIgnoreCase(keyName)) {
+					value = nList.item(temp).getAttributes().getNamedItem("value").getTextContent();
+					break;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return value;
+	}
+
+	/**
+	 * Read parameter value based on the given testng.xml file and key name
+	 *
+	 * @author sanojs
+	 * @since 04/01/2023
+	 * @param testngFilePath
+	 * @param keyName
+	 * @return
+	 */
+	public String getParameterValueFromTestNG(String testngFilePath, String keyName) {
+		String value = null;
+		try {
+			File fXmlFile = new File(testngFilePath).getAbsoluteFile();
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			dbFactory.setValidating(false);
+			dbFactory.setNamespaceAware(true);
+			dbFactory.setFeature("http://xml.org/sax/features/namespaces", false);
+			dbFactory.setFeature("http://xml.org/sax/features/validation", false);
+			dbFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+			dbFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(fXmlFile);
+			doc.getDocumentElement().normalize();
+			NodeList nList = doc.getElementsByTagName("parameter");
+			for (int temp = 0; temp < nList.getLength(); temp++) {
+				String name = nList.item(temp).getAttributes().getNamedItem("name").getTextContent();
+				if (name.equalsIgnoreCase(keyName)) {
+					value = nList.item(temp).getAttributes().getNamedItem("value").getTextContent();
+					break;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return value;
+	}
 }
