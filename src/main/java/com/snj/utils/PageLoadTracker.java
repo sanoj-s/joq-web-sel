@@ -1,4 +1,4 @@
-package com.snj.action;
+package com.snj.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -94,16 +94,14 @@ public class PageLoadTracker {
 		if (!new File(System.getProperty("user.dir") + "\\Reports").exists()) {
 			(new File(System.getProperty("user.dir") + "\\Reports")).mkdir();
 		}
-		if (!new File(System.getProperty("user.dir") + "\\Reports\\Performance").exists()) {
-			(new File(System.getProperty("user.dir") + "\\Reports\\Performance")).mkdir();
+		if (!new File(System.getProperty("user.dir") + "\\Reports\\Performance_Audit").exists()) {
+			(new File(System.getProperty("user.dir") + "\\Reports\\Performance_Audit")).mkdir();
 		}
-		if (!new File(System.getProperty("user.dir") + "\\Reports\\Performance\\Summary").exists()) {
-			(new File(System.getProperty("user.dir") + "\\Reports\\Performance\\Summary")).mkdir();
-		}
+
 		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy_MM_dd");
 		LocalDateTime dateNow = LocalDateTime.now();
 		String dateValue = dateFormat.format(dateNow);
-		String filePath = System.getProperty("user.dir") + "\\Reports\\Performance\\Summary\\Performance_Test_Report_"
+		String filePath = System.getProperty("user.dir") + "\\Reports\\Performance_Audit\\Performance_Test_Report_"
 				+ reportName + "_" + dateValue + ".xlsx";
 
 		File excelFile = new File(filePath);

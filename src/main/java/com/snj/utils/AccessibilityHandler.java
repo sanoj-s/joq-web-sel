@@ -1,4 +1,4 @@
-package com.snj.accessibilityhandler;
+package com.snj.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,14 +43,14 @@ public class AccessibilityHandler {
 			if (!new File(System.getProperty("user.dir") + "\\Reports").exists()) {
 				(new File(System.getProperty("user.dir") + "\\Reports")).mkdir();
 			}
-			if (!new File(System.getProperty("user.dir") + "\\Reports\\Accessibility").exists()) {
-				(new File(System.getProperty("user.dir") + "\\Reports\\Accessibility")).mkdir();
+			if (!new File(System.getProperty("user.dir") + "\\Reports\\Accessibility_Audit").exists()) {
+				(new File(System.getProperty("user.dir") + "\\Reports\\Accessibility_Audit")).mkdir();
 			}
-			if (!new File(System.getProperty("user.dir") + "\\Reports\\Accessibility\\Summary").exists()) {
-				(new File(System.getProperty("user.dir") + "\\Reports\\Accessibility\\Summary")).mkdir();
+			if (!new File(System.getProperty("user.dir") + "\\Reports\\Accessibility_Audit\\Summary").exists()) {
+				(new File(System.getProperty("user.dir") + "\\Reports\\Accessibility_Audit\\Summary")).mkdir();
 			}
-			if (!new File(System.getProperty("user.dir") + "\\Reports\\Accessibility\\Details").exists()) {
-				(new File(System.getProperty("user.dir") + "\\Reports\\Accessibility\\Details")).mkdir();
+			if (!new File(System.getProperty("user.dir") + "\\Reports\\Accessibility_Audit\\Details").exists()) {
+				(new File(System.getProperty("user.dir") + "\\Reports\\Accessibility_Audit\\Details")).mkdir();
 			}
 
 			DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy_MM_dd");
@@ -58,7 +58,7 @@ public class AccessibilityHandler {
 			String dateValue = dateFormat.format(dateNow);
 			String sheetName = pageName + "_" + dateValue;
 			String filePath = System.getProperty("user.dir")
-					+ "\\Reports\\Accessibility\\Summary\\AccessibilityTestReport_" + dateValue + ".xlsx";
+					+ "\\Reports\\Accessibility_Audit\\Summary\\AccessibilityTestReport_" + dateValue + ".xlsx";
 			createExcelFile(filePath);
 			int j = 2;
 			for (int i = 0; i < violationResults.getViolations().size(); i++) {
@@ -70,10 +70,12 @@ public class AccessibilityHandler {
 				writeToExcel(filePath, sheetName, 6, j, violationResults.getViolations().get(i).getTags().toString());
 				j++;
 			}
-			AxeReporter.writeResultsToJsonFile(System.getProperty("user.dir") + "\\Reports\\Accessibility\\Details\\"
-					+ pageName + "_" + getCurrentDateAndTime(), violationResults);
-			AxeReporter.writeResultsToTextFile(System.getProperty("user.dir") + "\\Reports\\Accessibility\\Details\\"
-					+ pageName + "_" + getCurrentDateAndTime(), violationResults.getViolations());
+			AxeReporter.writeResultsToJsonFile(System.getProperty("user.dir")
+					+ "\\Reports\\Accessibility_Audit\\Details\\" + pageName + "_" + getCurrentDateAndTime(),
+					violationResults);
+			AxeReporter.writeResultsToTextFile(System.getProperty("user.dir")
+					+ "\\Reports\\Accessibility_Audit\\Details\\" + pageName + "_" + getCurrentDateAndTime(),
+					violationResults.getViolations());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
