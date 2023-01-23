@@ -46,11 +46,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-import com.snj.accessibilityhandler.AccessibilityHandler;
 import com.snj.base.AutomationEngine;
 import com.snj.data.PropertyDataHandler;
 import com.snj.exception.AutomationException;
+import com.snj.utils.AccessibilityHandler;
 import com.snj.utils.AutomationConstants;
+import com.snj.utils.PageLoadTracker;
+import com.snj.utils.ScreenRecording;
 
 public class UtilityActions extends AutomationEngine {
 
@@ -1113,6 +1115,38 @@ public class UtilityActions extends AutomationEngine {
 		try {
 			new PageLoadTracker().trackLoadTime(driver, expectedObject, expectedTime, pageNameOrFlow, reportName);
 		} catch (Exception e) {
+		}
+	}
+
+	/**
+	 * Start video recording and store it in Automation_Videos folder inside Reports
+	 * folder
+	 * 
+	 * @author sanojs
+	 * @since 23-01-2023
+	 * @param testcaseName
+	 * @throws AutomationException
+	 */
+	public void startRecording(String testcaseName) throws AutomationException {
+		try {
+			ScreenRecording.startVideoRecording(testcaseName);
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage() + "\n" + AutomationConstants.CAUSE + e.getMessage());
+		}
+	}
+
+	/**
+	 * Stop video recording
+	 * 
+	 * @author sanojs
+	 * @since 23-01-2023
+	 * @throws AutomationException
+	 */
+	public void stopRecording() throws AutomationException {
+		try {
+			ScreenRecording.stopVideoRecording();
+		} catch (Exception e) {
+			throw new AutomationException(getExceptionMessage() + "\n" + AutomationConstants.CAUSE + e.getMessage());
 		}
 	}
 

@@ -30,6 +30,7 @@
 		<jsonassert-version>1.5.1</jsonassert-version>
 		<commons-io-version>2.6</commons-io-version>
 		<opencsv-version>5.1</opencsv-version>
+		<monte-screen-recorder-version>0.7.7.0</monte-screen-recorder-version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -121,6 +122,11 @@
 			<groupId>com.opencsv</groupId>
 			<artifactId>opencsv</artifactId>
 			<version>${opencsv-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.stephenc.monte</groupId>
+			<artifactId>monte-screen-recorder</artifactId>
+			<version>${monte-screen-recorder-version}</version>
 		</dependency>
 	</dependencies>
 </project>
