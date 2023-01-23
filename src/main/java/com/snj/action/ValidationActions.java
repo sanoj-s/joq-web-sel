@@ -1,21 +1,45 @@
 package com.snj.action;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
 import org.apache.commons.io.FileUtils;
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.hssf.util.HSSFColor.HSSFColorPredefined;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
@@ -1081,6 +1105,367 @@ public class ValidationActions extends AutomationEngine {
 		} catch (Exception lException) {
 			lException.printStackTrace();
 			throw new AutomationException(getExceptionMessage(), lException);
+		}
+	}
+
+	/**
+	 * Capture the current screen and compare it with expected image file
+	 * 
+	 * @author sanojs
+	 * @since 01-05-2023
+	 * @param driver
+	 * @param scenario
+	 * @param expectedImageFilePath
+	 * @param featureName
+	 * @throws AutomationException
+	 * 
+	 */
+	@SuppressWarnings("unused")
+	public String compareImages(WebDriver driver, String scenario, String expectedImageFilePath, String featureName)
+			throws AutomationException {
+		String matchpercentage = null;
+		try {
+			BufferedImage image;
+			int width = 0;
+			int height = 0;
+			int[][] clr;
+			BufferedImage images;
+			int widthe = 0;
+			int heighte = 0;
+			int[][] clre;
+			double start = System.currentTimeMillis();
+			utilityActionHelper.delay(5);
+
+			File outputfile;
+			try {
+				outputfile = ((TakesScreenshot) new Augmenter().augment(driver)).getScreenshotAs(OutputType.FILE);
+				if (!outputfile.canRead() || !outputfile.isFile()) {
+					throw new AutomationException(AutomationConstants.EXCEPTION_MESSAGE_FAILED_TO_GET_SCREEN);
+				}
+				image = ImageIO.read(outputfile);
+				width = image.getWidth(null);
+				height = image.getHeight(null);
+				clr = new int[width][height];
+			} catch (Exception e) {
+				throw new AutomationException(AutomationConstants.EXCEPTION_MESSAGE_FAILED_TO_GET_SCREEN);
+			}
+
+			try {
+				File inFile = new File(expectedImageFilePath).getAbsoluteFile();
+				if (!inFile.canRead() || !inFile.isFile()) {
+					throw new AutomationException(AutomationConstants.EXCEPTION_MESSAGE_INPUT_IMAGE_NOT_FOUND);
+				}
+				images = ImageIO.read(inFile);
+				widthe = images.getWidth(null);
+				heighte = images.getHeight(null);
+				clre = new int[widthe][heighte];
+			} catch (Exception e) {
+				throw new AutomationException(AutomationConstants.EXCEPTION_MESSAGE_INPUT_IMAGE_NOT_FOUND);
+			}
+
+			int smw = 0;
+			int smh = 0;
+			int p = 0;
+			// Calculating the smallest value among width and height
+			if (width > widthe) {
+				smw = widthe;
+			} else {
+				smw = width;
+			}
+			if (height > heighte) {
+				smh = heighte;
+			} else {
+				smh = height;
+			}
+			// Checking the number of pixels similarity
+			for (int a = 0; a < smw; a++) {
+				for (int b = 0; b < smh; b++) {
+					clre[a][b] = images.getRGB(a, b);
+					clr[a][b] = image.getRGB(a, b);
+					if (clr[a][b] == clre[a][b]) {
+						p = p + 1;
+					}
+				}
+			}
+			float w, h = 0;
+			if (width > widthe) {
+				w = width;
+			} else {
+				w = widthe;
+			}
+			if (height > heighte) {
+				h = height;
+			} else {
+				h = heighte;
+			}
+			float s = (smw * smh);
+			// Calculating the percentage
+			float x = (100 * p) / s;
+			matchpercentage = String.valueOf(new DecimalFormat("#").format(x)) + "%";
+
+			DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy_HH-mm-ss");
+			Date date = new Date();
+			String dateTime = dateFormat.format(date).toString();
+
+			double stop = System.currentTimeMillis();
+			String timeTakenForComparison = String.valueOf((stop - start) / 1000);
+
+			// Track the comparison details to the report
+			trackDetailsToReport(scenario, expectedImageFilePath.toString(), matchpercentage, timeTakenForComparison,
+					dateTime, featureName);
+
+		} catch (Exception lException) {
+			lException.printStackTrace();
+			throw new AutomationException(getExceptionMessage(), lException);
+
+		}
+		return matchpercentage;
+	}
+
+	/**
+	 * Compares two images that send by the user and will return the percentage
+	 * value for assertion
+	 * 
+	 * @author sanojs
+	 * @since 01-05-2023
+	 * @param expectedImage
+	 * @param actualImage
+	 * @throws AutomationException
+	 * 
+	 */
+	@SuppressWarnings("unused")
+	public String compareImages(String expectedImage, String actualImage) throws AutomationException {
+		String matchpercentage = null;
+		try {
+			BufferedImage image;
+			int width = 0;
+			int height = 0;
+			int[][] clr;
+			BufferedImage images;
+			int widthe = 0;
+			int heighte = 0;
+			int[][] clre;
+			File outFile;
+			try {
+				outFile = new File(actualImage).getAbsoluteFile();
+				;
+				if (!outFile.canRead() || !outFile.isFile()) {
+					throw new AutomationException(AutomationConstants.EXCEPTION_MESSAGE_OUTPUT_IMAGE_NOT_FOUND);
+				}
+				image = ImageIO.read(outFile);
+				width = image.getWidth(null);
+				height = image.getHeight(null);
+				clr = new int[width][height];
+			} catch (Exception e) {
+				throw (new AutomationException(AutomationConstants.EXCEPTION_MESSAGE_OUTPUT_IMAGE_NOT_FOUND));
+			}
+
+			File inFile;
+			try {
+				inFile = new File(expectedImage).getAbsoluteFile();
+				;
+				if (!inFile.canRead() || !inFile.isFile()) {
+					throw new AutomationException(AutomationConstants.EXCEPTION_MESSAGE_INPUT_IMAGE_NOT_FOUND);
+				}
+				images = ImageIO.read(inFile);
+				widthe = images.getWidth(null);
+				heighte = images.getHeight(null);
+				clre = new int[widthe][heighte];
+			} catch (Exception e) {
+				throw new AutomationException(AutomationConstants.EXCEPTION_MESSAGE_INPUT_IMAGE_NOT_FOUND);
+			}
+
+			int smw = 0;
+			int smh = 0;
+			int p = 0;
+			// Calculating the smallest value among width and height
+			if (width > widthe) {
+				smw = widthe;
+			} else {
+				smw = width;
+			}
+			if (height > heighte) {
+				smh = heighte;
+			} else {
+				smh = height;
+			}
+			// Checking the number of pixels similarity
+			for (int a = 0; a < smw; a++) {
+				for (int b = 0; b < smh; b++) {
+					clre[a][b] = images.getRGB(a, b);
+					clr[a][b] = image.getRGB(a, b);
+					if (clr[a][b] == clre[a][b]) {
+						p = p + 1;
+					}
+				}
+			}
+
+			float w, h = 0;
+			if (width > widthe) {
+				w = width;
+			} else {
+				w = widthe;
+			}
+			if (height > heighte) {
+				h = height;
+			} else {
+				h = heighte;
+			}
+			float s = (smw * smh);
+			// Calculating the percentage
+			float x = (100 * p) / s;
+			matchpercentage = String.valueOf(new DecimalFormat("#").format(x)) + "%";
+
+		} catch (Exception lException) {
+			lException.printStackTrace();
+			throw new AutomationException(getExceptionMessage(), lException);
+
+		}
+		return matchpercentage;
+	}
+
+	/**
+	 * Method to track the image comparison details and generate excel report
+	 * 
+	 * @since 12/01/2023
+	 * @param scenario
+	 * @param expectedImage
+	 * @param percentMatch
+	 * @param timeTakenForComparison
+	 * @param dateTime
+	 * @param featureName
+	 * @throws IOException
+	 */
+	private void trackDetailsToReport(String scenario, String expectedImage, String percentMatch,
+			String timeTakenForComparison, String dateTime, String featureName) throws IOException {
+
+		// Creating file object of existing excel file
+		if (!new File(System.getProperty("user.dir") + "\\Reports").exists()) {
+			(new File(System.getProperty("user.dir") + "\\Reports")).mkdir();
+		}
+		if (!new File(System.getProperty("user.dir") + "\\Reports\\Image_Comparision\\").exists()) {
+			new File(new File(System.getProperty("user.dir")), "\\Reports\\Image_Comparision\\").mkdirs();
+		}
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy_MM_dd");
+		LocalDateTime dateNow = LocalDateTime.now();
+		String dateValue = dateFormat.format(dateNow);
+		String filePath = System.getProperty("user.dir") + "\\Reports\\Image_Comparision\\Image_Comparision_Report_"
+				+ featureName + "_" + dateValue + ".xlsx";
+
+		File excelFile = new File(filePath);
+		OutputStream fileOut = null;
+		Sheet sheet;
+		File fileName;
+
+		Workbook wb = new XSSFWorkbook();
+		if (!excelFile.exists()) {
+			fileName = new File(filePath);
+			fileOut = new FileOutputStream(fileName);
+			sheet = wb.createSheet("Sheet1");
+
+			// Create headers and set style
+			Row header = sheet.createRow(0);
+			header.createCell(0).setCellValue("Scenario");
+			header.createCell(1).setCellValue("Expected Image");
+			header.createCell(2).setCellValue("% Match");
+			header.createCell(3).setCellValue("Time Taken for Comparison (in seconds)");
+			header.createCell(4).setCellValue("Date Time");
+			header.createCell(5).setCellValue("Status");
+			CellStyle style = wb.createCellStyle();
+			Font font = wb.createFont();
+			font.setFontHeightInPoints((short) 12);
+			font.setBold(true);
+			style.setFont(font);
+			style.setWrapText(true);
+			sheet.setColumnWidth(0, 70 * 256);
+			sheet.setColumnWidth(1, 50 * 256);
+			sheet.setColumnWidth(2, 15 * 256);
+			sheet.setColumnWidth(3, 25 * 256);
+			sheet.setColumnWidth(4, 15 * 256);
+			sheet.setColumnWidth(5, 10 * 256);
+			for (int j = 0; j <= 5; j++) {
+				header.getCell(j).setCellStyle(style);
+				CellStyle cellHeaderStyle = header.getCell(j).getCellStyle();
+				cellHeaderStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+				cellHeaderStyle.setAlignment(HorizontalAlignment.CENTER);
+				header.getCell(j).setCellStyle(cellHeaderStyle);
+			}
+			wb.write(fileOut);
+			System.out.println("Report has been created successfully.");
+		}
+		wb.close();
+
+		// New records to update in the report
+		Object[][] newdataLists = { { scenario, expectedImage, percentMatch, timeTakenForComparison, dateTime } };
+		try {
+			// Creating input stream
+			FileInputStream inputStream = new FileInputStream(filePath);
+
+			// Creating workbook from input stream
+			Workbook workbook = WorkbookFactory.create(inputStream);
+
+			// Reading first sheet of excel file
+			sheet = workbook.getSheetAt(0);
+
+			// Getting the count of existing records
+			int rowCount = sheet.getLastRowNum();
+
+			// Iterating new data to update
+			for (Object[] data : newdataLists) {
+
+				// Creating new row from the next row count
+				Row row = sheet.createRow(++rowCount);
+
+				int columnCount = 0;
+
+				// Iterating data informations
+				for (Object info : data) {
+
+					// Creating new cell and setting the value
+					Cell cell = row.createCell(columnCount++);
+					if (info instanceof String) {
+						cell.setCellValue((String) info);
+					} else if (info instanceof Integer) {
+						cell.setCellValue((Integer) info);
+					}
+				}
+				// Setting the status and also setting the color style
+				for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+					CellStyle style = workbook.createCellStyle();
+					Font font = workbook.createFont();
+					font.setBold(true);
+					DataFormatter df = new DataFormatter();
+					String actualPercentage = df.formatCellValue(sheet.getRow(i).getCell(2));
+					Cell cell = row.createCell(5);
+					if (!actualPercentage.equals("100%")) {
+						font.setColor(HSSFColorPredefined.RED.getIndex());
+						style.setFont(font);
+						cell.setCellStyle(style);
+						cell.setCellValue((String) "FAIL");
+					} else {
+						font.setColor(HSSFColorPredefined.GREEN.getIndex());
+						style.setFont(font);
+						cell.setCellStyle(style);
+						cell.setCellValue((String) "PASS");
+					}
+				}
+			}
+			// Close input stream
+			inputStream.close();
+
+			// Crating output stream and writing the updated workbook
+			FileOutputStream os = new FileOutputStream(filePath);
+			workbook.write(os);
+
+			// Close the workbook and output stream
+			workbook.close();
+			os.close();
+
+			System.out.println("Report has been updated successfully.");
+
+		} catch (EncryptedDocumentException | IOException e) {
+			System.err.println("Exception while updating an existing report.");
+			e.printStackTrace();
 		}
 	}
 }

@@ -32,4 +32,8 @@ public class AutomationConstants {
 	public static final String EXCEPTIION_EXCEL_COLUMN_NAME = "Excel column with given name not found, check the name";
 	public static final String EXCEPTIION_EXCEL_PATH = "Give excel file path as argument";
 	public static final String EXCEPTIION_EXCEL_FILE = "Please provide excel file with .xlsx or .xls format";
+
+	public static final String EXCEPTION_MESSAGE_FAILED_TO_GET_SCREEN = "Failed to get current screen";
+	public static final String EXCEPTION_MESSAGE_INPUT_IMAGE_NOT_FOUND = "Specified expected image not found";
+	public static final String EXCEPTION_MESSAGE_OUTPUT_IMAGE_NOT_FOUND = "Specified actual image not found";
 }
