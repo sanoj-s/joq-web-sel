@@ -11,6 +11,8 @@ This is a test automation framework for web applications on different browsers l
 <br><li>Support for Lighthouse audit on website with different categories such as performance, accessibility, seo, best-practices, pwa. 
 <br><li>Support for accessibility testing on website to track the violations, violation impact, and help details to solve the violations.
 <br><li>Support to collect the page load time for better performance tracking of an application.
+<br><li>Support to generate the video report for the automation execution flow.
+<br><li>Support to compare the images and generate image comparison report. 
 <br><li>Support database validation.
 <br><li>Support API testing and response validation.
 <br><li>Support mock geolocation, simulate device mode, simulate network speed.
@@ -94,10 +96,16 @@ This is a test automation framework for web applications on different browsers l
 <br>`new UtilityActions().startLighthouseAudit(driver.getCurrentUrl(), "performance,seo", "no");`	
 
 **Perform Accessibility Testing**
-<br>This automation framework supports the accessibility testing on website to track the violations, violation impact, and help details to solve the violations. You can use **startAccessibilityAudit** keyword of the UtilityActions class in the test suite class to start the track violations. Once the execution is completed the framework will generate the accessibility test summary report in the **\Reports\Accessibility\Summary** folder of the project structure. In addition to the summary report, there are detailed text and JSON reports will generate in the **\Reports\Accessibility\Details** folder of the project structure.
+<br>This automation framework supports the accessibility testing on website to track the violations, violation impact, and help details to solve the violations. You can use **startAccessibilityAudit** keyword of the UtilityActions class in the test suite class to start the track violations. Once the execution is completed the framework will generate the accessibility test summary report in the **\Reports\Accessibility_Audit\Summary** folder of the project structure. In addition to the summary report, there are detailed text and JSON reports will generate in the **\Reports\Accessibility_Audit\Details** folder of the project structure.
 
 **Collect Page Load Performance**
-<br>This automation framework support to collect the page load time for a better performance tracking of an application. You can use **collectLoadTime** keyword of the UtilityActions class in the test suite class to collect the page load time. Once the execution is completed the framework will generate the performance test summary report in the **\Reports\Performance\Summary** folder of the project structure. 
+<br>This automation framework support to collect the page load time for a better performance tracking of an application. You can use **collectLoadTime** keyword of the UtilityActions class in the test suite class to collect the page load time. Once the execution is completed the framework will generate the performance test summary report in the **\Reports\Performance_Audit** folder of the project structure. 
+
+**Image Comparison**
+<br>This automation framework support to compare the actual image against the expected image at runtime. You can use **compareImages** keyword of the ValidationActions class in the test suite class to compare the images. Once the execution is completed the framework will generate the image comparison report in the **\Reports\Image_Comparision** folder of the project structure. More details at https://journeyofquality.com/2023/01/13/image-comparison-during-automation/ 
+
+**Video Recording**
+<br>This automation framework support to generate the video recording of the automation workflow. You can use **startRecording** keyword of the UtilityActions class in the test suite class to start the recording and stop the recording by using the keyword **stopRecording** of the UtilityActions. Once the execution is completed the framework will generate the video report in the **\Reports\Automation_Videos** folder of the project structure. 
 
 I hope this automation framework will help to kickstart your automation scripting from the base level.	
 	
