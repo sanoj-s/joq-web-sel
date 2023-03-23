@@ -23,8 +23,8 @@ This is a test automation framework for web applications on different browsers l
 **Steps to develop and execute automation scripts using snj-selenium-java**
 <br><li>Set up Java, Eclipse/IntelliJ IDEA and dependent softwares.
 <br><li>Import the **snj-selenium-java** framework into Eclipse/IntelliJ IDEA from this repository (master).	
-<br><li>Configure details in **automation_framework_config** and **email_config** properties files inside the src/main/resources of the framework. 	
-<br><li>Configure details in **automation_test_config** and **database_config** properties files inside the src/test/resources of the framework. 
+<br><li>Configure details in **framework_config** property file inside the src/main/resources of the framework. 	
+<br><li>Configure details in **email_config**,**automation_test_config** and **database_config** properties files inside the src/test/resources of the framework. 
 <br><li>Manage TestRunner class inside the **snj.selenium.runner** package	
 <br><li>Manage Test Suite Class inside the **snj.selenium.testcases** package and Test Helper class inside **snj.selenium.testhelpers** package.
 <br><li>Manage Test Object Class inside the **snj.selenium.testobjects** package.
