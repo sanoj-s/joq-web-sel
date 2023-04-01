@@ -19,12 +19,12 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import com.snj.base.AutomationEngine;
-import com.snj.data.PropertyDataHandler;
 import com.snj.exception.AutomationException;
+import com.snj.keywords.DataHandler;
 
 public class AutomationMail extends AutomationEngine {
 
-	PropertyDataHandler propertyObj = new PropertyDataHandler();
+	DataHandler propertyObj = new DataHandler();
 
 	/**
 	 * Send the execution report to the recipients list mentioned in the

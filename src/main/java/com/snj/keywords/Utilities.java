@@ -1,4 +1,4 @@
-package com.snj.action;
+package com.snj.keywords;
 
 import static org.openqa.selenium.support.locators.RelativeLocator.with;
 
@@ -35,10 +35,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chromium.ChromiumDriver;
 import org.openqa.selenium.devtools.DevTools;
-import org.openqa.selenium.devtools.v108.network.Network;
-import org.openqa.selenium.devtools.v108.network.model.ConnectionType;
-import org.openqa.selenium.devtools.v108.network.model.Headers;
+import org.openqa.selenium.devtools.v109.network.Network;
+import org.openqa.selenium.devtools.v109.network.model.ConnectionType;
+import org.openqa.selenium.devtools.v109.network.model.Headers;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -47,14 +48,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 import com.snj.base.AutomationEngine;
-import com.snj.data.PropertyDataHandler;
 import com.snj.exception.AutomationException;
 import com.snj.utils.AccessibilityHandler;
 import com.snj.utils.AutomationConstants;
 import com.snj.utils.PageLoadTracker;
 import com.snj.utils.ScreenRecording;
 
-public class UtilityActions extends AutomationEngine {
+public class Utilities extends AutomationEngine {
 
 	public WebDriverWait wait;
 	public Random random;
@@ -71,7 +71,7 @@ public class UtilityActions extends AutomationEngine {
 	 */
 	public WebElement getWebElement(WebDriver driver, String elementName) throws AutomationException {
 		WebElement element = null;
-		PropertyDataHandler objProertyData = new PropertyDataHandler();
+		DataHandler objProertyData = new DataHandler();
 		try {
 			long timeout = Long.parseLong(objProertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG,
 					AutomationConstants.SHORT_LOADING));
@@ -98,7 +98,7 @@ public class UtilityActions extends AutomationEngine {
 	 */
 	public WebElement getWebElement(WebDriver driver, By elementLocator) throws AutomationException {
 		WebElement element = null;
-		PropertyDataHandler objProertyData = new PropertyDataHandler();
+		DataHandler objProertyData = new DataHandler();
 		try {
 			long timeout = Long.parseLong(
 					objProertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
@@ -198,7 +198,7 @@ public class UtilityActions extends AutomationEngine {
 	 */
 	public boolean waitForElement(WebDriver driver, String elementName) throws AutomationException {
 		boolean isElementVisible = false;
-		PropertyDataHandler objPropertyData = new PropertyDataHandler();
+		DataHandler objPropertyData = new DataHandler();
 		try {
 			long timeout = Long.parseLong(
 					objPropertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
@@ -247,7 +247,7 @@ public class UtilityActions extends AutomationEngine {
 	 */
 	public boolean waitForElementInVisible(WebDriver driver, String elementName) throws AutomationException {
 		boolean isElementInVisible = false;
-		PropertyDataHandler objPropertyData = new PropertyDataHandler();
+		DataHandler objPropertyData = new DataHandler();
 		try {
 			long timeout = Long.parseLong(
 					objPropertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
@@ -273,7 +273,7 @@ public class UtilityActions extends AutomationEngine {
 	public boolean waitForTextPresent(WebDriver driver, String elementName, String expectedText)
 			throws AutomationException {
 		boolean isTextPresent = false;
-		PropertyDataHandler objPropertyData = new PropertyDataHandler();
+		DataHandler objPropertyData = new DataHandler();
 		try {
 			long timeout = Long.parseLong(
 					objPropertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
@@ -299,7 +299,7 @@ public class UtilityActions extends AutomationEngine {
 	 */
 	public List<WebElement> waitForElements(WebDriver driver, String elementName) throws AutomationException {
 		List<WebElement> elements;
-		PropertyDataHandler objProertyData = new PropertyDataHandler();
+		DataHandler objProertyData = new DataHandler();
 		try {
 			if (elementName != null) {
 				long timeout = Long.parseLong(
@@ -332,8 +332,8 @@ public class UtilityActions extends AutomationEngine {
 					return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
 				}
 			};
-			long timeout = Long.parseLong(new PropertyDataHandler()
-					.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, AutomationConstants.SHORT_LOADING));
+			long timeout = Long.parseLong(new DataHandler().getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG,
+					AutomationConstants.SHORT_LOADING));
 			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
 			wait.until(pageLoadCondition);
 		} catch (Exception e) {
@@ -346,9 +346,7 @@ public class UtilityActions extends AutomationEngine {
 	 * 
 	 * @author sanojs
 	 * @since 20-04-2021
-	 * @param driver
 	 * @param delayInSeconds
-	 * @param doubleValue
 	 * @throws AutomationException
 	 */
 	public void delay(int delayInSeconds) throws AutomationException {
@@ -366,7 +364,6 @@ public class UtilityActions extends AutomationEngine {
 	 * @since 20-04-2021
 	 * @param driver
 	 * @param delayInSeconds
-	 * @param doubleValue
 	 * @throws AutomationException
 	 */
 	public void delay(WebDriver driver, int delayInSeconds) throws AutomationException {
@@ -388,8 +385,8 @@ public class UtilityActions extends AutomationEngine {
 	public long getLongWaitingTime() throws AutomationException {
 		long timeout;
 		try {
-			timeout = Long.parseLong(new PropertyDataHandler()
-					.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, AutomationConstants.LONG_LOADING));
+			timeout = Long.parseLong(new DataHandler().getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG,
+					AutomationConstants.LONG_LOADING));
 		} catch (Exception e) {
 			throw new AutomationException(getExceptionMessage(), e);
 		}
@@ -407,8 +404,8 @@ public class UtilityActions extends AutomationEngine {
 	public long getShortWaitingTime() throws AutomationException {
 		long timeout;
 		try {
-			timeout = Long.parseLong(new PropertyDataHandler()
-					.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, AutomationConstants.SHORT_LOADING));
+			timeout = Long.parseLong(new DataHandler().getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG,
+					AutomationConstants.SHORT_LOADING));
 		} catch (Exception e) {
 			throw new AutomationException(getExceptionMessage(), e);
 		}
@@ -609,7 +606,7 @@ public class UtilityActions extends AutomationEngine {
 
 		try {
 			Robot robot = new Robot();
-			new UtilityActions().delay(2);
+			new Utilities().delay(2);
 			while (x <= numberOfTimes) {
 				// Simulate a mouse click
 				robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
@@ -618,7 +615,7 @@ public class UtilityActions extends AutomationEngine {
 				// Simulate a key press
 				robot.keyPress(KeyEvent.VK_PAGE_UP);
 				robot.keyRelease(KeyEvent.VK_PAGE_UP);
-				new UtilityActions().delay(2);
+				new Utilities().delay(2);
 				x++;
 			}
 		} catch (AWTException e) {
@@ -644,7 +641,7 @@ public class UtilityActions extends AutomationEngine {
 
 		try {
 			Robot robot = new Robot();
-			new UtilityActions().delay(2);
+			new Utilities().delay(2);
 			while (x <= numberOfTimes) {
 				// Simulate a mouse click
 				robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
@@ -653,7 +650,7 @@ public class UtilityActions extends AutomationEngine {
 				// Simulate a key press
 				robot.keyPress(KeyEvent.VK_PAGE_DOWN);
 				robot.keyRelease(KeyEvent.VK_PAGE_DOWN);
-				new UtilityActions().delay(2);
+				new Utilities().delay(2);
 				x++;
 			}
 		} catch (AWTException e) {
@@ -824,6 +821,92 @@ public class UtilityActions extends AutomationEngine {
 	}
 
 	/**
+	 * Method deselect the selected value from the dropdown based on index passed
+	 * 
+	 * @author sanoj.swaminathan
+	 * @since 13-03-2021
+	 * @param driver
+	 * @param elementName
+	 * @param index
+	 * @throws AutomationException
+	 * 
+	 */
+	public void deselectElementByIndex(final WebDriver driver, final String elementName, final int index)
+			throws AutomationException {
+		try {
+			if (driver != null) {
+				WebElement element = getWebElement(driver, elementName);
+				if (element != null) {
+					final Select listbox = new Select(element);
+					listbox.deselectByIndex(index);
+				} else {
+					throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementName + "'");
+				}
+			}
+		} catch (final Exception lException) {
+			throw new AutomationException(getExceptionMessage(), lException);
+		}
+	}
+
+	/**
+	 * Method deselect the selected value from the dropdown based on Value passed
+	 * 
+	 * @author sanoj.swaminathan
+	 * @since 13-03-2021
+	 * @param driver
+	 * @param elementName
+	 * @param value
+	 * @throws AutomationException
+	 * 
+	 */
+
+	public void deselectElementByValue(final WebDriver driver, final String elementName, final String value)
+			throws AutomationException {
+		try {
+			if (driver != null) {
+				WebElement element = getWebElement(driver, elementName);
+				if (element != null) {
+					final Select listbox = new Select(element);
+					listbox.deselectByValue(value);
+				} else {
+					throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementName + "'");
+				}
+			}
+		} catch (final Exception lException) {
+			throw new AutomationException(getExceptionMessage(), lException);
+		}
+	}
+
+	/**
+	 * Method deselect the selected value from the dropdown based on visible text
+	 * 
+	 * @author sanoj.swaminathan
+	 * @since 13-03-2021
+	 * @param driver
+	 * @param elementName
+	 * @param visibleText
+	 * @throws AutomationException
+	 * 
+	 */
+
+	public void deselectElementByVisibleText(final WebDriver driver, final String elementName, final String visibleText)
+			throws AutomationException {
+		try {
+			if (driver != null) {
+				WebElement element = getWebElement(driver, elementName);
+				if (element != null) {
+					final Select listbox = new Select(element);
+					listbox.deselectByVisibleText(visibleText);
+				} else {
+					throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementName + "'");
+				}
+			}
+		} catch (final Exception lException) {
+			throw new AutomationException(getExceptionMessage(), lException);
+		}
+	}
+
+	/**
 	 * Release the pressed left mouse button at the current mouse location
 	 * 
 	 * @author sanojs
@@ -861,6 +944,30 @@ public class UtilityActions extends AutomationEngine {
 		} catch (Exception e) {
 			throw new AutomationException(getExceptionMessage(), e);
 		}
+	}
+
+	/**
+	 * To capture screenshot and returns a byte array
+	 * 
+	 * @author sanoj
+	 * @since 06-02-2023
+	 * @param driver
+	 * @return file
+	 * @throws AutomationException
+	 * 
+	 */
+
+	public byte[] takeScreenshotAsByteArray(final WebDriver driver) throws AutomationException {
+		byte[] file = null;
+		try {
+			if (driver != null) {
+				file = ((TakesScreenshot) new Augmenter().augment(driver)).getScreenshotAs(OutputType.BYTES);
+			}
+		} catch (final Exception lException) {
+			lException.printStackTrace();
+			throw new AutomationException(getExceptionMessage(), lException);
+		}
+		return file;
 	}
 
 	/**
@@ -1428,6 +1535,21 @@ public class UtilityActions extends AutomationEngine {
 			return longValue;
 		} catch (Exception e) {
 			throw new AutomationException(getExceptionMessage() + "\n" + AutomationConstants.CAUSE + e.getMessage());
+		}
+	}
+
+	/**
+	 * To delete a file
+	 * 
+	 * @author sanojs
+	 * @since 21-03-2023
+	 * @param filePath
+	 */
+	public void deleteFile(String filePath) {
+		try {
+			FileUtils.forceDelete(new File(filePath));
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

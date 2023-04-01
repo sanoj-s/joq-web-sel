@@ -1,4 +1,4 @@
-package com.snj.action;
+package com.snj.keywords;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -49,9 +49,9 @@ import com.snj.base.AutomationEngine;
 import com.snj.exception.AutomationException;
 import com.snj.utils.AutomationConstants;
 
-public class ValidationActions extends AutomationEngine {
+public class Validations extends AutomationEngine {
 
-	UtilityActions utilityActionHelper = new UtilityActions();
+	Utilities utilityActionHelper = new Utilities();
 
 	/**
 	 * Verify that the object is present and return true or false
@@ -194,7 +194,7 @@ public class ValidationActions extends AutomationEngine {
 		boolean elementVisible = false;
 		try {
 			WebElement element = utilityActionHelper.getWebElement(driver, elementName);
-			WebElement elementToDoAction = new UtilityActions().getRelativeElement(driver, tagName, direction, element);
+			WebElement elementToDoAction = new Utilities().getRelativeElement(driver, tagName, direction, element);
 			if (elementToDoAction.isDisplayed()) {
 				elementVisible = true;
 			} else {
@@ -223,7 +223,7 @@ public class ValidationActions extends AutomationEngine {
 		boolean elementVisible = false;
 		try {
 			WebElement element = utilityActionHelper.getWebElement(driver, elementName);
-			WebElement elementToDoAction = new UtilityActions().getRelativeElement(driver, tagName, direction, element);
+			WebElement elementToDoAction = new Utilities().getRelativeElement(driver, tagName, direction, element);
 			if (elementToDoAction.isDisplayed()) {
 				elementVisible = true;
 			} else {
@@ -324,7 +324,7 @@ public class ValidationActions extends AutomationEngine {
 		boolean elementVisible = false;
 		try {
 			WebElement element = utilityActionHelper.getWebElement(driver, elementName);
-			WebElement elementToDoAction = new UtilityActions().getRelativeElement(driver, tagName, direction, element);
+			WebElement elementToDoAction = new Utilities().getRelativeElement(driver, tagName, direction, element);
 			if (elementToDoAction.isEnabled()) {
 				elementVisible = true;
 			} else {
@@ -353,7 +353,7 @@ public class ValidationActions extends AutomationEngine {
 		boolean elementVisible = false;
 		try {
 			WebElement element = utilityActionHelper.getWebElement(driver, elementName);
-			WebElement elementToDoAction = new UtilityActions().getRelativeElement(driver, tagName, direction, element);
+			WebElement elementToDoAction = new Utilities().getRelativeElement(driver, tagName, direction, element);
 			if (elementToDoAction.isEnabled()) {
 				elementVisible = true;
 			} else {
@@ -455,7 +455,7 @@ public class ValidationActions extends AutomationEngine {
 		boolean elementVisible = false;
 		try {
 			WebElement element = utilityActionHelper.getWebElement(driver, elementName);
-			WebElement elementToDoAction = new UtilityActions().getRelativeElement(driver, tagName, direction, element);
+			WebElement elementToDoAction = new Utilities().getRelativeElement(driver, tagName, direction, element);
 			if (elementToDoAction.isSelected()) {
 				elementVisible = true;
 			} else {
@@ -484,7 +484,7 @@ public class ValidationActions extends AutomationEngine {
 		boolean elementVisible = false;
 		try {
 			WebElement element = utilityActionHelper.getWebElement(driver, elementName);
-			WebElement elementToDoAction = new UtilityActions().getRelativeElement(driver, tagName, direction, element);
+			WebElement elementToDoAction = new Utilities().getRelativeElement(driver, tagName, direction, element);
 			if (elementToDoAction.isSelected()) {
 				elementVisible = true;
 			} else {

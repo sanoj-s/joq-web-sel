@@ -1,4 +1,4 @@
-package com.snj.apihandler;
+package com.snj.keywords;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.hasJsonPath;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.isJson;

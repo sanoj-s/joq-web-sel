@@ -1,4 +1,4 @@
-package com.snj.action;
+package com.snj.keywords;
 
 import java.awt.Robot;
 import java.awt.Toolkit;
@@ -17,7 +17,7 @@ import com.snj.utils.AutomationConstants;
 
 public class WebActions extends AutomationEngine {
 
-	UtilityActions utilsObj = new UtilityActions();
+	Utilities utilsObj = new Utilities();
 
 	/**
 	 * Load the web application
@@ -387,7 +387,7 @@ public class WebActions extends AutomationEngine {
 	public void uploadFile(WebDriver driver, String elementName, String filePath) throws AutomationException {
 		try {
 			if (driver != null) {
-				WebElement element = new UtilityActions().getWebElement(driver, elementName);
+				WebElement element = new Utilities().getWebElement(driver, elementName);
 				if (element != null) {
 					String operatingSystem = System.getProperty("os.name");
 					Robot robot = new Robot();

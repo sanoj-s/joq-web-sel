@@ -1,4 +1,4 @@
-package com.snj.action;
+package com.snj.keywords;
 
 import java.awt.AWTException;
 import java.awt.Robot;
@@ -16,13 +16,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.snj.base.AutomationEngine;
-import com.snj.data.PropertyDataHandler;
 import com.snj.exception.AutomationException;
 import com.snj.utils.AutomationConstants;
 
 public class UIActions extends AutomationEngine {
 
-	UtilityActions utilityActionHelper = new UtilityActions();
+	Utilities utilityActionHelper = new Utilities();
 
 	/**
 	 * Click on an object
@@ -53,6 +52,8 @@ public class UIActions extends AutomationEngine {
 				System.out.println("==========================================================");
 				System.out.println("Successfully clicked on " + elementName);
 			} catch (Exception ex) {
+				System.out.println("==========================================================");
+				System.out.println("Failed to click on the " + elementName);
 				throw new AutomationException(getExceptionMessage(), ex);
 			}
 		}
@@ -74,8 +75,7 @@ public class UIActions extends AutomationEngine {
 		try {
 			if (elementName != null) {
 				WebElement element = utilityActionHelper.getWebElement(driver, elementName);
-				WebElement elementToDoAction = new UtilityActions().getRelativeElement(driver, tagName, direction,
-						element);
+				WebElement elementToDoAction = new Utilities().getRelativeElement(driver, tagName, direction, element);
 				elementToDoAction.click();
 				System.out.println("==========================================================");
 				System.out.println("Successfully clicked on " + elementToDoAction);
@@ -85,8 +85,7 @@ public class UIActions extends AutomationEngine {
 		} catch (Exception lException) {
 			try {
 				WebElement element = utilityActionHelper.getWebElement(driver, elementName);
-				WebElement elementToDoAction = new UtilityActions().getRelativeElement(driver, tagName, direction,
-						element);
+				WebElement elementToDoAction = new Utilities().getRelativeElement(driver, tagName, direction, element);
 				Actions builder = new Actions(driver);
 				Action action = builder.moveToElement(elementToDoAction).click().build();
 				action.perform();
@@ -171,7 +170,7 @@ public class UIActions extends AutomationEngine {
 	public void multiTap(WebDriver driver, String elementName, int clickCount) throws AutomationException {
 		try {
 			if (elementName != null) {
-				PropertyDataHandler propertyObj = new PropertyDataHandler();
+				DataHandler propertyObj = new DataHandler();
 				long timeout = Long.parseLong(
 						propertyObj.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
@@ -293,7 +292,7 @@ public class UIActions extends AutomationEngine {
 				Robot robot = new Robot();
 				robot.keyPress(KeyEvent.VK_TAB);
 				robot.keyRelease(KeyEvent.VK_TAB);
-				new UtilityActions().delay(2);
+				new Utilities().delay(2);
 			}
 		} catch (Exception lException) {
 			throw new AutomationException(getExceptionMessage(), lException);
@@ -380,6 +379,8 @@ public class UIActions extends AutomationEngine {
 				System.out.println("==========================================================");
 				System.out.println("Data " + typeValue + " successfully entered into " + elementName);
 			} catch (Exception ex) {
+				System.out.println("==========================================================");
+				System.out.println("Data " + typeValue + " failed to enter into " + elementName);
 				throw new AutomationException(getExceptionMessage(), ex);
 			}
 		}
@@ -401,7 +402,7 @@ public class UIActions extends AutomationEngine {
 				WebElement element = utilityActionHelper.getWebElement(driver, elementName);
 				element.sendKeys(typeValue);
 				System.out.println("==========================================================");
-				System.out.println("Data " + typeValue + " successfully entered into " + elementName);
+				System.out.println("Key " + typeValue.name() + " applied on " + elementName);
 			} else {
 				throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementName + "'");
 			}
@@ -427,8 +428,7 @@ public class UIActions extends AutomationEngine {
 		try {
 			if (elementName != null) {
 				final WebElement element = utilityActionHelper.getWebElement(driver, elementName);
-				WebElement elementToDoAction = new UtilityActions().getRelativeElement(driver, tagName, direction,
-						element);
+				WebElement elementToDoAction = new Utilities().getRelativeElement(driver, tagName, direction, element);
 				elementToDoAction.sendKeys(inputText);
 				System.out.println("==========================================================");
 				System.out.println("Data " + inputText + " successfully entered into " + elementToDoAction);
@@ -438,8 +438,7 @@ public class UIActions extends AutomationEngine {
 		} catch (final Exception lException) {
 			try {
 				WebElement element = utilityActionHelper.getWebElement(driver, elementName);
-				WebElement elementToDoAction = new UtilityActions().getRelativeElement(driver, tagName, direction,
-						element);
+				WebElement elementToDoAction = new Utilities().getRelativeElement(driver, tagName, direction, element);
 				JavascriptExecutor executor = (JavascriptExecutor) driver;
 				executor.executeScript("arguments[0]. value='" + inputText + "';", elementToDoAction);
 				System.out.println("==========================================================");

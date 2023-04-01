@@ -21,9 +21,9 @@ import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.aventstack.extentreports.reporter.configuration.ViewName;
-import com.snj.action.UtilityActions;
 import com.snj.base.AutomationEngine;
-import com.snj.data.PropertyDataHandler;
+import com.snj.keywords.DataHandler;
+import com.snj.keywords.Utilities;
 import com.snj.utils.AutomationConstants;
 import com.snj.utils.AutomationMail;
 
@@ -44,7 +44,7 @@ public class AutomationReport implements ITestListener {
 	 */
 	public void onStart(ITestContext testContext) {
 		try {
-			String testEnvironment = new PropertyDataHandler().getProperty(AutomationConstants.AUTOMATION_TEST_CONFIG,
+			String testEnvironment = new DataHandler().getProperty(AutomationConstants.AUTOMATION_TEST_CONFIG,
 					AutomationConstants.TEST_ENVIRONMENT);
 			if (testEnvironment.equalsIgnoreCase("")) {
 				testEnvironment = "QA";
@@ -60,15 +60,17 @@ public class AutomationReport implements ITestListener {
 
 			sparkReporter = new ExtentSparkReporter(
 					reportPath + "Automation/" + testEnvironment + "_Automation_Report_" + filePathdate + ".html")
-							.viewConfigurer().viewOrder().as(new ViewName[] { ViewName.DASHBOARD, ViewName.CATEGORY,
-									ViewName.TEST, ViewName.AUTHOR, ViewName.DEVICE, ViewName.EXCEPTION, ViewName.LOG })
-							.apply();
+					.viewConfigurer().viewOrder().as(new ViewName[] { ViewName.DASHBOARD, ViewName.CATEGORY,
+							ViewName.TEST, ViewName.AUTHOR, ViewName.DEVICE, ViewName.EXCEPTION, ViewName.LOG })
+					.apply();
 
 			XmlTest test = testContext.getCurrentXmlTest();
 			extent = new ExtentReports();
 			extent.attachReporter(sparkReporter);
 			extent.setSystemInfo("Operating System", System.getProperty("os.name"));
-			extent.setSystemInfo("Browser Name", test.getParameter("browserName").toString());
+			if (test.getParameter("browserName") != null) {
+				extent.setSystemInfo("Browser Name", test.getParameter("browserName").toString());
+			}
 			extent.setSystemInfo("Test Environment", testEnvironment);
 			extent.setSystemInfo("Host Name", InetAddress.getLocalHost().getHostName());
 			extent.setSystemInfo("IP address", InetAddress.getLocalHost().getHostAddress());
@@ -139,9 +141,10 @@ public class AutomationReport implements ITestListener {
 	public void onTestSuccess(ITestResult result) {
 		successCount++;
 		try {
-			test.log(Status.PASS, MarkupHelper.createLabel(result.getName() + " Test Case PASSED", ExtentColor.GREEN));
+			test.log(Status.PASS,
+					MarkupHelper.createLabel(result.getName() + " test case is passed", ExtentColor.GREEN));
 			System.out.println("********************************************");
-			System.out.println("TEST CASE: " + result.getName() + " IS PASS");
+			System.out.println("Test case: " + result.getName() + " is pass");
 			System.out.println("********************************************");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -159,17 +162,21 @@ public class AutomationReport implements ITestListener {
 	public void onTestFailure(ITestResult result) {
 		failureCount++;
 		try {
-			Object currentClass = result.getInstance();
-			WebDriver driver = ((AutomationEngine) currentClass).getDriver();
-
-			test.log(Status.FAIL, MarkupHelper.createLabel(result.getName() + " Test case FAILED due to below issues:",
-					ExtentColor.RED));
+			WebDriver driver = null;
+			test.log(Status.FAIL, MarkupHelper
+					.createLabel(result.getName() + " test case is failed due to below issues:", ExtentColor.RED));
 			test.fail(result.getThrowable());
-			test.fail("Please find the screenshot below");
-			test.addScreenCaptureFromPath(new UtilityActions().takeScreenshot(driver, result.getName()),
-					result.getName());
+			Object currentClass = result.getInstance();
+			try {
+				driver = ((AutomationEngine) currentClass).getDriver();
+			} catch (Exception e) {
+			}
+			if (driver != null) {
+				test.addScreenCaptureFromPath(new Utilities().takeScreenshot(driver, result.getName()),
+						result.getName());
+			}
 			System.out.println("********************************************");
-			System.out.println("TEST CASE: " + result.getName() + " IS FAIL");
+			System.out.println("Test case: " + result.getName() + " is failed");
 			System.out.println("********************************************");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -188,10 +195,10 @@ public class AutomationReport implements ITestListener {
 		skippedCount++;
 		try {
 			test.log(Status.SKIP,
-					MarkupHelper.createLabel(result.getName() + " Test Case SKIPPED", ExtentColor.ORANGE));
+					MarkupHelper.createLabel(result.getName() + " test case is skipped", ExtentColor.ORANGE));
 			test.skip(result.getThrowable());
 			System.out.println("********************************************");
-			System.out.println("TEST CASE: " + result.getName() + " IS SKIPPED");
+			System.out.println("Test case: " + result.getName() + " is skipped");
 			System.out.println("********************************************");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -208,13 +215,13 @@ public class AutomationReport implements ITestListener {
 	public void onFinish(ITestContext testContext) {
 		try {
 			extent.flush();
-			String testEnvironment = new PropertyDataHandler().getProperty(AutomationConstants.AUTOMATION_TEST_CONFIG,
+			String testEnvironment = new DataHandler().getProperty(AutomationConstants.AUTOMATION_TEST_CONFIG,
 					AutomationConstants.TEST_ENVIRONMENT);
 			if (testEnvironment.equalsIgnoreCase("")) {
 				testEnvironment = "QA";
 			}
-			String isMailReportNeed = new PropertyDataHandler()
-					.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "isMailReportNeed");
+			String isMailReportNeed = new DataHandler().getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG,
+					"isMailReportNeed");
 			if (isMailReportNeed.toLowerCase().equals("yes")) {
 				new AutomationMail().sendMailReport();
 			}

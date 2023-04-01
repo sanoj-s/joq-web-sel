@@ -21,8 +21,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
-import com.snj.data.PropertyDataHandler;
 import com.snj.exception.AutomationException;
+import com.snj.keywords.DataHandler;
 import com.snj.utils.AutomationConstants;
 
 public class AutomationEngine {
@@ -43,7 +43,7 @@ public class AutomationEngine {
 			throws AutomationException, InterruptedException {
 		switch (browserName.toLowerCase()) {
 		case "chrome":
-		case "headless":
+		case "headless-chrome":
 			if (!gridIP.equalsIgnoreCase("")) {
 				startExecutionInGrid(gridIP, gridPort, browserName);
 			} else {
@@ -52,10 +52,11 @@ public class AutomationEngine {
 			break;
 
 		case "firefox":
+		case "headless-firefox":
 			if (!gridIP.equalsIgnoreCase("")) {
 				startExecutionInGrid(gridIP, gridPort, browserName);
 			} else {
-				startFirefox();
+				startFirefox(browserName);
 			}
 			break;
 
@@ -167,8 +168,8 @@ public class AutomationEngine {
 	 */
 	private void startElectronApplication() throws AutomationException {
 		try {
-			String pathToElectronApplication = new PropertyDataHandler()
-					.getProperty(AutomationConstants.AUTOMATION_TEST_CONFIG, "electronApplicationPath");
+			String pathToElectronApplication = new DataHandler().getProperty(AutomationConstants.AUTOMATION_TEST_CONFIG,
+					"electronApplicationPath");
 			if ((pathToElectronApplication.equals("")) || (pathToElectronApplication.equalsIgnoreCase(null))) {
 				System.out.println(AutomationConstants.ELECTRON_APPLICATION_MISSING_ERROR_MESSAGE);
 				System.exit(0);
@@ -241,6 +242,7 @@ public class AutomationEngine {
 	 * @throws AutomationException
 	 * @since 13-04-2021
 	 * @modified 16-03-2021
+	 * @param browserName
 	 */
 	private void startChrome(String browserName) throws AutomationException {
 		try {
@@ -250,10 +252,10 @@ public class AutomationEngine {
 			prefs.put("credentials_enable_service", false);
 			prefs.put("profile.password_manager_enabled", false);
 			options.setExperimentalOption("prefs", prefs);
-			if (browserName.equalsIgnoreCase("headless")) {
+			if (browserName.equalsIgnoreCase("headless-chrome")) {
 				options.addArguments("--no-sandbox");
 				options.addArguments("--disable-dev-shm-usage");
-				options.addArguments("--headless");
+				options.addArguments("--headless=new");
 			}
 			driver = new ChromeDriver(options);
 			driver.manage().window().maximize();
@@ -269,12 +271,18 @@ public class AutomationEngine {
 	 * @throws AutomationException
 	 * @since 13-04-2021
 	 * @modified 16-03-2021
+	 * @param browserName
 	 */
-	private void startFirefox() throws AutomationException {
+	private void startFirefox(String browserName) throws AutomationException {
 		try {
 			DesiredCapabilities capabilities = new DesiredCapabilities();
 			capabilities.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
 			FirefoxOptions firefoxOptions = new FirefoxOptions(capabilities);
+			if (browserName.equalsIgnoreCase("headless-firefox")) {
+				firefoxOptions.addArguments("--no-sandbox");
+				firefoxOptions.addArguments("--disable-dev-shm-usage");
+				firefoxOptions.addArguments("--headless");
+			}
 			driver = new FirefoxDriver(firefoxOptions);
 			driver.manage().window().maximize();
 		} catch (Exception e) {
@@ -289,7 +297,7 @@ public class AutomationEngine {
 	 * @author sanojs
 	 * @since 13-04-2021
 	 */
-	public static String getExceptionMessage() {
+	public String getExceptionMessage() {
 		StringBuffer message = new StringBuffer();
 
 		try {

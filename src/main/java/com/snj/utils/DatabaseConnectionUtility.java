@@ -1,4 +1,4 @@
-package com.snj.dbhandler;
+package com.snj.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,14 +6,13 @@ import java.sql.Statement;
 import java.util.logging.Logger;
 
 import com.snj.base.AutomationEngine;
-import com.snj.data.PropertyDataHandler;
 import com.snj.exception.AutomationException;
-import com.snj.utils.AutomationConstants;
+import com.snj.keywords.DataHandler;
 
 public class DatabaseConnectionUtility extends AutomationEngine {
 
 	private static Logger log;
-	public String className, dbUrl, dbUsername, dbPassword;
+	public String dbUrl, dbUsername, dbPassword;
 	public Connection con = null;
 	public Statement stmt = null;
 
@@ -33,7 +32,7 @@ public class DatabaseConnectionUtility extends AutomationEngine {
 	 */
 	public Statement getConnectionStatement() throws AutomationException {
 		try {
-			PropertyDataHandler propHandler = new PropertyDataHandler();
+			DataHandler propHandler = new DataHandler();
 			dbUrl = propHandler.getProperty(AutomationConstants.DB_CONFIG, "dbUrl");
 			dbUsername = propHandler.getProperty(AutomationConstants.DB_CONFIG, "dbUsername");
 			dbPassword = propHandler.getProperty(AutomationConstants.DB_CONFIG, "dbPassword");

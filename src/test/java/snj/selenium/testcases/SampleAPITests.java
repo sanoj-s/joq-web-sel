@@ -7,10 +7,10 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-import com.snj.apihandler.APIActions;
-import com.snj.apihandler.APIUtilities;
-import com.snj.apihandler.APIValidations;
 import com.snj.exception.AutomationException;
+import com.snj.keywords.APIActions;
+import com.snj.keywords.APIUtilities;
+import com.snj.keywords.APIValidations;
 import com.snj.keywords.Validations;
 import com.snj.reporting.AutomationReport;
 
