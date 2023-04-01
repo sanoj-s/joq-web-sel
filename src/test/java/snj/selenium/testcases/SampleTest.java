@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 import com.snj.exception.AutomationException;
 import com.snj.keywords.UIActions;
 import com.snj.keywords.Utilities;
+import com.snj.keywords.Validations;
 import com.snj.keywords.WebActions;
 
 import snj.selenium.runner.TestRunner;
@@ -22,6 +23,7 @@ public class SampleTest extends TestRunner {
 		new Utilities().startRecording("Test");
 		new WebActions().loadWebApplication(driver, "https://www.google.com");
 		new UIActions().type(driver, SampleObjects.txt_searchbox, "JourneyOfQuality");
+		// new Validations().verifyEquals(value, "12", "Not Match");
 //		new ValidationActions().verifyEquals(new ValidationActions().compareImages("D:\\Test\\TestImage\\actual.png",
 //				"D:\\Test\\TestImage\\expected.png"), "100%", "Image doesn't match");
 //		System.out.println(new ValidationActions().compareImages(driver, "Validated google page",
@@ -36,8 +38,18 @@ public class SampleTest extends TestRunner {
 //		new UtilityActions().startAccessibilityAudit(driver, "Home");
 	}
 
+	@Test(enabled = true)
+	public void TC002_sampleTestCase() throws Exception {
+		new Utilities().startRecording("Test");
+		new WebActions().loadWebApplication(driver, "https://www.google.com");
+		new UIActions().type(driver, SampleObjects.txt_searchbox, "JourneyOfQuality");
+		String value = new Utilities().getElementText(driver, SampleObjects.txt_searchbox);
+		new Validations().verifyEquals(value, "12", "Not Match");
+
+	}
+
 	@Test(enabled = false)
-	public void TC002_sampleTestCase() throws AutomationException, IOException, InterruptedException {
+	public void TC003_sampleTestCase() throws AutomationException, IOException, InterruptedException {
 
 //		new UIActions().click(driver, "li", "left", SampleObjects.btn_book);
 //		new UIActions().click(driver, "li", "right", SampleObjects.btn_book1);

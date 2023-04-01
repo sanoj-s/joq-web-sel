@@ -88,7 +88,8 @@ public class AutomationMail extends AutomationEngine {
 
 			// adds only the latest Report file in attachments
 			MimeBodyPart attachPart = new MimeBodyPart();
-			attachPart.attachFile(lastFileModified(System.getProperty("user.dir") + "/Reports/"));
+			attachPart.attachFile(
+					lastFileModified(System.getProperty("user.dir") + AutomationConstants.EMAIL_REPORT_FOLDER));
 			multipart.addBodyPart(attachPart);
 
 			// sets the multi-part as e-mail’s content

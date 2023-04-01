@@ -933,17 +933,18 @@ public class Utilities extends AutomationEngine {
 	 * @throws AutomationException
 	 */
 	public String takeScreenshot(WebDriver driver, String fileName) throws AutomationException {
+		String destinationFilePath = null;
 		try {
 			TakesScreenshot screenShot = ((TakesScreenshot) driver);
 			File sourceFile = screenShot.getScreenshotAs(OutputType.FILE);
-			String destination = System.getProperty("user.dir") + "/screenshots/" + fileName + "_" + getCurrentDate()
-					+ "_" + "screenshot.jpg";
-			File destinationFile = new File(destination);
+			destinationFilePath = System.getProperty("user.dir") + "/Defect_Screenshot/" + fileName + "_"
+					+ getCurrentDate() + ".jpg";
+			File destinationFile = new File(destinationFilePath);
 			FileUtils.copyFile(sourceFile, destinationFile);
-			return destination;
 		} catch (Exception e) {
 			throw new AutomationException(getExceptionMessage(), e);
 		}
+		return destinationFilePath;
 	}
 
 	/**

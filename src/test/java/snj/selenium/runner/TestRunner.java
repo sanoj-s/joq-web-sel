@@ -5,9 +5,9 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Parameters;
 
-import com.snj.action.WebActions;
 import com.snj.base.AutomationEngine;
 import com.snj.exception.AutomationException;
+import com.snj.keywords.WebActions;
 import com.snj.reporting.AutomationReport;
 
 @Listeners(AutomationReport.class)

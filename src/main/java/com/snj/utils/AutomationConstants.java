@@ -3,11 +3,15 @@ package com.snj.utils;
 public class AutomationConstants {
 	// =========> Generic
 	public static final String OBJECT_NOT_FOUND = "Unable to locate ";
+	public static final String PROJECT_NAME = "projectName";
 	public static final String TEST_ENVIRONMENT = "testEnvironment";
 	public static final String CAUSE = "Cause of the Exception : ";
 	public static final String URLCHECK_LIST_FILE = "//Links_Verification_Results//";
 	public static final String API_RESPONSE_DATA = "./src/test/resources/APITesting/ResponseData/";
 	public static final String API_REQUEST_PAYLOAD = "./src/test/resources/APITesting/RequestPayload/";
+	public static final String REPORT_FOLDER_HTML = "//Reports//Automation_Execution_Reports//HTML_Reports//";
+	public static final String REPORT_FOLDER_PDF = "//Reports//Automation_Execution_Reports//PDF_Reports";
+	public static final String EMAIL_REPORT_FOLDER = "//test-output//Email_Reports//";
 
 	// ==========> Configuration files and variables
 	public static final String AUTOMATION_FRAMEWORK_CONFIG = "framework_config";
@@ -17,6 +21,7 @@ public class AutomationConstants {
 	public static final String CSV_FILE_PATH = "csvFilePath";
 	public static final String LONG_LOADING = "LONG_LOADING";
 	public static final String SHORT_LOADING = "SHORT_LOADING";
+	public static final String NEED_MAIL_REPORT = "isMailReportNeed";
 
 	// ============> Exception Messages
 	public static final String CHECKBROWSER_MESSAGE = "Please check the browser name. Looks like the browser name is not valid";
@@ -35,8 +40,8 @@ public class AutomationConstants {
 	public static final String EXCEPTION_MESSAGE_FAILED_TO_GET_SCREEN = "Failed to get current screen";
 	public static final String EXCEPTION_MESSAGE_INPUT_IMAGE_NOT_FOUND = "Specified expected image not found";
 	public static final String EXCEPTION_MESSAGE_OUTPUT_IMAGE_NOT_FOUND = "Specified actual image not found";
-	
-	//==============> Automation Reporting
+
+	// ==============> Automation Reporting
 	public static final String APP_ICON_PATH = "SupportFiles/app_icon.png";
 	public static final String NOIMAGE_ICON_PATH = "SupportFiles/noImage.png";
 	public static final String EXCEPTION_MESSAGE_APP_ICON_FAILS = "You have not added app icon in the SupportFiles folder of src/main/resources, please specify it if you need an app icon in the test report\n";
@@ -53,10 +58,9 @@ public class AutomationConstants {
 	public static final String PASSED = "Passed";
 	public static final String FAILED = "Failed";
 	public static final String SKIPPED = "Skipped";
-	
+	public static final String TEST_ENVIRONMENTS = "Test Environment";
 	public static final String EXECUTION_ENVIRONMENTS = "Execution Environment";
 	public static final String PLATFORM_NAME = "Platform";
 	public static final String BROWSER_NAME = "Browser Name";
 	public static final String BROWSER_VERSION = "Browser Version";
-	public static final String REPORT_FOLDER_PDF = "//Reports//Automation_Execution_Reports//PDF_Reports//";
 }
