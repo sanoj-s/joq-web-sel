@@ -22,7 +22,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.snj.exception.AutomationException;
-import com.snj.keywords.Utilities;
 import com.snj.utils.AutomationConstants;
 import com.snj.utils.ResponseTimeTracker;
 

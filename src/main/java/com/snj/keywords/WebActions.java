@@ -22,7 +22,7 @@ public class WebActions extends AutomationEngine {
 	/**
 	 * Load the web application
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 16-04-2021
 	 * @param driver
 	 * @param webApplicationUrl
@@ -39,7 +39,7 @@ public class WebActions extends AutomationEngine {
 	/**
 	 * Navigate to the new web application URL
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 16-04-2021
 	 * @param driver
 	 * @param webApplicationUrl
@@ -56,7 +56,7 @@ public class WebActions extends AutomationEngine {
 	/**
 	 * Get the current web URL
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 16-04-2021
 	 * @param driver
 	 * @throws AutomationException
@@ -74,7 +74,7 @@ public class WebActions extends AutomationEngine {
 	/**
 	 * Get the title of the web page
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 16-04-2021
 	 * @param driver
 	 * @throws AutomationException
@@ -92,7 +92,7 @@ public class WebActions extends AutomationEngine {
 	/**
 	 * Navigate back to the previous web page
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 16-04-2021
 	 * @param driver
 	 * @throws AutomationException
@@ -109,7 +109,7 @@ public class WebActions extends AutomationEngine {
 	/**
 	 * Navigate forward to the next web page
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 16-04-2021
 	 * @param driver
 	 * @throws AutomationException
@@ -126,7 +126,7 @@ public class WebActions extends AutomationEngine {
 	/**
 	 * Refresh the web page
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 16-04-2021
 	 * @param driver
 	 * @throws AutomationException
@@ -143,7 +143,7 @@ public class WebActions extends AutomationEngine {
 	/**
 	 * Get the list of window handles
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 16-04-2021
 	 * @param driver
 	 * @throws AutomationException
@@ -161,7 +161,7 @@ public class WebActions extends AutomationEngine {
 	/**
 	 * Switch to browser tab
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 15-06-2021
 	 * @param driver
 	 * @param tabIndex
@@ -183,7 +183,7 @@ public class WebActions extends AutomationEngine {
 	/**
 	 * Switch to browser tab, then close it and switch back to parent tab
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 15-06-2021
 	 * @param driver
 	 * @param windowIndex
@@ -207,7 +207,7 @@ public class WebActions extends AutomationEngine {
 	/**
 	 * Switch to frame in the web page based on index
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 15-06-2021
 	 * @param driver
 	 * @param tabIndex
@@ -228,7 +228,7 @@ public class WebActions extends AutomationEngine {
 	/**
 	 * Switch to frame in the web page based on frame name or Id
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 15-06-2021
 	 * @param driver
 	 * @param frameNameOrId
@@ -250,7 +250,7 @@ public class WebActions extends AutomationEngine {
 	 * Switch to frame in the web page based on WebElement, you can use
 	 * getWebElement() of UtilityActions to get the WebElement value
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 15-06-2021
 	 * @param driver
 	 * @param elementName
@@ -271,7 +271,7 @@ public class WebActions extends AutomationEngine {
 	/**
 	 * Switch out from the frame
 	 *
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 15-06-2021
 	 * @param driver
 	 * @throws AutomationException
@@ -291,7 +291,7 @@ public class WebActions extends AutomationEngine {
 	/**
 	 * Accept the browser alert
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 16-04-2021
 	 * @param driver
 	 * @throws AutomationException
@@ -308,7 +308,7 @@ public class WebActions extends AutomationEngine {
 	/**
 	 * Dismiss the browser alert
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 16-04-2021
 	 * @param driver
 	 * @throws AutomationException
@@ -326,7 +326,7 @@ public class WebActions extends AutomationEngine {
 	/**
 	 * Get the text or label from the browser alert
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 16-04-2021
 	 * @param driver
 	 * @throws AutomationException
@@ -345,7 +345,7 @@ public class WebActions extends AutomationEngine {
 	/**
 	 * Close the browser window
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 16-04-2021
 	 * @param driver
 	 * @throws AutomationException
@@ -361,7 +361,7 @@ public class WebActions extends AutomationEngine {
 	/**
 	 * Quit the browser session
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 16-04-2021
 	 * @param driver
 	 * @throws AutomationException
@@ -377,7 +377,7 @@ public class WebActions extends AutomationEngine {
 	/**
 	 * Upload the file from your system to a web page
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 16-04-2021
 	 * @param driver
 	 * @param elementName
@@ -470,7 +470,7 @@ public class WebActions extends AutomationEngine {
 	/**
 	 * Get correct directory name to help upload file
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 16-04-2021
 	 * @param fileLocation
 	 * @throws AutomationException

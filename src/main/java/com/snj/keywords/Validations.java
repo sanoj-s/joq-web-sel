@@ -54,162 +54,35 @@ public class Validations extends AutomationEngine {
 	Utilities utilityActionHelper = new Utilities();
 
 	/**
-	 * Verify that the object is present and return true or false
+	 * Verify the visibility of an element on the page
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 15-04-2021
 	 * @param driver
 	 * @param elementName
 	 * @param messageOnFailure
-	 * @throws AutomationException
-	 */
-	public boolean verifyElementPresent(WebDriver driver, String elementName) throws AutomationException {
-		boolean elementPresent = false;
-		try {
-			int count = utilityActionHelper.waitForElements(driver, elementName).size();
-			if (count != 0) {
-				elementPresent = true;
-			} else {
-				elementPresent = false;
-			}
-		} catch (Exception e) {
-			elementPresent = false;
-		}
-		return elementPresent;
-	}
-
-	/**
-	 * Verify that the object is present
-	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param driver
-	 * @param elementName
-	 * @param messageOnFailure
-	 * @throws AutomationException
-	 */
-	public void verifyElementPresent(WebDriver driver, String elementName, String messageOnFailure)
-			throws AutomationException {
-		boolean elementPresent = false;
-		try {
-			int count = utilityActionHelper.waitForElements(driver, elementName).size();
-			if (count != 0) {
-				elementPresent = true;
-			} else {
-				elementPresent = false;
-			}
-			Assert.assertTrue(elementPresent, messageOnFailure);
-		} catch (Exception e) {
-			Assert.assertTrue(elementPresent, messageOnFailure);
-		}
-	}
-
-	/**
-	 * Verify that the object is not present
-	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param driver
-	 * @param elementName
-	 * @param messageOnFailure
-	 * @throws AutomationException
-	 */
-	public void verifyElementNotPresent(WebDriver driver, String elementName, String messageOnFailure)
-			throws AutomationException {
-		boolean elementNotPresent = false;
-		try {
-			int count = utilityActionHelper.waitForElements(driver, elementName).size();
-			if (count != 0) {
-				elementNotPresent = true;
-			} else {
-				elementNotPresent = false;
-			}
-			Assert.assertFalse(elementNotPresent, messageOnFailure);
-		} catch (Exception e) {
-			Assert.assertFalse(elementNotPresent, messageOnFailure);
-		}
-	}
-
-	/**
-	 * Verify that the object is visible and return true or false
-	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param driver
-	 * @param elementName
-	 * @throws AutomationException
-	 */
-	public boolean verifyElementVisible(WebDriver driver, String elementName) throws AutomationException {
-		boolean elementVisible = false;
-		try {
-			if (utilityActionHelper.getWebElement(driver, elementName).isDisplayed()) {
-				elementVisible = true;
-			} else {
-				elementVisible = false;
-			}
-		} catch (Exception e) {
-			elementVisible = false;
-		}
-		return elementVisible;
-	}
-
-	/**
-	 * Verify that the object is visible
-	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param driver
-	 * @param elementName
 	 * @throws AutomationException
 	 */
 	public void verifyElementVisible(WebDriver driver, String elementName, String messageOnFailure)
 			throws AutomationException {
-		boolean elementVisible = false;
+		boolean isElementVisible = false;
 		try {
-			if (utilityActionHelper.getWebElement(driver, elementName).isDisplayed()) {
-				elementVisible = true;
+			int count = utilityActionHelper.waitForElements(driver, elementName).size();
+			if (count != 0) {
+				isElementVisible = true;
 			} else {
-				elementVisible = false;
+				isElementVisible = false;
 			}
-			Assert.assertTrue(elementVisible, messageOnFailure);
+			Assert.assertTrue(isElementVisible, messageOnFailure);
 		} catch (Exception e) {
-			Assert.assertTrue(elementVisible, messageOnFailure);
+			Assert.assertTrue(isElementVisible, messageOnFailure);
 		}
-	}
-
-	/**
-	 * Verify that the object is visible and return true or false based on
-	 * RelativeLocator direction
-	 * 
-	 * @author sanojs
-	 * @since 08-12-2021
-	 * @param driver
-	 * @param tagName
-	 * @param direction:  left, right, above, below, near
-	 * @param elementName
-	 * @throws AutomationException
-	 */
-	public boolean verifyElementVisible(WebDriver driver, String tagName, String direction, String elementName)
-			throws AutomationException {
-		boolean elementVisible = false;
-		try {
-			WebElement element = utilityActionHelper.getWebElement(driver, elementName);
-			WebElement elementToDoAction = new Utilities().getRelativeElement(driver, tagName, direction, element);
-			if (elementToDoAction.isDisplayed()) {
-				elementVisible = true;
-			} else {
-				elementVisible = false;
-			}
-		} catch (Exception e) {
-			elementVisible = false;
-		}
-		return elementVisible;
 	}
 
 	/**
 	 * Verify that the object is visible based on RelativeLocator direction
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 08-12-2021
 	 * @param driver
 	 * @param tagName
@@ -236,15 +109,65 @@ public class Validations extends AutomationEngine {
 	}
 
 	/**
-	 * Verify that the object is not visible
+	 * Verify the visibility of an element is not on the page
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
+	 * @since 15-04-2021
+	 * @param driver
+	 * @param elementName
+	 * @param messageOnFailure
+	 * @throws AutomationException
+	 */
+	public void verifyElementNotVisible(WebDriver driver, String elementName, String messageOnFailure)
+			throws AutomationException {
+		boolean elementNotPresent = false;
+		try {
+			int count = utilityActionHelper.waitForElements(driver, elementName).size();
+			if (count != 0) {
+				elementNotPresent = true;
+			} else {
+				elementNotPresent = false;
+			}
+			Assert.assertFalse(elementNotPresent, messageOnFailure);
+		} catch (Exception e) {
+			Assert.assertFalse(elementNotPresent, messageOnFailure);
+		}
+	}
+
+	/**
+	 * Verify that the the element is displayed on the page
+	 * 
+	 * @author sanoj.swaminathan
 	 * @since 15-04-2021
 	 * @param driver
 	 * @param elementName
 	 * @throws AutomationException
 	 */
-	public void verifyElementNotVisible(WebDriver driver, String elementName, String messageOnFailure)
+	public void verifyElementDisplayed(WebDriver driver, String elementName, String messageOnFailure)
+			throws AutomationException {
+		boolean elementVisible = false;
+		try {
+			if (utilityActionHelper.getWebElement(driver, elementName).isDisplayed()) {
+				elementVisible = true;
+			} else {
+				elementVisible = false;
+			}
+			Assert.assertTrue(elementVisible, messageOnFailure);
+		} catch (Exception e) {
+			Assert.assertTrue(elementVisible, messageOnFailure);
+		}
+	}
+
+	/**
+	 * Verify that the element is not displayed on the page
+	 * 
+	 * @author sanoj.swaminathan
+	 * @since 15-04-2021
+	 * @param driver
+	 * @param elementName
+	 * @throws AutomationException
+	 */
+	public void verifyElementNotDisplayed(WebDriver driver, String elementName, String messageOnFailure)
 			throws AutomationException {
 		boolean elementNotVisible = false;
 		try {
@@ -260,32 +183,9 @@ public class Validations extends AutomationEngine {
 	}
 
 	/**
-	 * Verify that the object is enabled and return true or false
+	 * Verify that the element is enabled
 	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param driver
-	 * @param elementName
-	 * @throws AutomationException
-	 */
-	public boolean verifyElementEnabled(WebDriver driver, String elementName) throws AutomationException {
-		boolean elementEnabled = false;
-		try {
-			if (utilityActionHelper.getWebElement(driver, elementName).isEnabled()) {
-				elementEnabled = true;
-			} else {
-				elementEnabled = false;
-			}
-		} catch (Exception e) {
-			elementEnabled = false;
-		}
-		return elementEnabled;
-	}
-
-	/**
-	 * Verify that the object is enabled
-	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 15-04-2021
 	 * @param driver
 	 * @param elementName
@@ -308,38 +208,9 @@ public class Validations extends AutomationEngine {
 	}
 
 	/**
-	 * Verify that the object is enabled and return true or false based on
-	 * RelativeLocator direction
-	 * 
-	 * @author sanojs
-	 * @since 08-12-2021
-	 * @param driver
-	 * @param tagName
-	 * @param direction:  left, right, above, below, near
-	 * @param elementName
-	 * @throws AutomationException
-	 */
-	public boolean verifyElementEnabled(WebDriver driver, String tagName, String direction, String elementName)
-			throws AutomationException {
-		boolean elementVisible = false;
-		try {
-			WebElement element = utilityActionHelper.getWebElement(driver, elementName);
-			WebElement elementToDoAction = new Utilities().getRelativeElement(driver, tagName, direction, element);
-			if (elementToDoAction.isEnabled()) {
-				elementVisible = true;
-			} else {
-				elementVisible = false;
-			}
-		} catch (Exception e) {
-			elementVisible = false;
-		}
-		return elementVisible;
-	}
-
-	/**
 	 * Verify that the object is enabled based on RelativeLocator direction
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 08-12-2021
 	 * @param driver
 	 * @param tagName
@@ -366,9 +237,9 @@ public class Validations extends AutomationEngine {
 	}
 
 	/**
-	 * Verify that the object is not enabled
+	 * Verify that the element is not enabled
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 15-04-2021
 	 * @param driver
 	 * @param elementName
@@ -391,32 +262,9 @@ public class Validations extends AutomationEngine {
 	}
 
 	/**
-	 * Verify that the object is selected and return true or false
+	 * Verify that the element is selected
 	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param driver
-	 * @param elementName
-	 * @throws AutomationException
-	 */
-	public boolean verifyElementSelected(WebDriver driver, String elementName) throws AutomationException {
-		boolean elementSelected = false;
-		try {
-			if (utilityActionHelper.getWebElement(driver, elementName).isSelected()) {
-				elementSelected = true;
-			} else {
-				elementSelected = false;
-			}
-		} catch (Exception e) {
-			elementSelected = false;
-		}
-		return elementSelected;
-	}
-
-	/**
-	 * Verify that the object is selected
-	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 15-04-2021
 	 * @param driver
 	 * @param elementName
@@ -439,38 +287,9 @@ public class Validations extends AutomationEngine {
 	}
 
 	/**
-	 * Verify that the object is selected and return true or false based on
-	 * RelativeLocator direction
-	 * 
-	 * @author sanojs
-	 * @since 08-12-2021
-	 * @param driver
-	 * @param tagName
-	 * @param direction:  left, right, above, below, near
-	 * @param elementName
-	 * @throws AutomationException
-	 */
-	public boolean verifyElementSelected(WebDriver driver, String tagName, String direction, String elementName)
-			throws AutomationException {
-		boolean elementVisible = false;
-		try {
-			WebElement element = utilityActionHelper.getWebElement(driver, elementName);
-			WebElement elementToDoAction = new Utilities().getRelativeElement(driver, tagName, direction, element);
-			if (elementToDoAction.isSelected()) {
-				elementVisible = true;
-			} else {
-				elementVisible = false;
-			}
-		} catch (Exception e) {
-			elementVisible = false;
-		}
-		return elementVisible;
-	}
-
-	/**
 	 * Verify that the object is selected based on RelativeLocator direction
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 08-12-2021
 	 * @param driver
 	 * @param tagName
@@ -497,9 +316,9 @@ public class Validations extends AutomationEngine {
 	}
 
 	/**
-	 * Verify that the object is not selected
+	 * Verify that the element is not selected
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 15-04-2021
 	 * @param driver
 	 * @param elementName
@@ -522,40 +341,9 @@ public class Validations extends AutomationEngine {
 	}
 
 	/**
-	 * Verify that the checkbox selected and return true or false
-	 * 
-	 * @author sanojs
-	 * @since 05/18/2021
-	 * @param driver
-	 * @param elementName
-	 * @return
-	 * @throws AutomationException
-	 */
-	public boolean verifyCheckboxSelected(WebDriver driver, String elementName) throws AutomationException {
-		boolean isCheckboxSelected = false;
-		try {
-			if (driver != null) {
-				WebElement element = utilityActionHelper.getWebElement(driver, elementName);
-				if (element != null) {
-					if (element.getAttribute("checked") != null) {
-						if (element.getAttribute("checked").equals("true")) {
-							isCheckboxSelected = true;
-						}
-					} else {
-						isCheckboxSelected = false;
-					}
-				}
-			}
-		} catch (Exception e) {
-			isCheckboxSelected = false;
-		}
-		return isCheckboxSelected;
-	}
-
-	/**
 	 * Verify that the checkbox selected
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 05/18/2021
 	 * @param driver
 	 * @param elementName
@@ -586,36 +374,9 @@ public class Validations extends AutomationEngine {
 	}
 
 	/**
-	 * Verify that text or label present and return true or false
+	 * Verify that the element text or label is visible
 	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param driver
-	 * @param elementName
-	 * @param expectedText
-	 * @throws AutomationException
-	 */
-	public boolean verifyElementText(WebDriver driver, String elementName, String expectedText)
-			throws AutomationException {
-		boolean textVerified = false;
-		try {
-			WebElement element = utilityActionHelper.getWebElement(driver, elementName);
-			String actualText = element.getText();
-			if (actualText.contentEquals(expectedText)) {
-				textVerified = true;
-			} else {
-				textVerified = false;
-			}
-		} catch (Exception e) {
-			textVerified = false;
-		}
-		return textVerified;
-	}
-
-	/**
-	 * Verify that text or label present
-	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 15-04-2021
 	 * @param driver
 	 * @param elementName
@@ -641,43 +402,16 @@ public class Validations extends AutomationEngine {
 	}
 
 	/**
-	 * Verify that the object contains text or label and return true or false
+	 * Verify that the element contains text or label
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 15-04-2021
 	 * @param driver
 	 * @param elementName
 	 * @param expectedText
 	 * @throws AutomationException
 	 */
-	public boolean verifyElementContainsText(WebDriver driver, String elementName, String expectedText)
-			throws AutomationException {
-		boolean textContains = false;
-		try {
-			WebElement element = utilityActionHelper.getWebElement(driver, elementName);
-			String actualText = element.getText();
-			if (actualText.contains(expectedText)) {
-				textContains = true;
-			} else {
-				textContains = false;
-			}
-		} catch (Exception e) {
-			textContains = false;
-		}
-		return textContains;
-	}
-
-	/**
-	 * Verify that the object contains text or label
-	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param driver
-	 * @param elementName
-	 * @param expectedText
-	 * @throws AutomationException
-	 */
-	public void verifyElementContainsText(WebDriver driver, String elementName, String expectedText,
+	public void verifyElementTextContains(WebDriver driver, String elementName, String expectedText,
 			String messageOnFailure) throws AutomationException {
 		boolean textContains = false;
 		try {
@@ -695,38 +429,9 @@ public class Validations extends AutomationEngine {
 	}
 
 	/**
-	 * Verify that the object attribute has text or label present and return true or
-	 * false
+	 * Verify that the element attribute has text or label visible
 	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param driver
-	 * @param elementName
-	 * @param attributeName
-	 * @param expectedText
-	 * @throws AutomationException
-	 */
-	public boolean verifyElementAttributeHasText(WebDriver driver, String elementName, String attributeName,
-			String expectedText) throws AutomationException {
-		boolean textVerified = false;
-		try {
-			WebElement element = utilityActionHelper.getWebElement(driver, elementName);
-			String actualAttributeValue = element.getAttribute(attributeName);
-			if (actualAttributeValue.contentEquals(expectedText)) {
-				textVerified = true;
-			} else {
-				textVerified = false;
-			}
-		} catch (Exception e) {
-			textVerified = false;
-		}
-		return textVerified;
-	}
-
-	/**
-	 * Verify that the object attribute has text or label present
-	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 15-04-2021
 	 * @param driver
 	 * @param elementName
@@ -753,9 +458,9 @@ public class Validations extends AutomationEngine {
 	}
 
 	/**
-	 * Verify that the URL contains text or label and return true or false
+	 * Verify that the URL contains text or label
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 15-04-2021
 	 * @param driver
 	 * @param expectedText
@@ -781,12 +486,12 @@ public class Validations extends AutomationEngine {
 	/**
 	 * To compare and verify the JSON files
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 10-10-2022
 	 * @param expectedJSONPath
 	 * @param actualJSONPath
 	 */
-	public void verifyJSONContent(String expectedJSONPath, String actualJSONPath) {
+	public void verifyJSONFileContent(String expectedJSONPath, String actualJSONPath) {
 		try {
 			String expectedJson = FileUtils.readFileToString(new File(expectedJSONPath), "utf-8");
 			String actualJson = FileUtils.readFileToString(new File(actualJSONPath), "utf-8");
@@ -797,10 +502,37 @@ public class Validations extends AutomationEngine {
 	}
 
 	/**
+	 * Verify the file downloaded or not
+	 * 
+	 * @author sanoj.swaminathan
+	 * @since 19-08-2022
+	 * @param downloadPath
+	 * @param fileName
+	 * @param messageOnFailure
+	 * @return
+	 */
+	public void verifyFileUpload(String downloadPath, String fileName, String messageOnFailure) {
+		boolean isFileUploaded = false;
+		try {
+			File dir = new File(downloadPath);
+			File[] dirContents = dir.listFiles();
+			for (int i = 0; i < dirContents.length; i++) {
+				if (dirContents[i].getName().contains(fileName)) {
+					dirContents[i].delete();
+					isFileUploaded = true;
+					Assert.assertTrue(isFileUploaded, messageOnFailure);
+				}
+			}
+		} catch (Exception e) {
+			Assert.assertTrue(isFileUploaded, messageOnFailure);
+		}
+	}
+
+	/**
 	 * Test broken links in a web page. To achieve, users must be in the web page to
 	 * be tested and call this method
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 16-04-2021
 	 * @param driver
 	 * @throws AutomationException
@@ -970,69 +702,10 @@ public class Validations extends AutomationEngine {
 	}
 
 	/**
-	 * Verify the file downloaded or not
-	 * 
-	 * @author sanojs
-	 * @since 19-08-2022
-	 * @param downloadPath
-	 * @param fileName
-	 * @return
-	 */
-	public boolean isFileDownloaded(String downloadPath, String fileName) {
-		File dir = new File(downloadPath);
-		File[] dirContents = dir.listFiles();
-		for (int i = 0; i < dirContents.length; i++) {
-			if (dirContents[i].getName().contains(fileName)) {
-				dirContents[i].delete();
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Verify boolean condition is working as expected or not, based on that it will
-	 * show the message that given as parameter
-	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param condition
-	 * @param messageOnFailure
-	 * @throws AutomationException
-	 */
-	public void verifyTrue(boolean condition, String messageOnFailure) throws AutomationException {
-		try {
-			Assert.assertTrue((boolean) condition, (String) messageOnFailure);
-		} catch (Exception lException) {
-			lException.printStackTrace();
-			throw new AutomationException(getExceptionMessage(), lException);
-		}
-	}
-
-	/**
-	 * Verify boolean condition is working as expected or not, based on that it will
-	 * show the message that given as parameter
-	 * 
-	 * @author sanojs
-	 * @since 15-04-2021
-	 * @param condition
-	 * @param messageOnFailure
-	 * @throws AutomationException
-	 */
-	public void verifyFalse(boolean condition, String messageOnFailure) throws AutomationException {
-		try {
-			Assert.assertFalse((boolean) condition, (String) messageOnFailure);
-		} catch (Exception lException) {
-			lException.printStackTrace();
-			throw new AutomationException(getExceptionMessage(), lException);
-		}
-	}
-
-	/**
 	 * Verify whether the actual and expected results are equal or not, based on
 	 * that it will show the message that given as parameter
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 15-04-2021
 	 * @param actual
 	 * @param expected
@@ -1052,7 +725,7 @@ public class Validations extends AutomationEngine {
 	 * Verify whether the actual and expected results are equal or not for boolean,
 	 * based on that it will show the message that given as parameter
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 15-04-2021
 	 * @param actual
 	 * @param expected
@@ -1072,7 +745,7 @@ public class Validations extends AutomationEngine {
 	 * Verify whether the actual and expected results are not equal or not for
 	 * String, based on that it will show the message that given as parameter
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 15-04-2021
 	 * @param actual
 	 * @param expected
@@ -1092,7 +765,7 @@ public class Validations extends AutomationEngine {
 	 * Verify whether the actual and expected results are equal or not for boolean,
 	 * based on that it will show the message that given as parameter
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 15-04-2021
 	 * @param actual
 	 * @param expected
@@ -1111,7 +784,7 @@ public class Validations extends AutomationEngine {
 	/**
 	 * Capture the current screen and compare it with expected image file
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 01-05-2023
 	 * @param driver
 	 * @param scenario
@@ -1226,7 +899,7 @@ public class Validations extends AutomationEngine {
 	 * Compares two images that send by the user and will return the percentage
 	 * value for assertion
 	 * 
-	 * @author sanojs
+	 * @author sanoj.swaminathan
 	 * @since 01-05-2023
 	 * @param expectedImage
 	 * @param actualImage

@@ -474,7 +474,7 @@ public class Utilities extends AutomationEngine {
 	}
 
 	/**
-	 * Get the y co-ordinate of the WebElement
+	 * Get the Y co-ordinate of the WebElement
 	 * 
 	 * @author sanojs
 	 * @since 16-04-2021
@@ -924,8 +924,8 @@ public class Utilities extends AutomationEngine {
 	}
 
 	/**
-	 * Take a screenshot of the current screen and store into screenshots folder in
-	 * the project structure
+	 * Take a screenshot of the current screen and store into Defect_Screenshot
+	 * folder in the project structure
 	 * 
 	 * @author sanojs
 	 * @since 16-04-2021
