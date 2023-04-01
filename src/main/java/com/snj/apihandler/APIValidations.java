@@ -8,11 +8,16 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.nullValue;
 import static org.testng.Assert.assertTrue;
 
+import java.io.File;
 import java.util.ArrayList;
 
+import org.apache.commons.io.FileUtils;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.testng.Assert;
 
 import com.snj.exception.AutomationException;
+import com.snj.utils.AutomationConstants;
 
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -119,6 +124,27 @@ public class APIValidations {
 	}
 
 	/**
+	 * Validate the actual JSON response against the expected JSON data from the
+	 * file
+	 * 
+	 * @author sanojs
+	 * @since 07-03-2023
+	 * @param responseJson
+	 * @param expectedJSONFileName
+	 */
+	public void validateJsonResponseMatch(Response responseJson, String expectedJSONFileName) {
+		try {
+			String expectedResponseDataPath = System.getProperty("user.dir") + AutomationConstants.API_RESPONSE_DATA
+					+ expectedJSONFileName + ".json";
+			String actualJson = responseJson.getBody().asString();
+			String expectedJson = FileUtils.readFileToString(new File(expectedResponseDataPath), "utf-8");
+			JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.STRICT);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
 	 * Validate JsonPath from the response
 	 * 
 	 * @author sanojs
@@ -164,7 +190,7 @@ public class APIValidations {
 	 * @author sanojs
 	 * @since 15-04-2021
 	 * @param responseData
-	 * @param jsonPath
+	 * @param jsonPath        like data.id
 	 * @param valueToValidate
 	 * @return
 	 */
@@ -185,7 +211,7 @@ public class APIValidations {
 	 * @author sanojs
 	 * @since 15-04-2021
 	 * @param responseData
-	 * @param jsonPath
+	 * @param jsonPath        like data.id
 	 * @param valueToValidate
 	 * @return
 	 */
@@ -206,7 +232,7 @@ public class APIValidations {
 	 * @author sanojs
 	 * @since 15-04-2021
 	 * @param responseData
-	 * @param jsonPath
+	 * @param jsonPath        like data.id
 	 * @param valueToValidate
 	 * @return
 	 */
@@ -215,6 +241,24 @@ public class APIValidations {
 			String responseBody = responseData.getBody().asString();
 			assertThat(responseBody, isJson(withJsonPath(jsonPath)));
 			assertThat(responseBody, hasJsonPath(jsonPath, nullValue()));
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	/**
+	 * Validate the empty response
+	 * 
+	 * @author sanojs
+	 * @since 07-03-2023
+	 * @param responseData
+	 * @return
+	 */
+	public boolean validateEmptyResponse(Response responseData) throws AutomationException {
+		try {
+			String responseBody = responseData.getBody().asString();
+			assertTrue(responseBody.equals("{}"), "Response data is not empty");
 			return true;
 		} catch (Exception e) {
 			return false;
