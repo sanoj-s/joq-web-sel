@@ -630,6 +630,227 @@ public class APIUtilities {
 	}
 
 	/**
+	 * Method to update the JSON Array node
+	 * 
+	 * @author sanoj.swaminathan
+	 * @since 12-04-2023
+	 * @param JSONFilePath
+	 * @param excelSheetName
+	 * @param columnName
+	 * @param parentObjectList
+	 * @param arrayNodeName
+	 * @return
+	 */
+	public String updateJSONArrayNode(String JSONFilePath, String excelSheetName, String columnName,
+			List<String> parentObjectList, String arrayNodeName) {
+		File file = new File(JSONFilePath);
+		ObjectMapper objectmapper = new ObjectMapper();
+		JsonNode parentNode = null;
+		String nodeColumnValue = null;
+		int sizeofParentObjectList;
+		try {
+			JsonNode jsonnode = objectmapper.readTree(file);
+			String excelPath = new DataHandler().getProperty(AutomationConstants.AUTOMATION_TEST_CONFIG,
+					"testDataAPIPath");
+			DataHandler dataHandler = new DataHandler(excelPath, excelSheetName);
+			int columnCount = dataHandler.getColCountFromExcel();
+			for (int i = 1; i <= columnCount; i++) {
+				String nodeColumnData = dataHandler.getDataFromExcel(1, i);
+				if (nodeColumnData.equals(columnName)) {
+					nodeColumnValue = dataHandler.getDataFromExcel(2, i);
+					break;
+				}
+			}
+			JsonNode json = new ObjectMapper().readTree(nodeColumnValue);
+			System.out.println("Array node to be added :" + json.toPrettyString());
+			String updateNodeValue = json.toPrettyString();
+			updateNodeValue.replace("[", "");
+			updateNodeValue.replace("]", "");
+			JsonNode jsp = new ObjectMapper().readTree(updateNodeValue);
+			System.out.println("Original JSON: " + jsonnode.toString());
+			if (parentObjectList == null) {
+				sizeofParentObjectList = 0;
+			} else {
+
+				sizeofParentObjectList = parentObjectList.size();
+			}
+			switch (sizeofParentObjectList) {
+			case 0:
+				parentNode = jsonnode;
+				break;
+			case 1:
+				parentNode = jsonnode.get(parentObjectList.get(0));
+				break;
+			case 2:
+				parentNode = jsonnode.get(parentObjectList.get(0)).get(parentObjectList.get(1));
+				break;
+			case 3:
+				parentNode = jsonnode.get(parentObjectList.get(0)).get(parentObjectList.get(1))
+						.get(parentObjectList.get(2));
+				break;
+			case 4:
+				parentNode = jsonnode.get(parentObjectList.get(0)).get(parentObjectList.get(1))
+						.get(parentObjectList.get(2)).get(parentObjectList.get(3));
+				break;
+			default:
+				break;
+			}
+			((ObjectNode) parentNode).set(arrayNodeName, jsp);
+			System.out.println("Updated JSON: " + jsonnode.toString());
+			try (FileWriter files = new FileWriter(JSONFilePath)) {
+				String json1 = objectmapper.writeValueAsString(jsonnode);
+				files.write(json1);
+				files.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return JSONFilePath;
+	}
+
+	/**
+	 * Method to update the JSON Array node with excel file path
+	 * 
+	 * @author sanoj.swaminathan
+	 * @since 12-04-2023
+	 * @param JSONFilePath
+	 * @param excelFilePath
+	 * @param excelSheetName
+	 * @param columnName
+	 * @param parentObjectList
+	 * @param arrayNodeName
+	 * @return
+	 */
+	public String updateJSONArrayNode(String JSONFilePath, String excelFilePath, String excelSheetName,
+			String columnName, List<String> parentObjectList, String arrayNodeName) {
+		File file = new File(JSONFilePath);
+		ObjectMapper objectmapper = new ObjectMapper();
+		JsonNode parentNode = null;
+		String nodeColumnValue = null;
+		int sizeofParentObjectList;
+		try {
+			JsonNode jsonnode = objectmapper.readTree(file);
+			DataHandler dataHandler = new DataHandler(excelFilePath, excelSheetName);
+			int columnCount = dataHandler.getColCountFromExcel();
+			for (int i = 1; i <= columnCount; i++) {
+				String nodeColumnData = dataHandler.getDataFromExcel(1, i);
+				if (nodeColumnData.equals(columnName)) {
+					nodeColumnValue = dataHandler.getDataFromExcel(2, i);
+					break;
+				}
+			}
+			JsonNode json = new ObjectMapper().readTree(nodeColumnValue);
+			System.out.println("Array node to be added :" + json.toPrettyString());
+			String updateNodeValue = json.toPrettyString();
+			updateNodeValue.replace("[", "");
+			updateNodeValue.replace("]", "");
+			JsonNode jsp = new ObjectMapper().readTree(updateNodeValue);
+			System.out.println("Original JSON: " + jsonnode.toString());
+			if (parentObjectList == null) {
+				sizeofParentObjectList = 0;
+			} else {
+
+				sizeofParentObjectList = parentObjectList.size();
+			}
+			switch (sizeofParentObjectList) {
+			case 0:
+				parentNode = jsonnode;
+				break;
+			case 1:
+				parentNode = jsonnode.get(parentObjectList.get(0));
+				break;
+			case 2:
+				parentNode = jsonnode.get(parentObjectList.get(0)).get(parentObjectList.get(1));
+				break;
+			case 3:
+				parentNode = jsonnode.get(parentObjectList.get(0)).get(parentObjectList.get(1))
+						.get(parentObjectList.get(2));
+				break;
+			case 4:
+				parentNode = jsonnode.get(parentObjectList.get(0)).get(parentObjectList.get(1))
+						.get(parentObjectList.get(2)).get(parentObjectList.get(3));
+				break;
+			default:
+				break;
+			}
+			((ObjectNode) parentNode).set(arrayNodeName, jsp);
+			System.out.println("Updated JSON: " + jsonnode.toString());
+			try (FileWriter files = new FileWriter(JSONFilePath)) {
+				String json1 = objectmapper.writeValueAsString(jsonnode);
+				files.write(json1);
+				files.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return JSONFilePath;
+	}
+
+	/**
+	 * Method to delete JSON array node
+	 * 
+	 * @author sanoj.swaminathan
+	 * @since 12-04-2023
+	 * @param JSONFilePath
+	 * @param parentObjectList
+	 * @param arrayNodeName
+	 * @return
+	 */
+	public String deleteJSONArrayNode(String JSONFilePath, List<String> parentObjectList, String arrayNodeName) {
+		File file = new File(JSONFilePath);
+		ObjectMapper objectmapper = new ObjectMapper();
+		JsonNode deleteNode = null;
+		int sizeofParentObjectList;
+		try {
+			JsonNode jsonnode = objectmapper.readTree(file);
+			System.out.println("Original JSON: " + jsonnode.toString());
+			if (parentObjectList == null) {
+				sizeofParentObjectList = 0;
+			} else {
+
+				sizeofParentObjectList = parentObjectList.size();
+			}
+			switch (sizeofParentObjectList) {
+			case 0:
+				deleteNode = jsonnode;
+				break;
+			case 1:
+				deleteNode = jsonnode.get(parentObjectList.get(0));
+				break;
+			case 2:
+				deleteNode = jsonnode.get(parentObjectList.get(0)).get(parentObjectList.get(1));
+				break;
+			case 3:
+				deleteNode = jsonnode.get(parentObjectList.get(0)).get(parentObjectList.get(1))
+						.get(parentObjectList.get(2));
+				break;
+			case 4:
+				deleteNode = jsonnode.get(parentObjectList.get(0)).get(parentObjectList.get(1))
+						.get(parentObjectList.get(2)).get(parentObjectList.get(3));
+				break;
+			default:
+				break;
+			}
+			((ObjectNode) deleteNode).remove(arrayNodeName);
+			System.out.println("Updated JSON: " + jsonnode.toString());
+			try (FileWriter files = new FileWriter(JSONFilePath)) {
+				String json = objectmapper.writeValueAsString(jsonnode);
+				files.write(json);
+				files.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return JSONFilePath;
+	}
+
+	/**
 	 * Method to get the JSON node value based on given JSON object list
 	 * 
 	 * @author sanoj.swaminathan
