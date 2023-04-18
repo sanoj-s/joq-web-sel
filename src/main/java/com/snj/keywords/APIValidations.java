@@ -6,7 +6,6 @@ import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.nullValue;
-import static org.testng.Assert.assertTrue;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -56,7 +55,7 @@ public class APIValidations {
 	public void validateResponseBody(Response response, String expectedValue) {
 		try {
 			String actualValue = response.then().extract().body().asPrettyString();
-			assertTrue(actualValue.equals(expectedValue), actualValue + " value not matches " + expectedValue);
+			Assert.assertTrue(actualValue.equals(expectedValue), actualValue + " value not matches " + expectedValue);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -74,7 +73,7 @@ public class APIValidations {
 	public void validateInResponseBody(Response response, String expectedValue) {
 		try {
 			String actualValue = response.then().extract().body().asPrettyString();
-			assertTrue(actualValue.contains(expectedValue), actualValue + " value not matches " + expectedValue);
+			Assert.assertTrue(actualValue.contains(expectedValue), actualValue + " value not matches " + expectedValue);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -92,7 +91,7 @@ public class APIValidations {
 	public void validateResponseData(Response response, String keyToValidate, String expectedValue) {
 		try {
 			String actualValue = response.then().extract().path(keyToValidate);
-			assertTrue(actualValue.equals(expectedValue), actualValue + " value not matches " + expectedValue);
+			Assert.assertTrue(actualValue.equals(expectedValue), actualValue + " value not matches " + expectedValue);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -119,7 +118,7 @@ public class APIValidations {
 		int dataSize = path.getInt(arrayName + ".size()");
 		for (int i = 0; i < dataSize; i++) {
 			String actualValue = path.get("" + arrayName + "[" + i + "]." + keyName + "");
-			assertTrue(actualValue.equals(expectedValue.get(i)));
+			Assert.assertTrue(actualValue.equals(expectedValue.get(i)));
 		}
 	}
 
@@ -258,7 +257,7 @@ public class APIValidations {
 	public boolean validateEmptyResponse(Response responseData) throws AutomationException {
 		try {
 			String responseBody = responseData.getBody().asString();
-			assertTrue(responseBody.equals("{}"), "Response data is not empty");
+			Assert.assertTrue(responseBody.equals("{}"), "Response data is not empty");
 			return true;
 		} catch (Exception e) {
 			return false;
