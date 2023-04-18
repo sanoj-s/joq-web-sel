@@ -20,7 +20,7 @@ public class SampleTest extends TestRunner {
 
 	@Test(enabled = true)
 	public void TC001_sampleTestCase() throws Exception {
-		new Utilities().startRecording("Test");
+		//new Utilities().startRecording("Test");
 		new WebActions().loadWebApplication(driver, "https://www.google.com");
 		new UIActions().type(driver, SampleObjects.txt_searchbox, "JourneyOfQuality");
 		// new Validations().verifyEquals(value, "12", "Not Match");
@@ -40,7 +40,7 @@ public class SampleTest extends TestRunner {
 
 	@Test(enabled = true)
 	public void TC002_sampleTestCase() throws Exception {
-		new Utilities().startRecording("Test");
+		//new Utilities().startRecording("Test");
 		new WebActions().loadWebApplication(driver, "https://www.google.com");
 		new UIActions().type(driver, SampleObjects.txt_searchbox, "JourneyOfQuality");
 		String value = new Utilities().getElementText(driver, SampleObjects.txt_searchbox);
