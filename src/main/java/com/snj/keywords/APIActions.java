@@ -3,6 +3,8 @@ package com.snj.keywords;
 import java.io.File;
 import java.util.Map;
 
+import org.apache.http.HttpHeaders;
+
 import com.snj.exception.AutomationException;
 import com.snj.utils.AutomationConstants;
 
@@ -23,11 +25,10 @@ public class APIActions {
 	 * @param contentType
 	 * @param queryParams
 	 * @param body
-	 * @return
-	 * @throws AutomationException
+	 * @return @
 	 */
 	public Response postRequest(String baseURI, String endPointPath, String contentType,
-			Map<String, String> queryParams, Map<String, String> body) throws AutomationException {
+			Map<String, String> queryParams, Map<String, String> body) {
 		Response response = null;
 		try {
 			response = RestAssured.given().baseUri(baseURI).queryParams(queryParams).body(body).contentType(contentType)
@@ -35,7 +36,7 @@ public class APIActions {
 			System.out.println("==========================================================");
 			System.out.println("Execution completed successfully");
 		} catch (Exception e) {
-			throw new AutomationException(e.getMessage());
+			e.printStackTrace();
 		}
 		return response;
 	}
@@ -50,11 +51,10 @@ public class APIActions {
 	 * @param contentType
 	 * @param queryParams
 	 * @param payloadFileName
-	 * @return
-	 * @throws AutomationException
+	 * @return @
 	 */
 	public Response postRequest(String baseURI, String endPointPath, String contentType,
-			Map<String, String> queryParams, String payloadFileName) throws AutomationException {
+			Map<String, String> queryParams, String payloadFileName) {
 		Response response = null;
 		try {
 			String payloadPath = System.getProperty("user.dir") + AutomationConstants.API_REQUEST_PAYLOAD
@@ -64,7 +64,7 @@ public class APIActions {
 			System.out.println("==========================================================");
 			System.out.println("Execution completed successfully");
 		} catch (Exception e) {
-			throw new AutomationException(e.getMessage());
+			e.printStackTrace();
 		}
 		return response;
 	}
@@ -80,18 +80,45 @@ public class APIActions {
 	 * @param endPointPath
 	 * @param payloadFileName
 	 * @param contentType
-	 * @return
-	 * @throws AutomationException
+	 * @return @
 	 */
 
-	public Response postRequest(String baseURI, String endPointPath, String payloadFileName, String contentType)
-			throws AutomationException {
+	public Response postRequest(String baseURI, String endPointPath, String payloadFileName, String contentType) {
 		Response response = null;
 		try {
 			String payloadPath = System.getProperty("user.dir") + AutomationConstants.API_REQUEST_PAYLOAD
 					+ payloadFileName + ".json";
 			response = RestAssured.given().baseUri(baseURI).body(new File(payloadPath).getAbsoluteFile())
 					.contentType(contentType).log().all().when().post(endPointPath).andReturn();
+			response.then().log().all().extract().response();
+			System.out.println("==========================================================");
+			System.out.println("Execution completed successfully");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		responseInString = response.asString();
+		return response;
+	}
+
+	/**
+	 * Perform HTTP Post request with direct body data.
+	 * 
+	 * @author sanoj.swaminathan
+	 * @since 15-03-2023
+	 * @param baseURI
+	 * @param endPointPath
+	 * @param requestBody
+	 * @param contentType
+	 * @return
+	 * @throws AutomationException
+	 */
+
+	public Response postRequestWithBody(String baseURI, String endPointPath, String requestBody, String contentType)
+			throws AutomationException {
+		Response response = null;
+		try {
+			response = RestAssured.given().baseUri(baseURI).body(requestBody).contentType(contentType).log().all()
+					.when().post(endPointPath).andReturn();
 			response.then().log().all().extract().response();
 			System.out.println("==========================================================");
 			System.out.println("Execution completed successfully");
@@ -103,7 +130,8 @@ public class APIActions {
 	}
 
 	/**
-	 * Perform HTTP Post request with body data from file.
+	 * Perform HTTP Post request with body data from file. You have to keep the JSON
+	 * body data file in /src/test/resources/APITesting/RequestPayload/
 	 * 
 	 * @author sanoj.swaminathan
 	 * @since 21-03-2023
@@ -111,12 +139,11 @@ public class APIActions {
 	 * @param endPointPath
 	 * @param payloadFilePath
 	 * @param contentType
-	 * @return
-	 * @throws AutomationException
+	 * @return @
 	 */
 
 	public Response postRequestWithPayloadPath(String baseURI, String endPointPath, String payloadFilePath,
-			String contentType) throws AutomationException {
+			String contentType) {
 		Response response = null;
 		try {
 			File payloadFile = new File(payloadFilePath);
@@ -126,7 +153,7 @@ public class APIActions {
 			System.out.println("==========================================================");
 			System.out.println("Execution completed successfully");
 		} catch (Exception e) {
-			throw new AutomationException(e.getMessage());
+			e.printStackTrace();
 		}
 		responseInString = response.asString();
 		return response;
@@ -139,17 +166,16 @@ public class APIActions {
 	 * @since 15-04-2021
 	 * @param baseURI
 	 * @param endPointPath
-	 * @return
-	 * @throws AutomationException
+	 * @return @
 	 */
-	public Response getRequest(String baseURI, String endPointPath) throws AutomationException {
+	public Response getRequest(String baseURI, String endPointPath) {
 		Response response = null;
 		try {
 			response = RestAssured.given().baseUri(baseURI).when().get(endPointPath);
 			System.out.println("===================================================");
 			System.out.println("Execution completed successfully");
 		} catch (Exception e) {
-			throw new AutomationException(e.getMessage());
+			e.printStackTrace();
 		}
 		return response;
 	}
@@ -162,11 +188,9 @@ public class APIActions {
 	 * @param baseURI
 	 * @param endPointPath
 	 * @param queryParams
-	 * @return
-	 * @throws AutomationException
+	 * @return @
 	 */
-	public Response getRequest(String baseURI, String endPointPath, Map<String, String> queryParams)
-			throws AutomationException {
+	public Response getRequest(String baseURI, String endPointPath, Map<String, String> queryParams) {
 		Response response = null;
 		try {
 			response = RestAssured.given().baseUri(baseURI).queryParams(queryParams).log().all().when()
@@ -175,7 +199,35 @@ public class APIActions {
 			System.out.println("Execution completed successfully");
 			response.then().log().all();
 		} catch (Exception e) {
-			throw new AutomationException(e.getMessage());
+			e.printStackTrace();
+		}
+		return response;
+	}
+
+	/**
+	 * Perform HTTP Get request with authorization token and path parameter
+	 * 
+	 * @author sanoj.swaminathan
+	 * @since 15-04-2021
+	 * @param baseURI
+	 * @param endPointPath
+	 * @param authenticationScheme
+	 * @param token
+	 * @param pathParamName
+	 * @param pathParamValue
+	 * @return @
+	 */
+
+	public Response getRequestWithAuthToken(String baseURI, String endPointPath, String authenticationScheme,
+			String token, String pathParamName, String pathParamValue) {
+		Response response = null;
+		try {
+			response = RestAssured.given().baseUri(baseURI).header("Authorization", authenticationScheme + " " + token)
+					.pathParam(pathParamName, pathParamValue).log().all().when().get(endPointPath);
+			System.out.println("==========================================================");
+			System.out.println("Execution completed successfully");
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return response;
 	}
@@ -187,23 +239,22 @@ public class APIActions {
 	 * @since 15-04-2021
 	 * @param baseURI
 	 * @param endPointPath
+	 * @param authenticationScheme
 	 * @param token
-	 * @param pathParamName
-	 * @param pathParamValue
-	 * @return
-	 * @throws AutomationException
+	 * @return @
 	 */
 
-	public Response getRequestWithAuthToken(String baseURI, String endPointPath, String token, String pathParamName,
-			String pathParamValue) throws AutomationException {
+	public Response getRequestWithAuthToken(String baseURI, String endPointPath, String authenticationScheme,
+			String token) {
 		Response response = null;
 		try {
-			response = RestAssured.given().baseUri(baseURI).header("Authorization", "Bearer " + token)
-					.pathParam(pathParamName, pathParamValue).log().all().when().get(endPointPath);
+			response = RestAssured.given().baseUri(baseURI)
+					.header(HttpHeaders.AUTHORIZATION, authenticationScheme + " " + token).when().get(endPointPath);
+
 			System.out.println("==========================================================");
 			System.out.println("Execution completed successfully");
 		} catch (Exception e) {
-			throw new AutomationException(e.getMessage());
+			e.printStackTrace();
 		}
 		return response;
 	}
@@ -217,11 +268,9 @@ public class APIActions {
 	 * @param endPointPath
 	 * @param payloadFileName
 	 * @param contentType
-	 * @return
-	 * @throws AutomationException
+	 * @return @
 	 */
-	public Response putRequest(String baseURI, String endPointPath, String payloadFileName, String contentType)
-			throws AutomationException {
+	public Response putRequest(String baseURI, String endPointPath, String payloadFileName, String contentType) {
 		Response response = null;
 		try {
 			String payloadPath = System.getProperty("user.dir") + AutomationConstants.API_REQUEST_PAYLOAD
@@ -231,7 +280,7 @@ public class APIActions {
 			System.out.println("==========================================================");
 			System.out.println("Execution completed successfully");
 		} catch (Exception e) {
-			throw new AutomationException(e.getMessage());
+			e.printStackTrace();
 		}
 		return response;
 	}
@@ -246,11 +295,10 @@ public class APIActions {
 	 * @param body
 	 * @param queryParams
 	 * @param contentType
-	 * @return
-	 * @throws AutomationException
+	 * @return @
 	 */
 	public Response putRequest(String baseURI, String endPointPath, Map<String, String> body,
-			Map<String, String> queryParams, String contentType) throws AutomationException {
+			Map<String, String> queryParams, String contentType) {
 		Response response = null;
 		try {
 			response = RestAssured.given().baseUri(baseURI).queryParams(queryParams).body(body).contentType(contentType)
@@ -259,7 +307,7 @@ public class APIActions {
 			System.out.println("Execution completed successfully");
 			response.then().log().all();
 		} catch (Exception e) {
-			throw new AutomationException(e.getMessage());
+			e.printStackTrace();
 		}
 		return response;
 	}
@@ -273,11 +321,9 @@ public class APIActions {
 	 * @param endPointPath
 	 * @param payloadFileName
 	 * @param contentType
-	 * @return
-	 * @throws AutomationException
+	 * @return @
 	 */
-	public Response patchRequest(String baseURI, String endPointPath, String payloadFileName, String contentType)
-			throws AutomationException {
+	public Response patchRequest(String baseURI, String endPointPath, String payloadFileName, String contentType) {
 		Response response = null;
 		try {
 			String payloadPath = System.getProperty("user.dir") + AutomationConstants.API_REQUEST_PAYLOAD
@@ -287,8 +333,69 @@ public class APIActions {
 			System.out.println("==========================================================");
 			System.out.println("Execution completed successfully");
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return response;
+	}
+
+	/**
+	 * Perform HTTP Patch request with direct body data.
+	 * 
+	 * @author sanoj.swaminathan
+	 * @since 15-03-2023
+	 * @param baseURI
+	 * @param endPointPath
+	 * @param requestBody
+	 * @param contentType
+	 * @return
+	 * @throws AutomationException
+	 */
+
+	public Response patchRequestWithBody(String baseURI, String endPointPath, String requestBody, String contentType)
+			throws AutomationException {
+		Response response = null;
+		try {
+			response = RestAssured.given().baseUri(baseURI).body(requestBody).contentType(contentType).log().all()
+					.when().patch(endPointPath).andReturn();
+			response.then().log().all().extract().response();
+			System.out.println("==========================================================");
+			System.out.println("Execution completed successfully");
+		} catch (Exception e) {
 			throw new AutomationException(e.getMessage());
 		}
+		responseInString = response.asString();
+		return response;
+	}
+
+	/**
+	 * Perform HTTP Patch request with direct body data with token.
+	 * 
+	 * @author sanoj.swaminathan
+	 * @since 15-03-2023
+	 * @param baseURI
+	 * @param endPointPath
+	 * @param requestBody
+	 * @param authenticationScheme
+	 * @param token
+	 * @param contentType
+	 * @return
+	 * @throws AutomationException
+	 */
+
+	public Response patchRequestWithBody(String baseURI, String endPointPath, String requestBody,
+			String authenticationScheme, String token, String contentType) throws AutomationException {
+		Response response = null;
+		try {
+			response = RestAssured.given().baseUri(baseURI)
+					.header(HttpHeaders.AUTHORIZATION, authenticationScheme + " " + token).body(requestBody)
+					.contentType(contentType).log().all().when().patch(endPointPath).andReturn();
+			response.then().log().all().extract().response();
+			System.out.println("==========================================================");
+			System.out.println("Execution completed successfully");
+		} catch (Exception e) {
+			throw new AutomationException(e.getMessage());
+		}
+		responseInString = response.asString();
 		return response;
 	}
 
@@ -302,11 +409,10 @@ public class APIActions {
 	 * @param body
 	 * @param queryParams
 	 * @param contentType
-	 * @return
-	 * @throws AutomationException
+	 * @return @
 	 */
 	public Response patchRequest(String baseURI, String endPointPath, Map<String, String> body,
-			Map<String, String> queryParams, String contentType) throws AutomationException {
+			Map<String, String> queryParams, String contentType) {
 		Response response = null;
 		try {
 			response = RestAssured.given().baseUri(baseURI).queryParams(queryParams).body(body).contentType(contentType)
@@ -315,7 +421,7 @@ public class APIActions {
 			System.out.println("Execution completed successfully");
 			response.then().log().all();
 		} catch (Exception e) {
-			throw new AutomationException(e.getMessage());
+			e.printStackTrace();
 		}
 		return response;
 	}
@@ -327,10 +433,9 @@ public class APIActions {
 	 * @since 15-04-2021
 	 * @param baseURI
 	 * @param endPointPath
-	 * @return
-	 * @throws AutomationException
+	 * @return @
 	 */
-	public Response deleteRequest(String baseURI, String endPointPath) throws AutomationException {
+	public Response deleteRequest(String baseURI, String endPointPath) {
 		Response response = null;
 		try {
 			response = RestAssured.given().baseUri(baseURI).log().all().when().delete(endPointPath).andReturn();
@@ -338,7 +443,7 @@ public class APIActions {
 			System.out.println("Execution completed successfully");
 			response.then().log().all();
 		} catch (Exception e) {
-			throw new AutomationException(e.getMessage());
+			e.printStackTrace();
 		}
 		return response;
 	}
@@ -351,11 +456,9 @@ public class APIActions {
 	 * @param baseURI
 	 * @param endPointPath
 	 * @param queryParams
-	 * @return
-	 * @throws AutomationException
+	 * @return @
 	 */
-	public Response deleteRequest(String baseURI, String endPointPath, Map<String, String> queryParams)
-			throws AutomationException {
+	public Response deleteRequest(String baseURI, String endPointPath, Map<String, String> queryParams) {
 		Response response = null;
 		try {
 			response = RestAssured.given().baseUri(baseURI).queryParams(queryParams).log().all().when()
@@ -364,7 +467,8 @@ public class APIActions {
 			System.out.println("Execution completed successfully");
 			response.then().log().all();
 		} catch (Exception e) {
-			throw new AutomationException(e.getMessage());
+			e.printStackTrace();
+			;
 		}
 		responseInString = response.asString();
 		return response;
