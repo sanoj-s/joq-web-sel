@@ -14,9 +14,9 @@ This is a test automation framework for web applications on different browsers l
 <br><li>Support to generate the video report for the automation execution flow.
 <br><li>Support to compare the images and generate image comparison report. 
 <br><li>Support database validation.
-<br><li>Support API testing and response validation.
+<br><li>Support API testing, generate response time report and response validation.
 <br><li>Support mock geolocation, simulate device mode, simulate network speed.
-<br><li>Good reporting - framework generates HTML report.  
+<br><li>Good reporting - framework generates PDF and HTML report.  
 <br><li>Email collaboration - send an email with details of automation execution and HTML attachment. 
 <br><li>Well defined keyword document, get from src/main/resources -> keywords folder of the project structure. 
 	
