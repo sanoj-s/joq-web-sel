@@ -100,9 +100,14 @@ public class APIUtilities {
 		} catch (Exception e) {
 			try {
 				JsonPath jsonPath = new JsonPath(responseData.asPrettyString());
-				jsonValue = new Utilities().convertIntToString(jsonPath.getInt(parameterName));
+				jsonValue = Integer.toString(jsonPath.getInt(parameterName));
 			} catch (Exception ex) {
-				System.out.println("Failed to get the value from the response");
+				try {
+					JsonPath jsonPath = new JsonPath(responseData.asPrettyString());
+					jsonValue = jsonPath.getString(parameterName);
+				} catch (Exception exception) {
+					System.out.println("Failed to get the value from the response");
+				}
 			}
 		}
 		return jsonValue;

@@ -41,6 +41,7 @@ import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
+import com.aventstack.extentreports.reporter.configuration.ViewName;
 import com.itextpdf.awt.DefaultFontMapper;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -161,7 +162,10 @@ public class AutomationReport implements ITestListener, IExecutionListener {
 			testExecutionEnvironment = dataHandler.getProperty(AutomationConstants.AUTOMATION_TEST_CONFIG,
 					AutomationConstants.TEST_ENVIRONMENT);
 			sparkReporter = new ExtentSparkReporter(System.getProperty("user.dir")
-					+ AutomationConstants.REPORT_FOLDER_HTML + currentTestNameWithDatehtml);
+					+ AutomationConstants.REPORT_FOLDER_HTML + currentTestNameWithDatehtml).viewConfigurer().viewOrder()
+					.as(new ViewName[] { ViewName.DASHBOARD, ViewName.CATEGORY, ViewName.TEST, ViewName.AUTHOR,
+							ViewName.DEVICE, ViewName.EXCEPTION, ViewName.LOG })
+					.apply();
 			XmlTest xmlTest = context.getCurrentXmlTest();
 			extent = new ExtentReports();
 			extent.attachReporter(sparkReporter);
