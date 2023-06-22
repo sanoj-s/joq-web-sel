@@ -2,7 +2,7 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Suite">
 	<test thread-count="5" name="Execution for Test Suites">
-		<parameter name="browserName" value="headless-chrome" />
+		<parameter name="browserName" value="chrome" />
 		<parameter name="gridIP" value="" />
 		<parameter name="gridPort" value="" />
 		<classes>

@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>snj.selenium.java</groupId>
 	<artifactId>snj-selenium-java</artifactId>
-	<version>1.1.0</version>
+	<version>1.1.1</version>
 	<packaging>jar</packaging>
 
 	<name>selenium</name>
@@ -14,10 +14,10 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<selenium-version>4.8.3</selenium-version>
+		<selenium-version>4.10.0</selenium-version>
 		<axe-core-selenium-version>4.6.0</axe-core-selenium-version>
 		<restassured-version>5.3.0</restassured-version>
-		<testng-version>7.7.1</testng-version>
+		<testng-version>7.8.0</testng-version>
 		<extentreports-version>5.0.9</extentreports-version>
 		<itextpdf-version>5.5.13.3</itextpdf-version>
 		<jfreechart-version>1.5.3</jfreechart-version>
@@ -33,6 +33,7 @@
 		<commons-io-version>2.6</commons-io-version>
 		<opencsv-version>5.7.1</opencsv-version>
 		<monte-screen-recorder-version>0.7.7.0</monte-screen-recorder-version>
+		<datafaker-version>1.9.0</datafaker-version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -139,6 +140,11 @@
 			<groupId>com.github.stephenc.monte</groupId>
 			<artifactId>monte-screen-recorder</artifactId>
 			<version>${monte-screen-recorder-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.datafaker</groupId>
+			<artifactId>datafaker</artifactId>
+			<version>${datafaker-version}</version>
 		</dependency>
 	</dependencies>
 	<build>
