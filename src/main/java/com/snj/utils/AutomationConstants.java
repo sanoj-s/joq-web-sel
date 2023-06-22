@@ -9,6 +9,7 @@ public class AutomationConstants {
 	public static final String URLCHECK_LIST_FILE = "//Links_Verification_Results//";
 	public static final String API_RESPONSE_DATA = "./src/test/resources/APITesting/ResponseData/";
 	public static final String API_REQUEST_PAYLOAD = "./src/test/resources/APITesting/RequestPayload/";
+	public static final String API_REQUEST_GRAPHQL = "./src/test/resources/APITesting/GraphQL/";
 	public static final String REPORT_FOLDER_HTML = "//Reports//Automation_Execution_Reports//HTML_Reports//";
 	public static final String REPORT_FOLDER_PDF = "//Reports//Automation_Execution_Reports//PDF_Reports";
 	public static final String EMAIL_REPORT_FOLDER = "//test-output//Email_Reports//";

@@ -1,0 +1,13 @@
+query{
+  products(id: "7") {
+    name
+    price
+    category {
+      name
+    }
+    vendor {
+      name
+      id
+    }
+  }
+}
