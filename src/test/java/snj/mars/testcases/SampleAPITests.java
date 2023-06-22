@@ -1,4 +1,4 @@
-package snj.selenium.testcases;
+package snj.mars.testcases;
 
 import java.io.IOException;
 import java.util.ArrayList;

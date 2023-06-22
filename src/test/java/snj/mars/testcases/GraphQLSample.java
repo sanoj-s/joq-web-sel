@@ -1,4 +1,4 @@
-package snj.selenium.testcases;
+package snj.mars.testcases;
 
 import org.json.JSONException;
 import org.testng.annotations.BeforeClass;

@@ -1,4 +1,4 @@
-package snj.selenium.runner;
+package snj.mars.runner;
 
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;

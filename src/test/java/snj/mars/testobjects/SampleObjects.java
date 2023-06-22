@@ -1,4 +1,4 @@
-package snj.selenium.testobjects;
+package snj.mars.testobjects;
 
 public class SampleObjects {
 	public static String txt_searchbox = "(//textarea[@id='APjFqb'])[1]";

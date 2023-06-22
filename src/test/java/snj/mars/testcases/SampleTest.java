@@ -1,4 +1,4 @@
-package snj.selenium.testcases;
+package snj.mars.testcases;
 
 import java.io.IOException;
 
@@ -10,8 +10,8 @@ import com.snj.keywords.Utilities;
 import com.snj.keywords.Validations;
 import com.snj.keywords.WebActions;
 
-import snj.selenium.runner.TestRunner;
-import snj.selenium.testobjects.SampleObjects;
+import snj.mars.runner.TestRunner;
+import snj.mars.testobjects.SampleObjects;
 
 public class SampleTest extends TestRunner {
 	public SampleTest() throws AutomationException {
