@@ -6,7 +6,7 @@
 		<parameter name="gridIP" value="" />
 		<parameter name="gridPort" value="" />
 		<classes>
-			<class name="snj.selenium.testcases.SampleTest" />
+			<class name="com.snj.testcases.SampleTest" />
 		</classes>
 	</test> <!-- Test -->
 </suite> <!-- Suite -->

@@ -3,7 +3,7 @@
 <suite name="Suite">
 	<test thread-count="5" name="Execution for API Test Suites">
 		<classes>
-			<class name="snj.selenium.testcases.SampleAPITests" />
+			<class name="com.snj.testcases.SampleAPITests" />
 		</classes>
 	</test> <!-- Test -->
 </suite> <!-- Suite -->
