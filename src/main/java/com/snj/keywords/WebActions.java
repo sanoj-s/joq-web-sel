@@ -392,7 +392,7 @@ public class WebActions extends AutomationEngine {
 					String operatingSystem = System.getProperty("os.name");
 					Robot robot = new Robot();
 					String actualFilepath = fileUploadDir(new File(filePath).getAbsolutePath());
-					element.click();
+					new UIActions().tap(driver, elementName);
 					Thread.sleep(3000);
 					StringSelection stringSelection;
 					if (actualFilepath.contains("./")) {
