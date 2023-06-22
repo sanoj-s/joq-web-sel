@@ -1,38 +1,39 @@
-# snj-selenium-java
-This is a test automation framework for web applications on different browsers like Google Chrome, Mozilla Firefox, Microsoft Edge, Internet Explorer and Safari in real-time. It provides rich features like Test Execution, Test Reporting, and Test details sharing via mail. The automation framework includes 170+ pre-built keywords using which an Automation Engineer can easily perform the web automation.
+# snj-mars
+**snj-mars** is a test automation framework for web applications on different browsers like Google Chrome, Mozilla Firefox, Microsoft Edge, Internet Explorer, and Safari in real-time. The framework supports Java programming language. It provides rich features like Test Execution, Test Reporting, and Test details sharing via mail. The automation framework includes 360+ pre-built keywords using which an Automation Engineer can easily perform web automation.
 
-<h3>Salient features of snj-selenium-java</h3>
+<h3>Salient features of snj-mars</h3>
 <li>Automation support for web applications (in Windows, MAC and Linux platforms).
-<br><li>Automation support for Google chrome, Mozilla Firefox, Microsoft Edge, Internet Explorer and Safari browsers.
+<br><li>Automation support for Google Chrome, Mozilla Firefox, Microsoft Edge, Internet Explorer and Safari browsers.
 <br><li>Automation support for headless execution of test scripts.
 <br><li>Automation support for electron applications.
 <br><li>Support for parallel execution on different browsers.
 <br><li>Support for fully distributed remote executions (Selenium Grid 4).
-<br><li>Support for Lighthouse audit on website with different categories such as performance, accessibility, seo, best-practices, pwa. 
-<br><li>Support for accessibility testing on website to track the violations, violation impact, and help details to solve the violations.
+<br><li>Support for Lighthouse audit on the website with different categories such as performance, accessibility, seo, best-practices, pwa. 
+<br><li>Support for accessibility testing on the website to track the violations, violation impact, and help details to solve the violations.
 <br><li>Support to collect the page load time for better performance tracking of an application.
 <br><li>Support to generate the video report for the automation execution flow.
-<br><li>Support to compare the images and generate image comparison report. 
+<br><li>Support to compare the images and generate image comparison reports. 
+<br><li>Support of test data generator and it includes 159 built-in keywords to generate the test data.
 <br><li>Support database validation.
-<br><li>Support API testing, generate response time report and response validation.
+<br><li>Support API testing, generate response time report and response validation. It also supports the automation of GraphQL APIs. 
 <br><li>Support mock geolocation, simulate device mode, simulate network speed.
-<br><li>Good reporting - framework generates PDF and HTML report.  
+<br><li>Good reporting - framework generates PDF and HTML reports.  
 <br><li>Email collaboration - send an email with details of automation execution and HTML attachment. 
-<br><li>Well defined keyword document, get from src/main/resources -> keywords folder of the project structure. 
+<br><li> Well-defined keyword document, get from src/main/resources -> keywords folder of the project structure. 
 	
-**Steps to develop and execute automation scripts using snj-selenium-java**
+**Steps to develop and execute automation scripts using snj-mars**
 <br><li>Set up Java, Eclipse/IntelliJ IDEA and dependent softwares.
-<br><li>Import the **snj-selenium-java** framework into Eclipse/IntelliJ IDEA from this repository (master).	
+<br><li>Import the **snj-mars** framework into Eclipse/IntelliJ IDEA from this repository (master).	
 <br><li>Configure details in **framework_config** property file inside the src/main/resources of the framework. 	
 <br><li>Configure details in **email_config**,**automation_test_config** and **database_config** properties files inside the src/test/resources of the framework. 
-<br><li>Manage TestRunner class inside the **snj.selenium.runner** package	
-<br><li>Manage Test Suite Class inside the **snj.selenium.testcases** package and Test Helper class inside **snj.selenium.testhelpers** package.
-<br><li>Manage Test Object Class inside the **snj.selenium.testobjects** package.
+<br><li>Manage TestRunner class inside the **snj.mars.runner** package	
+<br><li>Manage Test Suite Class inside the **snj.mars.testcases** package and Test Helper class inside **snj.mars.testhelpers** package.
+<br><li>Manage Test Object Class inside the **snj.mars.testobjects** package.
 <br><li>Create **testng.xml** and map test suite classes to it.
 <br><li>Run the **testng.xml** file and view the execution reports which generate in the **\Reports\Automation** folder of the project structure.	
 
 **Manage TestRunner class**
-<br>Once the TestRunner class ready under **snj.selenium.runner** package, you can use below code snippet in TestRunner class:
+<br>Once the TestRunner class is ready under **snj.mars.runner** package, you can use below code snippet in TestRunner class:
 	
 	@Listeners(AutomationReport.class)
 	public class TestRunner extends AutomationEngine {
@@ -49,7 +50,7 @@ This is a test automation framework for web applications on different browsers l
 	}
 	
 **Manage Test Suite Class**
-<br>You can create multiple test suite classes under **snj.selenium.testcases** package, you can use below code snippet as sample test case in test suite class:
+<br>You can create multiple test suite classes under **snj.mars.testcases** package, you can use below code snippet as a sample test case in the test suite class:
 	
 	public class SampleTest extends TestRunner {
 	public SampleTest() throws AutomationException {
@@ -64,10 +65,10 @@ This is a test automation framework for web applications on different browsers l
 	}
 	
 **Manage Test Helper Class**
-<br>You can create multiple test helper classes under **snj.selenium.testhelpers** package. Test helper class can hold the actual automation step flow based on the application feature. Test helper methods should be re-usable in other test suite classes. Once you create the methods in test helper class, you can call those methods in test suite classes. 
+<br>You can create multiple test helper classes under **snj.mars.testhelpers** package. Test helper class can hold the actual automation step flow based on the application feature. Test helper methods should be re-usable in other test suite classes. Once you create the methods in the test helper class, you can call those methods in test suite classes. 
 	
 **Manage Test Object Class**
-<br>You can create multiple test object classes under **snj.selenium.testobjects** package. Test Object class can hold the object locator values like XPath, Id etc. These object creation based on your application page/screen. You can use the objects in test helper class to perform the actions on the object. Following is a sample snippet:
+<br>You can create multiple test object classes under **snj.mars.testobjects** package. Test Object class can hold the object locator values like XPath, Id etc. These object creations are based on your application page/screen. You can use the objects in the test helper class to perform the actions on the object. Following is a sample snippet:
 	
 	public class SampleObjects {
 		public static String txt_searchbox = "//input[@title='Search']";
@@ -84,31 +85,31 @@ This is a test automation framework for web applications on different browsers l
 		<parameter name="gridIP" value="xxx.xxx.xxx.xxx" />
 		<parameter name="gridPort" value="xxxx" />
 		<classes>
-		   <class name="snj.selenium.testcases.SampleTest" />
+		   <class name="snj.mars.testcases.SampleTest" />
 		</classes>
 	 </test> <!-- Test -->
         </suite> <!-- Suite -->
 
-**NOTE:** If you need run on different browsers, you can mention firefox or edge or ie or safari or headless for the **browserName** parameter in the above testng.xml code. If you need to run as Selenium Grid mode, just specify the values for **gridIP** and **gridPort**. For local execution, you just leave **gridIP** and **gridPort** as blank but need the **browserName** parameter value. For more about Selenium Grid setup, please visit https://journeyofquality.com/2022/01/26/a-variant-selenium-grid-4/   
+**NOTE:** If you need to run on different browsers, you can mention Firefox or edge or ie or Safari or headless for the **browserName** parameter in the above testng.xml code. If you need to run in Selenium Grid mode, just specify the values for **gridIP** and **gridPort**. For local execution, you just leave **gridIP** and **gridPort** blank but need the **browserName** parameter value. For more about Selenium Grid setup, please visit https://journeyofquality.com/2022/01/26/a-variant-selenium-grid-4/   
 
 **Perform Lighthouse Audit**
-<br>This automation framework supports the lighthouse audit on the website with different categories such as performance, accessibility, SEO, best practices, and PWA. You can use **startLighthouseAudit** keyword of the UtilityActions class. Once the audit is completed the framework will generate the audit report in the **\Reports\Lighthouse_Audit** folder of the project structure. The prerequisites for the Lighthouse audit is to install the **lighthouse** node module package on your system. For more details about Lighthouse setup, please visit https://journeyofquality.com/2021/12/21/turn-on-your-lighthouse/. Below is the sample code for reference:
+<br>This automation framework supports the lighthouse audit on the website with different categories such as performance, accessibility, SEO, best practices, and PWA. You can use **startLighthouseAudit** keyword of the UtilityActions class. Once the audit is completed the framework will generate the audit report in the **\Reports\Lighthouse_Audit** folder of the project structure. The prerequisite for the Lighthouse audit is to install the **lighthouse** node module package on your system. For more details about the Lighthouse setup, please visit https://journeyofquality.com/2021/12/21/turn-on-your-lighthouse/. Below is the sample code for reference:
 <br>`new UtilityActions().startLighthouseAudit(driver.getCurrentUrl(), "performance,seo", "no");`	
 
 **Perform Accessibility Testing**
-<br>This automation framework supports the accessibility testing on website to track the violations, violation impact, and help details to solve the violations. You can use **startAccessibilityAudit** keyword of the UtilityActions class in the test suite class to start the track violations. Once the execution is completed the framework will generate the accessibility test summary report in the **\Reports\Accessibility_Audit\Summary** folder of the project structure. In addition to the summary report, there are detailed text and JSON reports will generate in the **\Reports\Accessibility_Audit\Details** folder of the project structure.
+<br>This automation framework supports the accessibility testing on the website to track the violations and violation impact, and helpful details to solve the violations. You can use **startAccessibilityAudit** keyword of the UtilityActions class in the test suite class to start the track violations. Once the execution is completed the framework will generate the accessibility test summary report in the **\Reports\Accessibility_Audit\Summary** folder of the project structure. In addition to the summary report, there are detailed text and JSON reports will generate in the **\Reports\Accessibility_Audit\Details** folder of the project structure.
 
 **Collect Page Load Performance**
-<br>This automation framework support to collect the page load time for a better performance tracking of an application. You can use **collectLoadTime** keyword of the UtilityActions class in the test suite class to collect the page load time. Once the execution is completed the framework will generate the performance test summary report in the **\Reports\Performance_Audit** folder of the project structure. 
+<br>This automation framework support collecting the page load time for better performance tracking of an application. You can use **collectLoadTime** keyword of the UtilityActions class in the test suite class to collect the page load time. Once the execution is completed the framework will generate the performance test summary report in the **\Reports\Performance_Audit** folder of the project structure. 
 
 **Image Comparison**
-<br>This automation framework support to compare the actual image against the expected image at runtime. You can use **compareImages** keyword of the ValidationActions class in the test suite class to compare the images. Once the execution is completed the framework will generate the image comparison report in the **\Reports\Image_Comparision** folder of the project structure. More details at https://journeyofquality.com/2023/01/13/image-comparison-during-automation/ 
+<br>This automation framework support to the comparison of the actual image against the expected image at runtime. You can use **compareImages** keyword of the ValidationActions class in the test suite class to compare the images. Once the execution is completed the framework will generate the image comparison report in the **\Reports\Image_Comparision** folder of the project structure. More details at https://journeyofquality.com/2023/01/13/image-comparison-during-automation/ 
 
 **Video Recording**
-<br>This automation framework support to generate the video recording of the automation workflow. You can use **startRecording** keyword of the UtilityActions class in the test suite class to start the recording and stop the recording by using the keyword **stopRecording** of the UtilityActions. Once the execution is completed the framework will generate the video report in the **\Reports\Automation_Videos** folder of the project structure. 
+<br>This automation framework support generating the video recording of the automation workflow. You can use **startRecording** keyword of the UtilityActions class in the test suite class to start the recording and stop the recording by using the keyword **stopRecording** of the UtilityActions. Once the execution is completed the framework will generate the video report in the **\Reports\Automation_Videos** folder of the project structure. 
 
 I hope this automation framework will help to kickstart your automation scripting from the base level.	
 	
-Get your latest releases from https://github.com/sanoj-s/snj-selenium-java/releases	
+Get your latest releases from https://github.com/sanoj-s/snj-mars/releases
 	
 _**make it perfect!**_
