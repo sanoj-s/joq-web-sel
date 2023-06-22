@@ -35,9 +35,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chromium.ChromiumDriver;
 import org.openqa.selenium.devtools.DevTools;
-import org.openqa.selenium.devtools.v109.network.Network;
-import org.openqa.selenium.devtools.v109.network.model.ConnectionType;
-import org.openqa.selenium.devtools.v109.network.model.Headers;
+import org.openqa.selenium.devtools.v112.network.Network;
+import org.openqa.selenium.devtools.v112.network.model.ConnectionType;
+import org.openqa.selenium.devtools.v112.network.model.Headers;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -81,7 +81,18 @@ public class Utilities extends AutomationEngine {
 			((JavascriptExecutor) driver)
 					.executeScript("window.scrollTo(" + element.getLocation().x + "," + element.getLocation().y + ")");
 		} catch (Exception e) {
-			throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementName + "'");
+			try {
+				long timeout = Long.parseLong(objProertyData.getProperty(
+						AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, AutomationConstants.SHORT_LOADING));
+				wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
+				By actualElement = getElementByLocator(elementName);
+				element = wait.until(ExpectedConditions.presenceOfElementLocated(actualElement));
+				((JavascriptExecutor) driver).executeScript(
+						"window.scrollTo(" + element.getLocation().x + "," + element.getLocation().y + ")");
+
+			} catch (Exception exe) {
+				throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementName + "'");
+			}
 		}
 		return element;
 	}
@@ -103,9 +114,17 @@ public class Utilities extends AutomationEngine {
 			long timeout = Long.parseLong(
 					objProertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
 			wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
-			element = wait.until(ExpectedConditions.presenceOfElementLocated(elementLocator));
+			element = wait.until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
 		} catch (Exception e) {
-			throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementLocator + "'");
+			try {
+				long timeout = Long.parseLong(
+						objProertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
+				wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
+				element = wait.until(ExpectedConditions.presenceOfElementLocated(elementLocator));
+
+			} catch (Exception exe) {
+				throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementLocator + "'");
+			}
 		}
 		return element;
 	}
@@ -230,7 +249,13 @@ public class Utilities extends AutomationEngine {
 			By actualElement = getElementByLocator(expectedElementName);
 			element = wait.until(ExpectedConditions.presenceOfElementLocated(actualElement));
 		} catch (Exception e) {
-			throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + expectedElementName + "'");
+			try {
+				wait = new WebDriverWait(driver, Duration.ofSeconds(waitTime));
+				By actualElement = getElementByLocator(expectedElementName);
+				element = wait.until(ExpectedConditions.visibilityOfElementLocated(actualElement));
+			} catch (Exception ex) {
+				throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + expectedElementName + "'");
+			}
 		}
 		return element;
 	}
@@ -301,17 +326,23 @@ public class Utilities extends AutomationEngine {
 		List<WebElement> elements;
 		DataHandler objProertyData = new DataHandler();
 		try {
-			if (elementName != null) {
+			long timeout = Long.parseLong(
+					objProertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
+			wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
+			By actualElement = getElementByLocator(elementName);
+			wait.until(ExpectedConditions.presenceOfElementLocated(actualElement));
+			elements = driver.findElements(actualElement);
+		} catch (Exception e) {
+			try {
 				long timeout = Long.parseLong(
 						objProertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
 				wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
 				By actualElement = getElementByLocator(elementName);
-				wait.until(ExpectedConditions.presenceOfElementLocated(actualElement));
+				wait.until(ExpectedConditions.visibilityOfElementLocated(actualElement));
 				elements = driver.findElements(actualElement);
-			} else
+			} catch (Exception exe) {
 				throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementName + "'");
-		} catch (Exception e) {
-			throw new AutomationException(AutomationConstants.OBJECT_NOT_FOUND + "'" + elementName + "'");
+			}
 		}
 		return elements;
 	}
