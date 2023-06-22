@@ -1,4 +1,4 @@
-package snj.mars.testcases;
+package com.snj.testcases;
 
 import org.json.JSONException;
 import org.testng.annotations.BeforeClass;
