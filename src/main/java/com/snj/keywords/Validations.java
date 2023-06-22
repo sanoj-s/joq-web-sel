@@ -511,20 +511,20 @@ public class Validations extends AutomationEngine {
 	 * @param messageOnFailure
 	 * @return
 	 */
-	public void verifyFileUpload(String downloadPath, String fileName, String messageOnFailure) {
-		boolean isFileUploaded = false;
+	public void verifyFileDownloaded(String downloadPath, String fileName, String messageOnFailure) {
+		boolean isFileDownloaded = false;
 		try {
 			File dir = new File(downloadPath);
 			File[] dirContents = dir.listFiles();
 			for (int i = 0; i < dirContents.length; i++) {
 				if (dirContents[i].getName().contains(fileName)) {
 					dirContents[i].delete();
-					isFileUploaded = true;
-					Assert.assertTrue(isFileUploaded, messageOnFailure);
+					isFileDownloaded = true;
+					Assert.assertTrue(isFileDownloaded, messageOnFailure);
 				}
 			}
 		} catch (Exception e) {
-			Assert.assertTrue(isFileUploaded, messageOnFailure);
+			Assert.assertTrue(isFileDownloaded, messageOnFailure);
 		}
 	}
 
