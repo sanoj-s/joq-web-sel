@@ -1,5 +1,5 @@
 # snj-mars
-**snj-mars** is a test automation framework for web applications on different browsers like Google Chrome, Mozilla Firefox, Microsoft Edge, Internet Explorer, and Safari in real-time. The framework supports Java programming language. It provides rich features like Test Execution, Test Reporting, and Test details sharing via mail. The automation framework includes 360+ pre-built keywords using which an Automation Engineer can easily perform web automation.
+**snj-mars** is a test automation framework for web applications on different browsers like Google Chrome, Mozilla Firefox, Microsoft Edge, Internet Explorer, and Safari in real-time. The framework supports Java programming language. It provides rich features like Test Execution, Test Reporting, and Test details sharing via mail. The automation framework includes 370 pre-built keywords using which an Automation Engineer can easily perform web automation.
 
 <h3>Salient features of snj-mars</h3>
 <li>Automation support for web applications (in Windows, MAC and Linux platforms).
@@ -8,6 +8,7 @@
 <br><li>Automation support for electron applications.
 <br><li>Support for parallel execution on different browsers.
 <br><li>Support for fully distributed remote executions (Selenium Grid 4).
+<br><li>Support of Chrome for Testing (CfT) endpoints for chromedriver management and automated Chrome management.
 <br><li>Support for Lighthouse audit on the website with different categories such as performance, accessibility, seo, best-practices, pwa. 
 <br><li>Support for accessibility testing on the website to track the violations, violation impact, and help details to solve the violations.
 <br><li>Support to collect the page load time for better performance tracking of an application.
@@ -17,6 +18,7 @@
 <br><li>Support database validation.
 <br><li>Support API testing, generate response time report and response validation. It also supports the automation of GraphQL APIs. 
 <br><li>Support mock geolocation, simulate device mode, simulate network speed.
+<br><li>Generate the Network logs while automation execution of the web application.
 <br><li>Good reporting - framework generates PDF and HTML reports.  
 <br><li>Email collaboration - send an email with details of automation execution and HTML attachment. 
 <br><li> Well-defined keyword document, get from src/main/resources -> keywords folder of the project structure. 
@@ -38,9 +40,9 @@
 	@Listeners(AutomationReport.class)
 	public class TestRunner extends AutomationEngine {
 	@BeforeClass
-	@Parameters({ "browserName", "gridIP", "gridPort" })
-	public void setup(String browserName, String gridIP, String gridPort) throws Exception {
-		startBrowser(browserName, gridIP, gridPort);
+	@Parameters({ "browserName", "browserVersion", "gridIP", "gridPort" })
+	public void setup(String browserName, String browserVersion, String gridIP, String gridPort) throws Exception {
+		startBrowser(browserName, browserVersion, gridIP, gridPort);
 	}
 	@AfterSuite
 	public void tearDownMethod() throws AutomationException, InterruptedException {
@@ -82,6 +84,7 @@
         <suite name="Suite">
 	 <test thread-count="5" name="Execution for Test Suites">
 		<parameter name="browserName" value="chrome" />
+		<parameter name="browserVersion" value="116" />
 		<parameter name="gridIP" value="xxx.xxx.xxx.xxx" />
 		<parameter name="gridPort" value="xxxx" />
 		<classes>
@@ -90,7 +93,7 @@
 	 </test> <!-- Test -->
         </suite> <!-- Suite -->
 
-**NOTE:** If you need to run on different browsers, you can mention Firefox or edge or ie or Safari or headless for the **browserName** parameter in the above testng.xml code. If you need to run in Selenium Grid mode, just specify the values for **gridIP** and **gridPort**. For local execution, you just leave **gridIP** and **gridPort** blank but need the **browserName** parameter value. For more about Selenium Grid setup, please visit https://journeyofquality.com/2022/01/26/a-variant-selenium-grid-4/   
+**NOTE:** If you need to run on different browsers, you can mention Firefox or edge or ie or Safari or headless for the **browserName** parameter in the above testng.xml code. You can also execute on different versions of Chrome browser, for that set value for **browserVersion**. If you need to run in Selenium Grid mode, just specify the values for **gridIP** and **gridPort**. For local execution, you just leave **gridIP** and **gridPort** blank but need the **browserName** parameter value. For more about Selenium Grid setup, please visit https://journeyofquality.com/2022/01/26/a-variant-selenium-grid-4/   
 
 **Perform Lighthouse Audit**
 <br>This automation framework supports the lighthouse audit on the website with different categories such as performance, accessibility, SEO, best practices, and PWA. You can use **startLighthouseAudit** keyword of the UtilityActions class. Once the audit is completed the framework will generate the audit report in the **\Reports\Lighthouse_Audit** folder of the project structure. The prerequisite for the Lighthouse audit is to install the **lighthouse** node module package on your system. For more details about the Lighthouse setup, please visit https://journeyofquality.com/2021/12/21/turn-on-your-lighthouse/. Below is the sample code for reference:
