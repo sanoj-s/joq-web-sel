@@ -13,7 +13,8 @@ public class AutomationConstants {
 	public static final String REPORT_FOLDER_HTML = "//Reports//Automation_Execution_Reports//HTML_Reports//";
 	public static final String REPORT_FOLDER_PDF = "//Reports//Automation_Execution_Reports//PDF_Reports";
 	public static final String EMAIL_REPORT_FOLDER = "//test-output//Email_Reports//";
-
+	public static final String NEED_NETWORK_LOGS = "needNetworkLogs";
+	
 	// ==========> Configuration files and variables
 	public static final String AUTOMATION_FRAMEWORK_CONFIG = "framework_config";
 	public static final String DB_CONFIG = "database_config";

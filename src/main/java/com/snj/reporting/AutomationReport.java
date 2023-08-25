@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.text.DateFormat;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Future;
 
 import org.apache.commons.io.FileUtils;
@@ -26,6 +28,11 @@ import org.jfree.chart.ui.Align;
 import org.jfree.data.general.DefaultPieDataset;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.devtools.DevTools;
+import org.openqa.selenium.devtools.v114.network.Network;
+import org.openqa.selenium.devtools.v114.network.model.Response;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.IExecutionListener;
 import org.testng.ITestContext;
@@ -93,6 +100,9 @@ public class AutomationReport implements ITestListener, IExecutionListener {
 	public static ExtentReports extent;
 	public static ExtentTest test;
 	DataHandler dataHandler = new DataHandler();
+
+	FileWriter fileWriter;
+	String needNetworkLogs;
 
 	public AutomationReport() {
 		this.document = new Document();
@@ -211,6 +221,96 @@ public class AutomationReport implements ITestListener, IExecutionListener {
 		// Adding test case name to HTML report
 		String testName = result.getMethod().getMethodName();
 		test = extent.createTest(testName);
+		try {
+			// Track the network logs
+			needNetworkLogs = new DataHandler().getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG,
+					AutomationConstants.NEED_NETWORK_LOGS);
+			if (needNetworkLogs.equals("")) {
+				needNetworkLogs = "No";
+			}
+			if (needNetworkLogs.equalsIgnoreCase("yes")) {
+				trackNetworkLogs(result, testName);
+			}
+		} catch (Exception e) {
+		}
+	}
+
+	/**
+	 * Method to track the network logs and generate log files in the project
+	 * structure under //Logs//Network_logs folder
+	 * 
+	 * @author sanoj.swaminathan
+	 * @since 27-06-2023
+	 * @param result
+	 * @param testName
+	 */
+	private void trackNetworkLogs(ITestResult result, String testName) {
+		try {
+			WebDriver driver = null;
+			Object currentClass = result.getInstance();
+			try {
+				driver = ((AutomationEngine) currentClass).getDriver();
+			} catch (Exception e) {
+			}
+
+			DevTools devTools = null;
+			if (driver instanceof EdgeDriver) {
+				devTools = ((EdgeDriver) driver).getDevTools();
+			} else if (driver instanceof ChromeDriver) {
+				devTools = ((ChromeDriver) driver).getDevTools();
+			} else {
+				System.out.println("Network logs supported for Edge and Chrome browsers");
+			}
+			if (devTools != null) {
+				devTools.createSession();
+				devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
+
+				if (!new File(System.getProperty("user.dir") + "//Logs//Network_logs").exists()) {
+					(new File(System.getProperty("user.dir") + "//Logs")).mkdir();
+					(new File(System.getProperty("user.dir") + "//Logs//Network_logs")).mkdir();
+				}
+				fileWriter = new FileWriter(new File(System.getProperty("user.dir") + "\\Logs\\Network_logs\\"
+						+ testName + "_" + getCurrentDateAndTime() + ".txt"));
+
+				devTools.addListener(Network.responseReceived(), responseReceived -> {
+					Response response = responseReceived.getResponse();
+					String log = "Network Log: " + response.getUrl() + "\n";
+
+					try {
+						fileWriter.write(log);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					try {
+						fileWriter.flush();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				});
+				System.out.println("********************************************");
+				System.out.println("Network logs for " + testName + " is avaialble at " + System.getProperty("user.dir")
+						+ "\\Logs\\Network_logs\\" + testName + "_" + getCurrentDateAndTime() + ".txt");
+				System.out.println("********************************************");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Method to get the current date and time
+	 * 
+	 * @author sanoj.swaminathan
+	 * @since 27-06-2023
+	 * @return
+	 */
+	private static String getCurrentDateAndTime() {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		DateFormat timeFormat = new SimpleDateFormat("HH-mm-ss");
+		Date date = new Date();
+		String currdate = dateFormat.format(date);
+		String currtime = timeFormat.format(date);
+		return currdate + "_" + currtime;
 	}
 
 	/**
@@ -262,11 +362,11 @@ public class AutomationReport implements ITestListener, IExecutionListener {
 		test.log(Status.FAIL,
 				MarkupHelper.createLabel(result.getName() + " Test case FAILED due to below issues:", ExtentColor.RED));
 		test.fail(result.getThrowable());
-		test.fail("Please find the screenshot below");
 
 		String failureScreen = null;
 		if (driver != null) {
 			try {
+				test.fail("Please find the screenshot below");
 				failureScreen = new Utilities().takeScreenshot(driver, result.getName());
 				test.addScreenCaptureFromPath(failureScreen, result.getName());
 			} catch (AutomationException e) {
@@ -376,7 +476,6 @@ public class AutomationReport implements ITestListener, IExecutionListener {
 	public void onExecutionFinish() {
 		deleteCorruptedFile(AutomationConstants.REPORT_FOLDER_PDF);
 		System.out.println("info: [Forwarding newSession on session to delete corrupted files]");
-
 		try {
 			if (sendMail.equalsIgnoreCase("")) {
 				sendMail = "No";
@@ -387,6 +486,14 @@ public class AutomationReport implements ITestListener, IExecutionListener {
 				}
 			}
 		} catch (Exception ex) {
+		}
+
+		// Close the network logs
+		try {
+			if (needNetworkLogs.equalsIgnoreCase("yes") && fileWriter != null) {
+				fileWriter.close();
+			}
+		} catch (IOException e) {
 		}
 	}
 
@@ -1071,7 +1178,7 @@ public class AutomationReport implements ITestListener, IExecutionListener {
 	 */
 	public void trackSteps(String stepAction) {
 		try {
-			test.log(Status.INFO, MarkupHelper.createLabel(stepAction, ExtentColor.BLUE));
+			test.log(Status.INFO, MarkupHelper.createCodeBlock(stepAction));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
