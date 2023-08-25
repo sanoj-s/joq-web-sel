@@ -348,6 +348,54 @@ public class Utilities extends AutomationEngine {
 	}
 
 	/**
+	 * Method to wait for all elements loaded in the DOM of web application based on
+	 * given wait time.
+	 * 
+	 * @author sanoj.swaminathan
+	 * @since 26-06-2023
+	 * @param driver
+	 * @param elementName
+	 * @param waitTime
+	 * @return element
+	 * @throws AutomationException
+	 */
+	public List<WebElement> waitForAllElementsLoaded(WebDriver driver, long waitTime) throws AutomationException {
+		List<WebElement> element = null;
+		try {
+			wait = new WebDriverWait(driver, Duration.ofSeconds(waitTime));
+			element = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("*")));
+		} catch (Exception e) {
+			throw new AutomationException(e);
+		}
+		return element;
+	}
+
+	/**
+	 * Method to wait for all elements loaded in the DOM of web application.
+	 * 
+	 * @author sanoj.swaminathan
+	 * @since 27-06-2023
+	 * @param driver
+	 * @param elementName
+	 * @param waitTime
+	 * @return element
+	 * @throws AutomationException
+	 */
+	public List<WebElement> waitForAllElementsLoaded(WebDriver driver) throws AutomationException {
+		List<WebElement> element = null;
+		DataHandler objProertyData = new DataHandler();
+		try {
+			long timeout = Long.parseLong(
+					objProertyData.getProperty(AutomationConstants.AUTOMATION_FRAMEWORK_CONFIG, "SHORT_LOADING"));
+			wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
+			element = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("*")));
+		} catch (Exception e) {
+			throw new AutomationException(e);
+		}
+		return element;
+	}
+
+	/**
 	 * Wait for the page load complete
 	 * 
 	 * @author sanojs
