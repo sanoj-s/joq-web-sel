@@ -34,12 +34,16 @@ public class AutomationEngine {
 	 * 
 	 * @author sanojs
 	 * @since 22-04-2021
+	 * @modified 25-08-2023
 	 * @param browserName
+	 * @param browserVersion
+	 * @param gridIP
+	 * @param gridPort
 	 * @return
 	 * @throws AutomationException
 	 * @throws InterruptedException
 	 */
-	public WebDriver startBrowser(String browserName, String gridIP, String gridPort)
+	public WebDriver startBrowser(String browserName, String browserVersion, String gridIP, String gridPort)
 			throws AutomationException, InterruptedException {
 		switch (browserName.toLowerCase()) {
 		case "chrome":
@@ -47,7 +51,7 @@ public class AutomationEngine {
 			if (!gridIP.equalsIgnoreCase("")) {
 				startExecutionInGrid(gridIP, gridPort, browserName);
 			} else {
-				startChrome(browserName);
+				startChrome(browserName, browserVersion);
 			}
 			break;
 
@@ -243,8 +247,9 @@ public class AutomationEngine {
 	 * @since 13-04-2021
 	 * @modified 16-03-2021
 	 * @param browserName
+	 * @param browserVersion
 	 */
-	private void startChrome(String browserName) throws AutomationException {
+	private void startChrome(String browserName, String browserVersion) throws AutomationException {
 		try {
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("--test-type");
@@ -252,12 +257,17 @@ public class AutomationEngine {
 			prefs.put("credentials_enable_service", false);
 			prefs.put("profile.password_manager_enabled", false);
 			options.setExperimentalOption("prefs", prefs);
+			options.addArguments("--remote-allow-origins=*");
+			if (!browserVersion.equals("")) {
+				options.setBrowserVersion(browserVersion);
+			}
 			if (browserName.equalsIgnoreCase("headless-chrome")) {
 				options.addArguments("--no-sandbox");
 				options.addArguments("--disable-dev-shm-usage");
 				options.addArguments("--headless=new");
 			}
 			driver = new ChromeDriver(options);
+
 			driver.manage().window().maximize();
 		} catch (Exception e) {
 			throw new AutomationException(getExceptionMessage(), e);

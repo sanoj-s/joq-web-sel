@@ -3,6 +3,7 @@
 <suite name="Suite">
 	<test thread-count="5" name="Execution for Test Suites">
 		<parameter name="browserName" value="chrome" />
+		<parameter name="browserVersion" value="116" />
 		<parameter name="gridIP" value="" />
 		<parameter name="gridPort" value="" />
 		<classes>

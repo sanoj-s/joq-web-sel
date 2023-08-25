@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>snj.mars.java</groupId>
 	<artifactId>snj-mars-java</artifactId>
-	<version>1.1.1</version>
+	<version>1.1.2</version>
 	<packaging>jar</packaging>
 
 	<name>snj.mars</name>
@@ -12,9 +12,9 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<selenium-version>4.10.0</selenium-version>
+		<maven.compiler.source>1.11</maven.compiler.source>
+		<maven.compiler.target>1.11</maven.compiler.target>
+		<selenium-version>4.11.0</selenium-version>
 		<axe-core-selenium-version>4.6.0</axe-core-selenium-version>
 		<restassured-version>5.3.0</restassured-version>
 		<testng-version>7.8.0</testng-version>
