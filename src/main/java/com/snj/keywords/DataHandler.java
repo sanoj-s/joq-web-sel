@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -371,6 +372,35 @@ public class DataHandler {
 		} catch (IOException e) {
 			throw new AutomationException(
 					new AutomationEngine().getExceptionMessage() + "\n" + AutomationConstants.CAUSE + e.getMessage());
+		}
+	}
+
+	/**
+	 * Method to write new key and value to the properties file
+	 * 
+	 * @author sanoj.swaminathan
+	 * @since 31-07-2023
+	 * @param filePath. For example: ./src/test/resources/config.properties
+	 * @param keyName
+	 * @param value
+	 */
+	public void writeToPropertiesFile(String filePath, String keyName, String value) {
+
+		Properties properties = new Properties();
+		try (InputStream inputStream = new FileInputStream(filePath)) {
+			properties.load(inputStream);
+		} catch (IOException e) {
+		}
+
+		if (!properties.containsKey(keyName)) {
+			properties.setProperty(keyName, value);
+			try (OutputStream outputStream = new FileOutputStream(filePath, false)) {
+				properties.store(outputStream, null);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			System.out.println("Key already exists, skipping addition.");
 		}
 	}
 
