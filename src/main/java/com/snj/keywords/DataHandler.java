@@ -5,8 +5,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -376,6 +378,31 @@ public class DataHandler {
 	}
 
 	/**
+	 * Method to get the property value from the property file path
+	 * 
+	 * @author sanoj.swaminathan
+	 * @since 16-10-2023
+	 * @param fileName
+	 * @param filePath
+	 * @return propertyName
+	 * @throws AutomationException
+	 */
+	public String getPropertyFromFilePath(String filePath, String propertyName) throws AutomationException {
+		try {
+			String propValue = "";
+			Properties props = new Properties();
+			FileInputStream input = new FileInputStream(filePath);
+			props.load(input);
+			input.close();
+			propValue = props.getProperty(propertyName);
+			return propValue;
+		} catch (IOException e) {
+			throw new AutomationException(
+					new AutomationEngine().getExceptionMessage() + "\n" + AutomationConstants.CAUSE + e.getMessage());
+		}
+	}
+
+	/**
 	 * Method to write new key and value to the properties file
 	 * 
 	 * @author sanoj.swaminathan
@@ -401,6 +428,41 @@ public class DataHandler {
 			}
 		} else {
 			System.out.println("Key already exists, skipping addition.");
+		}
+	}
+
+	/**
+	 * Method to update the value of specific key in the properties file
+	 * 
+	 * @author sanojs
+	 * @since 25-09-2023
+	 * @param filePath
+	 * @param keyName
+	 * @param newValue
+	 * @throws InterruptedException
+	 */
+	public void updatePropertyValueInFile(String filePath, String keyName, String newValue)
+			throws InterruptedException {
+		try {
+			FileInputStream input = new FileInputStream(filePath);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+			String line;
+			StringBuilder updatedFileContent = new StringBuilder();
+
+			while ((line = reader.readLine()) != null) {
+				if (line.startsWith(keyName + "=")) {
+					line = keyName + "=" + newValue;
+				}
+				updatedFileContent.append(line).append(System.lineSeparator());
+			}
+			reader.close();
+			input.close();
+
+			FileWriter writer = new FileWriter(filePath);
+			writer.write(updatedFileContent.toString());
+			writer.close();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
