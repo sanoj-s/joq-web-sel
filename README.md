@@ -18,7 +18,7 @@
 <br><li>Support database validation.
 <br><li>Support API testing, generate response time report and response validation. It also supports the automation of GraphQL APIs. 
 <br><li>Support mock geolocation, simulate device mode, simulate network speed.
-<br><li>Generate the Network logs while automation execution of the web application.
+<br><li>Generate the Network logs while automation the execution of the web application.
 <br><li>Good reporting - framework generates PDF and HTML reports.  
 <br><li>Email collaboration - send an email with details of automation execution and HTML attachment. 
 <br><li> Well-defined keyword document, get from src/main/resources -> keywords folder of the project structure. 
@@ -100,19 +100,19 @@
 <br>`new UtilityActions().startLighthouseAudit(driver.getCurrentUrl(), "performance,seo", "no");`	
 
 **Perform Accessibility Testing**
-<br>This automation framework supports the accessibility testing on the website to track the violations and violation impact, and helpful details to solve the violations. You can use **startAccessibilityAudit** keyword of the UtilityActions class in the test suite class to start the track violations. Once the execution is completed the framework will generate the accessibility test summary report in the **\Reports\Accessibility_Audit\Summary** folder of the project structure. In addition to the summary report, there are detailed text and JSON reports will generate in the **\Reports\Accessibility_Audit\Details** folder of the project structure.
+<br>This automation framework supports the accessibility testing on the website to track the violations and violation impact, and helpful details to solve the violations. You can use **startAccessibilityAudit** keyword of the UtilityActions class in the test suite class to start the track violations. Once the execution is completed the framework will generate the accessibility test summary report in the **\Reports\Accessibility_Audit\Summary** folder of the project structure. In addition to the summary report, there are detailed text and JSON reports will be generated in the **\Reports\Accessibility_Audit\Details** folder of the project structure.
 
 **Collect Page Load Performance**
-<br>This automation framework support collecting the page load time for better performance tracking of an application. You can use **collectLoadTime** keyword of the UtilityActions class in the test suite class to collect the page load time. Once the execution is completed the framework will generate the performance test summary report in the **\Reports\Performance_Audit** folder of the project structure. 
+<br>This automation framework supports collecting the page load time for better performance tracking of an application. You can use **collectLoadTime** keyword of the UtilityActions class in the test suite class to collect the page load time. Once the execution is completed the framework will generate the performance test summary report in the **\Reports\Performance_Audit** folder of the project structure. 
 
 **Image Comparison**
-<br>This automation framework support to the comparison of the actual image against the expected image at runtime. You can use **compareImages** keyword of the ValidationActions class in the test suite class to compare the images. Once the execution is completed the framework will generate the image comparison report in the **\Reports\Image_Comparision** folder of the project structure. More details at https://journeyofquality.com/2023/01/13/image-comparison-during-automation/ 
+<br>This automation framework supports the comparison of the actual image against the expected image at runtime. You can use **compareImages** keyword of the ValidationActions class in the test suite class to compare the images. Once the execution is completed the framework will generate the image comparison report in the **\Reports\Image_Comparision** folder of the project structure. More details at https://journeyofquality.com/2023/01/13/image-comparison-during-automation/ 
 
 **Video Recording**
-<br>This automation framework support generating the video recording of the automation workflow. You can use **startRecording** keyword of the UtilityActions class in the test suite class to start the recording and stop the recording by using the keyword **stopRecording** of the UtilityActions. Once the execution is completed the framework will generate the video report in the **\Reports\Automation_Videos** folder of the project structure. 
+<br>This automation framework supports generating the video recording of the automation workflow. You can use **startRecording** keyword of the UtilityActions class in the test suite class to start the recording and stop the recording by using the keyword **stopRecording** of the UtilityActions. Once the execution is completed the framework will generate the video report in the **\Reports\Automation_Videos** folder of the project structure. 
 
 I hope this automation framework will help to kickstart your automation scripting from the base level.	
 	
-Get your latest releases from https://github.com/sanoj-s/snj-mars/releases
+Get your latest releases from https://github.com/sanoj-s/joq-web-sel/releases
 	
 _**make it perfect!**_
