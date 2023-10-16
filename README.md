@@ -1,7 +1,7 @@
-# snj-mars
-**snj-mars** is a test automation framework for web applications on different browsers like Google Chrome, Mozilla Firefox, Microsoft Edge, Internet Explorer, and Safari in real-time. The framework supports Java programming language. It provides rich features like Test Execution, Test Reporting, and Test details sharing via mail. The automation framework includes 370 pre-built keywords using which an Automation Engineer can easily perform web automation.
+# joq-web-sel
+**joq-web-sel** is a test automation framework for web applications on different browsers like Google Chrome, Mozilla Firefox, Microsoft Edge, Internet Explorer, and Safari in real-time. The framework supports Java programming language. It provides rich features like Test Execution, Test Reporting, and Test details sharing via mail. The automation framework includes 372 pre-built keywords using which an Automation Engineer can easily perform web automation.
 
-<h3>Salient features of snj-mars</h3>
+<h3>Salient features of joq-web-sel</h3>
 <li>Automation support for web applications (in Windows, MAC and Linux platforms).
 <br><li>Automation support for Google Chrome, Mozilla Firefox, Microsoft Edge, Internet Explorer and Safari browsers.
 <br><li>Automation support for headless execution of test scripts.
@@ -23,19 +23,19 @@
 <br><li>Email collaboration - send an email with details of automation execution and HTML attachment. 
 <br><li> Well-defined keyword document, get from src/main/resources -> keywords folder of the project structure. 
 	
-**Steps to develop and execute automation scripts using snj-mars**
+**Steps to develop and execute automation scripts using joq-web-sel**
 <br><li>Set up Java, Eclipse/IntelliJ IDEA and dependent softwares.
-<br><li>Import the **snj-mars** framework into Eclipse/IntelliJ IDEA from this repository (master).	
+<br><li>Import the **joq-web-sel** framework into Eclipse/IntelliJ IDEA from this repository (master).	
 <br><li>Configure details in **framework_config** property file inside the src/main/resources of the framework. 	
 <br><li>Configure details in **email_config**,**automation_test_config** and **database_config** properties files inside the src/test/resources of the framework. 
-<br><li>Manage TestRunner class inside the **com.snj.runner** package	
-<br><li>Manage Test Suite Class inside the **com.snj.testcases** package and Test Helper class inside **com.snj.testhelpers** package.
-<br><li>Manage Test Object Class inside the **com.snj.testobjects** package.
+<br><li>Manage TestRunner class inside the **com.joq.runner** package	
+<br><li>Manage Test Suite Class inside the **com.joq.testcases** package and Test Helper class inside **com.joq.testhelpers** package.
+<br><li>Manage Test Object Class inside the **com.joq.testobjects** package.
 <br><li>Create **testng.xml** and map test suite classes to it.
 <br><li>Run the **testng.xml** file and view the execution reports which generate in the **\Reports\Automation** folder of the project structure.	
 
 **Manage TestRunner class**
-<br>Once the TestRunner class is ready under **com.snj.runner** package, you can use below code snippet in TestRunner class:
+<br>Once the TestRunner class is ready under **com.joq.runner** package, you can use below code snippet in TestRunner class:
 	
 	@Listeners(AutomationReport.class)
 	public class TestRunner extends AutomationEngine {
@@ -52,7 +52,7 @@
 	}
 	
 **Manage Test Suite Class**
-<br>You can create multiple test suite classes under **com.snj.testcases** package, you can use below code snippet as a sample test case in the test suite class:
+<br>You can create multiple test suite classes under **com.joq.testcases** package, you can use below code snippet as a sample test case in the test suite class:
 	
 	public class SampleTest extends TestRunner {
 	public SampleTest() throws AutomationException {
@@ -67,10 +67,10 @@
 	}
 	
 **Manage Test Helper Class**
-<br>You can create multiple test helper classes under **com.snj.testhelpers** package. Test helper class can hold the actual automation step flow based on the application feature. Test helper methods should be re-usable in other test suite classes. Once you create the methods in the test helper class, you can call those methods in test suite classes. 
+<br>You can create multiple test helper classes under **com.joq.testhelpers** package. Test helper class can hold the actual automation step flow based on the application feature. Test helper methods should be re-usable in other test suite classes. Once you create the methods in the test helper class, you can call those methods in test suite classes. 
 	
 **Manage Test Object Class**
-<br>You can create multiple test object classes under **com.snj.testobjects** package. Test Object class can hold the object locator values like XPath, Id etc. These object creations are based on your application page/screen. You can use the objects in the test helper class to perform the actions on the object. Following is a sample snippet:
+<br>You can create multiple test object classes under **com.joq.testobjects** package. Test Object class can hold the object locator values like XPath, Id etc. These object creations are based on your application page/screen. You can use the objects in the test helper class to perform the actions on the object. Following is a sample snippet:
 	
 	public class SampleObjects {
 		public static String txt_searchbox = "//input[@title='Search']";
@@ -84,11 +84,11 @@
         <suite name="Suite">
 	 <test thread-count="5" name="Execution for Test Suites">
 		<parameter name="browserName" value="chrome" />
-		<parameter name="browserVersion" value="116" />
+		<parameter name="browserVersion" value="118" />
 		<parameter name="gridIP" value="xxx.xxx.xxx.xxx" />
 		<parameter name="gridPort" value="xxxx" />
 		<classes>
-		   <class name="com.snj.testcases.SampleTest" />
+		   <class name="com.joq.testcases.SampleTest" />
 		</classes>
 	 </test> <!-- Test -->
         </suite> <!-- Suite -->

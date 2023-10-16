@@ -2,23 +2,23 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>snj.mars.java</groupId>
-	<artifactId>snj-mars-java</artifactId>
-	<version>1.1.2</version>
+	<groupId>joq.web.sel</groupId>
+	<artifactId>joq-web-sel</artifactId>
+	<version>2.0.0</version>
 	<packaging>jar</packaging>
 
-	<name>snj.mars</name>
+	<name>joq.web.sel</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.11</maven.compiler.source>
 		<maven.compiler.target>1.11</maven.compiler.target>
-		<selenium-version>4.11.0</selenium-version>
+		<selenium-version>4.14.1</selenium-version>
 		<axe-core-selenium-version>4.6.0</axe-core-selenium-version>
-		<restassured-version>5.3.0</restassured-version>
+		<restassured-version>5.3.2</restassured-version>
 		<testng-version>7.8.0</testng-version>
-		<extentreports-version>5.0.9</extentreports-version>
+		<extentreports-version>5.1.1</extentreports-version>
 		<itextpdf-version>5.5.13.3</itextpdf-version>
 		<jfreechart-version>1.5.3</jfreechart-version>
 		<apache-poi-version>4.1.2</apache-poi-version>
