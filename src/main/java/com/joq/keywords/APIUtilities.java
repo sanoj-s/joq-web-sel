@@ -1,5 +1,6 @@
 package com.joq.keywords;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -21,11 +22,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.jayway.jsonpath.DocumentContext;
+import com.jayway.jsonpath.JsonPath;
 import com.joq.exception.AutomationException;
 import com.joq.utils.AutomationConstants;
 import com.joq.utils.ResponseTimeTracker;
 
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
 public class APIUtilities {
@@ -99,11 +101,13 @@ public class APIUtilities {
 			System.out.println("Value of " + parameterName + " is " + jsonValue);
 		} catch (Exception e) {
 			try {
-				JsonPath jsonPath = new JsonPath(responseData.asPrettyString());
+				io.restassured.path.json.JsonPath jsonPath = new io.restassured.path.json.JsonPath(
+						responseData.asPrettyString());
 				jsonValue = Integer.toString(jsonPath.getInt(parameterName));
 			} catch (Exception ex) {
 				try {
-					JsonPath jsonPath = new JsonPath(responseData.asPrettyString());
+					io.restassured.path.json.JsonPath jsonPath = new io.restassured.path.json.JsonPath(
+							responseData.asPrettyString());
 					jsonValue = jsonPath.getString(parameterName);
 				} catch (Exception exception) {
 					System.out.println("Failed to get the value from the response");
@@ -166,6 +170,128 @@ public class APIUtilities {
 			listValue.add(value);
 		}
 		return listValue;
+	}
+
+	/**
+	 * Method to update the JSON path node value in the API response and it will
+	 * create the JSON file and store in
+	 * /src/test/resources/APITesting/RequestPayload/
+	 * 
+	 * @author sanoj.swaminathan
+	 * @since 10-08-2023
+	 * @param response
+	 * @param jsonPath
+	 * @param value
+	 * @return
+	 */
+	public String updateJSONDataInResponseDetails(Response response, String jsonPath, String value) {
+		String payloadPath;
+		DocumentContext jsonContext = JsonPath.parse(response.asPrettyString());
+		jsonContext.set("$." + jsonPath + "", value);
+
+		// Get the updated JSON string
+		String updatedJsonString = jsonContext.jsonString();
+		System.out.println(updatedJsonString);
+
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ss", Locale.getDefault());
+		LocalDateTime dateNow = LocalDateTime.now();
+		String dateValue = dateFormat.format(dateNow);
+		payloadPath = System.getProperty("user.dir") + AutomationConstants.API_REQUEST_PAYLOAD + "payload" + "_"
+				+ dateValue + ".json";
+
+		// Write the updated JSON to a file
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(payloadPath))) {
+			writer.write(updatedJsonString);
+			System.out.println("Updated JSON written to " + payloadPath);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return payloadPath;
+
+	}
+
+	/**
+	 * Method to update the JSON path value in the given JSON payload file
+	 * 
+	 * @author sanoj.swaminathan
+	 * @since 10-08-2023
+	 * @param payloadPath
+	 * @param jsonPath
+	 * @param value
+	 * @return
+	 * @throws IOException
+	 */
+	public String updateJSONDataWithFilePath(String payloadPath, String jsonPath, String value) throws IOException {
+		File file = new File(payloadPath);
+		DocumentContext jsonContext = JsonPath.parse(file);
+		jsonContext.set("$." + jsonPath + "", value);
+
+		// Get the updated JSON string
+		String updatedJsonString = jsonContext.jsonString();
+		System.out.println(updatedJsonString);
+
+		// Write the updated JSON to a file
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(payloadPath))) {
+			writer.write(updatedJsonString);
+			System.out.println("Updated JSON written to " + payloadPath);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return payloadPath;
+	}
+
+	/**
+	 * Method to update the JSON path value in the given JSON payload file. The
+	 * payload file should be available in
+	 * ./src/test/resources/APITesting/RequestPayload/ folder
+	 * 
+	 * @author sanoj.swaminathan
+	 * @since 10-08-2023
+	 * @param jsonFileName
+	 * @param jsonPath
+	 * @param value
+	 * @return
+	 * @throws IOException
+	 */
+	public String updateJSONDataWithFileName(String jsonFileName, String jsonPath, String value) throws IOException {
+		String payloadPath = System.getProperty("user.dir") + AutomationConstants.API_REQUEST_PAYLOAD + jsonFileName
+				+ ".json";
+		File file = new File(payloadPath);
+		DocumentContext jsonContext = JsonPath.parse(file);
+		jsonContext.set("$." + jsonPath + "", value);
+
+		// Get the updated JSON string
+		String updatedJsonString = jsonContext.jsonString();
+		System.out.println(updatedJsonString);
+
+		// Write the updated JSON to a file
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(payloadPath))) {
+			writer.write(updatedJsonString);
+			System.out.println("Updated JSON written to " + payloadPath);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return payloadPath;
+	}
+
+	/**
+	 * Method to update the JSON path in the given JSON payload
+	 * 
+	 * @author sanoj.swaminathan
+	 * @since 10-08-2023
+	 * @param jsonString
+	 * @param jsonPath
+	 * @param value
+	 * @return
+	 */
+	public String updateJSONData(String jsonString, String jsonPath, String value) {
+		DocumentContext jsonContext = JsonPath.parse(jsonString);
+		jsonContext.set("$." + jsonPath + "", value);
+
+		// Get the updated JSON string
+		String updatedJsonString = jsonContext.jsonString();
+		System.out.println(updatedJsonString);
+		return updatedJsonString;
 	}
 
 	/**
